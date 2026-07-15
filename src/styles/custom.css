@@ -182,20 +182,6 @@ img {
     color: #fff !important;
 }
 
-.tag-line {
-    color: var(--primary-light);
-    font-family: var(--second-font);
-    font-weight: 500;
-    margin-bottom: 10px;
-}
-
-.tag-line-dark {
-    color: var(--primary-dark);
-    font-family: var(--second-font);
-    font-weight: 500;
-    margin-bottom: 10px;
-}
-
 h1,
 h2,
 h3,
