@@ -12,7 +12,7 @@ export default function DataTable({
   viewAllText = "View All",
   onViewAll,
   showDropdown = false,
-  dropdownTitle = "Status",
+  dropdownTitle = "All Status",
   dropdownItems = [],
 }) {
   return (
@@ -32,7 +32,7 @@ export default function DataTable({
 
         {showDropdown && (
           <Dropdown>
-            <Dropdown.Toggle className="table-dropdown">
+            <Dropdown.Toggle variant="success" className="table-dropdown btn-outline-primary">
               {dropdownTitle}
               <IoChevronDown />
             </Dropdown.Toggle>

@@ -60,7 +60,7 @@ const AdminNavbar = () => {
 
                         <li>
                             <Link
-                                href={`/admin/retailers`}
+                                href={`/admin/dashboard`}
                                 className={`dash-link ${pathname === "/admin/retailers" ? "active" : ""}`}
                             >
                                 <Image src={FileText} alt="Dashboard icon" />
@@ -70,7 +70,7 @@ const AdminNavbar = () => {
 
                         <li>
                             <Link
-                                href={`/admin/technicians`}
+                                href={`/admin/dashboard`}
                                 className={`dash-link ${pathname === "/admin/technicians" ? "active" : ""}`}
                             >
                                 <Image src={UsersThree} alt="Dashboard icon" />
@@ -80,7 +80,7 @@ const AdminNavbar = () => {
 
                         <li>
                             <Link
-                                href={`/admin/plans`}
+                                href={`/admin/dashboard`}
                                 className={`dash-link ${pathname === "/admin/plans" ? "active" : ""}`}
                             >
                                 <Image src={BuildingOffice} alt="Plans icon" />
@@ -90,8 +90,8 @@ const AdminNavbar = () => {
 
                         <li>
                             <Link
-                                href="#"
-                                className={`dash-link ${pathname === "/dashboard-course-old" ? "active" : ""}`}
+                                href={`/admin/dashboard`}
+                                className={`dash-link ${pathname === "/" ? "active" : ""}`}
                             >
                                 <Image src={Calendar} alt="Claims icon" />
                                 <span className="tooltip">Calendar</span>

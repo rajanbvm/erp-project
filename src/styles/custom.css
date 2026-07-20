@@ -36,10 +36,17 @@ body.dark-mode table thead tr th,
 body.dark-mode table tbody tr td,
 body.dark-mode .dash-logo .text-one,
 body.dark-mode .dash-header .header-actions span,
-body.dark-mode table tbody tr td .eyeBtn {
-    color: #fff !important;
+body.dark-mode table tbody tr td .eyeBtn,
+body.dark-mode .banner-text ul li a {
+    color: #fff;
 }
 
+body.dark-mode .btn span {
+    color: inherit !important;
+}
+.text-danger{
+    color: #EE201C !important;
+}
 .container {
     max-width: 1440px;
     padding-left: 50px;
@@ -140,6 +147,55 @@ img {
     background-color: var(--primary-dark) !important;
 }
 
+/* CSS */
+.button3d {
+    touch-action: manipulation;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    background-image: linear-gradient(-180deg, var(--primary-light) 0%, var(--primary-light) 100%);
+    box-shadow: -1.38px -1.84px 3.22px 0px #FFFFFF26 inset;
+    box-shadow: 1.84px 17.47px 28.51px 0px #0000004D;
+}
+
+.button3d::before {
+    content: "";
+    display: block;
+    height: 0.125rem;
+    position: absolute;
+    top: 0.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 3.75rem);
+    background: #fff;
+    border-radius: 100%;
+    opacity: 0.7;
+    background-image: linear-gradient(-270deg, #ffffff00 0%, #FFFFFF 20%, #FFFFFF 80%, #ffffff00 100%);
+}
+
+.button3d::after {
+    content: "";
+    display: block;
+    height: 0.125rem;
+    position: absolute;
+    bottom: 0.375rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 3.75rem);
+    background: #fff;
+    border-radius: 100%;
+
+    filter: blur(1px);
+    opacity: 0.05;
+    background-image: linear-gradient(-270deg, #ffffff00 0%, #FFFFFF 20%, #FFFFFF 80%, #ffffff00 100%);
+}
+
+.button3d:hover,
+.button3d:active {
+    /* filter: brightness(1.1); */
+    background-image: linear-gradient(-180deg, #fff 0%, #fff 100%);
+}
+
 .btn-primary {
     padding: 10px 24px;
     background-color: var(--primary-light) !important;
@@ -152,11 +208,12 @@ img {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    column-gap: 16px;
+    column-gap: 10px;
     transition: all 0.3s;
     font-family: var(--second-font);
-    min-height: 50px;
+    /* min-height: 50px; */
     min-width: 110px;
+    box-shadow: 0px 8px 14px 0px #0000001A;
 }
 
 .btn-outline-primary {
@@ -171,11 +228,12 @@ img {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    column-gap: 16px;
+    column-gap: 10px;
     transition: all 0.3s;
     font-family: var(--second-font);
-    min-height: 50px;
+    /* min-height: 50px; */
     min-width: 110px;
+    box-shadow: 0px 8px 14px 0px #0000001A;
 }
 
 .btn-primary:hover {
@@ -402,7 +460,7 @@ body.dark-mode .form-control::placeholder {
     rotate: 90deg;
 }
 
-.dash-header .header-section .search-bar input {
+.search-bar input {
     border: 1px solid #e9edf4;
     border-radius: 6px;
     width: 100%;
@@ -411,7 +469,7 @@ body.dark-mode .form-control::placeholder {
     min-height: 38px;
 }
 
-.dash-header .header-section .search-icon {
+.search-bar .search-icon {
     position: absolute;
     top: 4px;
     right: 10px;
@@ -427,7 +485,7 @@ body.dark-mode .form-control::placeholder {
     cursor: pointer;
 }
 
-body.dark-mode .dash-header .header-section .search-icon {
+body.dark-mode .search-bar .search-icon {
     color: var(--dark-mode-bg) !important;
     background-color: #fff;
 }
@@ -551,7 +609,7 @@ body.dark-mode .dashboard-main {
     visibility: visible;
 }
 
-.dash-header .header-section .search-bar {
+.search-bar {
     width: 50%;
     position: relative;
 }
@@ -647,6 +705,7 @@ body.dark-mode .dash-header .header-section::after {
 .btn:active {
     background-color: var(--primary-light) !important;
     border-color: var(--primary-light) !important;
+    color: #fff !important;
 }
 
 .overview-dropdown::after,
@@ -716,6 +775,14 @@ body.dark-mode .dash-header .header-section::after {
     font-size: 14px;
 }
 
+.table-dropdown.btn {
+    border-radius: 30px;
+}
+
+.table-dropdown.btn::after {
+    display: none;
+}
+
 .table-dropdown .btn svg {
     font-size: 18px;
 }
@@ -777,9 +844,10 @@ body.dark-mode .dash-header .header-section::after {
     border: solid 1px #fff !important;
 }
 
-body.dark-mode .bg-box {
+body.dark-mode .bg-box,
+body.dark-mode .bg-box .table-responsive {
     background-color: var(--dark-mode-bg);
-    border-color: var(--card-border);
+    border-color: var(--card-border) !important;
 }
 
 table thead tr th {
@@ -863,4 +931,52 @@ table tbody tr td .eyeBtn {
     color: #8F95B2;
     cursor: pointer;
     font-size: 18px;
+}
+
+.banner-text h1 {
+    color: #060606;
+    font-weight: 500;
+    font-size: 22px;
+    margin-bottom: 0;
+}
+
+.banner-text ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    justify-content: end;
+}
+
+.banner-text ul li a {
+    color: #000000;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.banner-text ul li span {
+    color: #636060;
+    border-radius: 8px;
+    padding: 6px 12px 8px 12px;
+    font-weight: 500;
+    background-color: var(--bg-white);
+    line-height: 1;
+}
+
+.page-search-sec {
+    padding: 24px;
+    background-color: var(--bg-white);
+    border-radius: 14px;
+    border: solid 1px var(--card-border);
+}
+
+.banner-text button {
+    border-radius: 30px;
+}
+
+.banner-text button svg {
+    width: 24px;
+    height: 24px;
 }
