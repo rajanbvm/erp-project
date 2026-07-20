@@ -1,4 +1,3 @@
-"use client";
 
 import { BsEye } from "react-icons/bs";
 import Dropdown from "react-bootstrap/Dropdown";

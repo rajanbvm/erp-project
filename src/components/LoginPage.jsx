@@ -1,65 +1,84 @@
-"use client";
-
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+
 import loginImg from "@/images/login-img.jpg";
 import eyeClose from "@/images/EyeClose.svg";
 import eyeOpen from "@/images/eyeOpen.svg";
 import Logo from "@/images/logo.svg";
+
 import { BsArrowRight } from "react-icons/bs";
 
+
 export default function LoginPage() {
+
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
 
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
+
   const togglePassword = () => {
-    setShowPassword((prev) => !prev);
+    setShowPassword((prev)=>!prev);
   };
 
-  const handleChange = (e) => {
-    setForm((prev) => ({
+
+  const handleChange = (e)=>{
+
+    setForm((prev)=>({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+
   };
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = (e)=>{
+
     e.preventDefault();
+
+    console.log("Email:", form.email);
+  console.log("Password:", form.password);
+
     setLoading(true);
 
-    if (
+
+    if(
       form.email === "admin@gmail.com" &&
       form.password === "123456"
-    ) {
-      // Save login info
+    ){
+
       localStorage.setItem(
         "adminUser",
         JSON.stringify({
-          id: 1,
-          name: "Admin",
-          email: "admin@gmail.com",
-          role: "admin",
-          isLoggedIn: true,
+          id:1,
+          name:"Admin",
+          email:"admin@gmail.com",
+          role:"admin",
+          isLoggedIn:true
         })
       );
 
-      alert("Login Successful");
+console.log("Redirecting...");
+router.push("/admin/dashboard");
 
-      router.push("/dashboard");
-    } else {
+
+    }else{
+
       alert("Invalid email or password");
+
     }
 
+
     setLoading(false);
+
   };
 
   return (

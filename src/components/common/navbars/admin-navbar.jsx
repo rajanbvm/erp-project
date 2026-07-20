@@ -40,8 +40,8 @@ const AdminNavbar = () => {
 
                         <li>
                             <Link
-                                href={`/dashboard`}
-                                className={`dash-link ${pathname === "/dashboard" ? "active" : ""}`}
+                                href={`/admin/dashboard`}
+                                className={`dash-link ${pathname === "/admin/dashboard" ? "active" : ""}`}
                             >
                                 <Image src={DashIcon} alt="Dashboard icon" />
                                 <span className="tooltip">Dashboard</span>
@@ -50,8 +50,8 @@ const AdminNavbar = () => {
 
                         <li>
                             <Link
-                                href={`/admin/consumers`}
-                                className={`dash-link ${pathname === "/admin/consumers" ? "active" : ""}`}
+                                href={`/admin/leads`}
+                                className={`dash-link ${pathname === "/admin/leads" ? "active" : ""}`}
                             >
                                 <Image src={userIcon} alt="Dashboard icon" />
                                 <span className="tooltip">Leads</span>
