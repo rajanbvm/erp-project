@@ -7,38 +7,23 @@ import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
 
 const ListPage = () => {
 const [selectedStatus, setSelectedStatus] = useState("All Status");
-   const LeadsColumns = [
-    { key: "lead", label: "LEAD" },
+   const ContactsColumns = [
+    { key: "contact", label: "Contact" },
     { key: "email", label: "Email" },
     { key: "company", label: "COMPANY" },
-    { key: "source", label: "SOURCE" },
+    { key: "role", label: "Role" },
+    { key: "phone", label: "Phone" },
     {
-      key: "score",
-      label: "SCORE",
+      key: "type",
+      label: "Type",
       render: (row) => (
         <span
           style={{
-            color: getScoreColor(row.score),
+            color: typeColors[row.type] || "#222",
             fontWeight: 500,
           }}
         >
-          {row.score}
-        </span>
-      ),
-    },
-    { key: "owner", label: "OWNER" },
-    { key: "created", label: "Created" },
-    {
-      key: "status",
-      label: "Status",
-      render: (row) => (
-        <span
-          style={{
-            color: statusColors[row.status] || "#222",
-            fontWeight: 500,
-          }}
-        >
-          {row.status}
+          {row.type}
         </span>
       ),
     },
@@ -58,70 +43,60 @@ const [selectedStatus, setSelectedStatus] = useState("All Status");
 
 
 
-  const LeadsData = [
+  const ContactsData = [
     {
-      lead: "Ahmed Hassan",
+      contact: "Ahmed Hassan",
       email: "ahmed@falcon.ae",
       company: "Falcon Group LLC",
-      source: "Google Ads",
-      score: 95,
-      owner: "John Doe",
-      created: "10 Jun 2026",
-      status: "Qualified",
+      role: "Sales Director",
+      phone: "+971 50 123 4567",
+      type: "Primary",
     },
     {
-      lead: "Sara Mehta",
+      contact: "Sara Mehta",
       email: "sara@techventures.com",
       company: "ABC Ltd",
-      source: "Website",
-      score: 72,
-      owner: "Sarah Wilson",
-      created: "11 Jun 2026",
-      status: "Proposal sent",
+      role: "CTO",
+      phone: "+971 50 123 4567",
+      type: "Secondary",
     },
     {
-      lead: "Ravi Kumar",
+      contact: "Ravi Kumar",
       email: "ravi@abc-ind.com",
       company: "XYZ",
-      source: "Facebook",
-      score: 40,
-      owner: "Mike Johnson",
-      created: "12 Jun 2026",
-      status: "Contacted",
+      role: "Sales Director",
+      phone: "+971 50 123 4567",
+      type: "Primary",
     },
   ];
 
-    const statusColors = {
-    "Qualified": "#173404",
-    "Proposal sent": "#26215C",
-    "Contacted": "#412402",
-    "New": "#0C447C",
-    "Negotiation": "#4A1B0C",
-    "Won": "#04342C",
+    const typeColors = {
+    "Primary": "#173404",
+    "Secondary": "#0C447C",
   };
 
  const dropdownItems = useMemo(() => {
-  const statuses = [...new Set(LeadsData.map((lead) => lead.status))];
+  const typees = [...new Set(ContactsData.map((contact) => contact.type))];
 
   return [
     {
       label: "All Status",
       onClick: () => setSelectedStatus("All Status"),
     },
-    ...statuses.map((status) => ({
-      label: status,
-      onClick: () => setSelectedStatus(status),
+    ...typees.map((type) => ({
+      label: type,
+      onClick: () => setSelectedStatus(type),
     })),
   ];
 }, []);
 
   const filteredData = useMemo(() => {
     if (selectedStatus === "All Status") {
-      return LeadsData;
+      return ContactsData;
     }
 
-    return LeadsData.filter(
-      (lead) => lead.status === selectedStatus
+    return ContactsData.filter(
+      (contact) => contact.type === selectedStatus
     );
   }, [selectedStatus]);
 
@@ -137,9 +112,9 @@ const [selectedStatus, setSelectedStatus] = useState("All Status");
 
   return (
     <>
-      <PageBanner title="Leads" />
+      <PageBanner title="Contacts" />
       <PageSearch
-        showImport={true}
+        // showImport={true}
         showExport={true}
         showAddButton={true}
         addButtonText="Add New Lead"
@@ -159,8 +134,8 @@ const [selectedStatus, setSelectedStatus] = useState("All Status");
 
       <div className="bg-box mb-32">
         <DataTable
-          title="All Leads"
-          columns={LeadsColumns}
+          title="All Contacts"
+          columns={ContactsColumns}
           data={filteredData}
           showViewAll={false}
           showDropdown={true}

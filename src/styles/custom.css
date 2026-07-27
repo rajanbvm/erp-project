@@ -37,16 +37,19 @@ body.dark-mode table tbody tr td,
 body.dark-mode .dash-logo .text-one,
 body.dark-mode .dash-header .header-actions span,
 body.dark-mode table tbody tr td .eyeBtn,
-body.dark-mode .banner-text ul li a {
+body.dark-mode .banner-text ul li a,
+body.dark-mode .banner-text ul li span {
     color: #fff;
 }
 
 body.dark-mode .btn span {
     color: inherit !important;
 }
-.text-danger{
+
+.text-danger {
     color: #EE201C !important;
 }
+
 .container {
     max-width: 1440px;
     padding-left: 50px;
@@ -61,7 +64,12 @@ body.dark-mode .btn span {
 
 .form-check-input {
     box-shadow: none !important;
-    border-color: #E55F5A;
+    border-color: #0C447C;
+}
+
+.form-check-input:checked {
+    background-color: #0C447C;
+    border-color: #0C447C;
 }
 
 .form-control:focus,
@@ -69,12 +77,6 @@ body.dark-mode .btn span {
 .form-check-input:focus {
     border-color: var(--primary-light);
 }
-
-/* .form-switch .form-check-input:focus,
-.form-switch .form-check-input {
-    --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%236C202A'/%3e%3c/svg%3e");
-    border-color: var(--primary-light);
-} */
 
 p {
     color: #6B6B6B;
@@ -683,6 +685,10 @@ body.dark-mode .dash-header .header-section::after {
     color: #161A23 !important;
 }
 
+.dropdown-item {
+    font-size: 14px;
+}
+
 .dropdown-item.active,
 .dropdown-item:active,
 .dropdown-item:hover {
@@ -760,7 +766,7 @@ body.dark-mode .dash-header .header-section::after {
 }
 
 .table-dropdown .btn {
-    color: #515B73;
+    color: #515B73 !important;
     background-image: url("data:image/svg+xml;utf8,<svg width=\"13\" height=\"13\" viewBox=\"0 0 13 13\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><mask id=\"path-1-inside-1_6464_36757\" fill=\"white\"><path d=\"M6.43652 0.812988L12.0934 6.46985L6.43652 12.1267L0.779661 6.46985L6.43652 0.812988Z\"/></mask><path d=\"M6.43652 12.1267L5.02231 13.5409L6.43652 14.9551L7.85074 13.5409L6.43652 12.1267ZM10.6792 5.05564L5.02231 10.7125L7.85074 13.5409L13.5076 7.88406L10.6792 5.05564ZM7.85074 10.7125L2.19388 5.05564L-0.634552 7.88406L5.02231 13.5409L7.85074 10.7125Z\" fill=\"%23515B73\" mask=\"url(%23path-1-inside-1_6464_36757)\"/></svg>");
     background-position: right 2px;
     background-repeat: no-repeat;
@@ -862,34 +868,44 @@ table thead tr th {
 }
 
 table tbody tr td {
-    background-color: transparent !important;
+    background-color: #EEEEF7 !important;
     padding: 20px !important;
-    border-color: transparent !important;
+    border-color: #fff !important;
     font-size: 14px;
     font-family: var(--main-font);
     font-weight: 300;
     color: #23272E;
 }
 
-table thead tr th:last-child {
+/* table thead tr th:last-child {
     border-radius: 0 10px 0 0;
-}
+} */
 
-table tbody tr td:last-child {
+/* table tbody tr td:last-child {
     border-radius: 0 0 10px 0;
-}
+} */
 
-table thead tr th:first-child {
+/* table thead tr th:first-child {
     border-radius: 10px 0 0 0;
-}
+} */
 
-table tbody tr td:first-child {
+/* table tbody tr td:first-child {
     border-radius: 0 0 0 10px;
+} */
+table tbody tr:last-child td,
+body.dark-mode table tbody tr:last-child td {
+    border-color: transparent !important;
 }
 
 body.dark-mode table thead tr th {
     background-color: var(--dark-table-bg) !important;
     color: #fff !important;
+}
+
+body.dark-mode table tbody tr td {
+    background-color: var(--dark-mode-bg) !important;
+    color: #fff !important;
+    border-color: var(--card-border) !important;
 }
 
 .table-header {
@@ -979,4 +995,21 @@ table tbody tr td .eyeBtn {
 .banner-text button svg {
     width: 24px;
     height: 24px;
+}
+
+.activity-btn {
+    min-width: 100px;
+    border: 0;
+    background-color: #00112D;
+    color: #fff !important;
+    padding: 6px 12px;
+    border-radius: 30px;
+}
+
+.activity-btn.mark-done {
+    background-color: #185FA5;
+}
+
+.activity-btn.done {
+    background-color: #1D9E75;
 }

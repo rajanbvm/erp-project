@@ -1,4 +1,4 @@
-import { BsSearch } from "react-icons/bs";
+import { BsSearch, BsTelephone } from "react-icons/bs";
 import { CiExport, CiImport } from "react-icons/ci";
 import { GoPlus } from "react-icons/go";
 
@@ -12,22 +12,26 @@ const PageSearch = ({
   onImportClick,
 
   showExport = false,
+  exportButtonText = "Export",
   onExportClick,
+
+  // New Secondary Outline Button
+  showSecondaryButton = false,
+  secondaryButtonText = "",
+  secondaryButtonIcon,
+  onSecondaryButtonClick,
 
   showAddButton = false,
   addButtonText = "Add New",
   onAddClick,
-
 }) => {
   return (
     <section className={`page-search-sec mb-32 ${className}`}>
       <div className="row align-items-center">
-
-        {/* Always Search */}
+        {/* Search */}
         <div className="col-md-4">
           <div className="banner-text">
-            <div className="search-bar">
-
+            <div className="search-bar w-100">
               <input
                 type="text"
                 placeholder={searchPlaceholder}
@@ -38,16 +42,13 @@ const PageSearch = ({
               <span className="search-icon">
                 <BsSearch />
               </span>
-
             </div>
           </div>
         </div>
 
-
-        {/* Dynamic Buttons */}
+        {/* Buttons */}
         <div className="col-md-8">
           <div className="banner-text text-end">
-
 
             {showImport && (
               <button
@@ -59,19 +60,25 @@ const PageSearch = ({
               </button>
             )}
 
-
-
             {showExport && (
               <button
                 className="btn btn-outline-primary mx-2"
                 onClick={onExportClick}
               >
                 <CiExport size={18} />
-                <span>Export</span>
+                <span>{exportButtonText}</span>
               </button>
             )}
 
-
+            {showSecondaryButton && (
+              <button
+                className="btn btn-outline-primary mx-2"
+                onClick={onSecondaryButtonClick}
+              >
+                {secondaryButtonIcon || <BsTelephone size={16} />}
+                <span>{secondaryButtonText}</span>
+              </button>
+            )}
 
             {showAddButton && (
               <button
@@ -82,15 +89,11 @@ const PageSearch = ({
                 <span>{addButtonText}</span>
               </button>
             )}
-
-
           </div>
         </div>
-
       </div>
     </section>
   );
 };
-
 
 export default PageSearch;

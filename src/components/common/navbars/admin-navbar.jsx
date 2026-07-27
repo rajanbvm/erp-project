@@ -9,6 +9,10 @@ import FileText from "@/images/FileText.svg";
 import UsersThree from "@/images/UsersThree.svg";
 import Calendar from "@/images/Calendar.svg";
 import BuildingOffice from "@/images/BuildingOffice.svg";
+import TrendUp from "@/images/TrendUp.svg";
+import Activities from "@/images/Activities.svg";
+import Tasks from "@/images/Tasks.svg";
+import Calls from "@/images/Calls.svg";
 // import { BASE_URL } from '@/config/api';
 
 
@@ -60,8 +64,8 @@ const AdminNavbar = () => {
 
                         <li>
                             <Link
-                                href={`/admin/dashboard`}
-                                className={`dash-link ${pathname === "/admin/retailers" ? "active" : ""}`}
+                                href={`/admin/quotations`}
+                                className={`dash-link ${pathname === "/admin/quotations" ? "active" : ""}`}
                             >
                                 <Image src={FileText} alt="Dashboard icon" />
                                 <span className="tooltip">Quotations</span>
@@ -70,8 +74,8 @@ const AdminNavbar = () => {
 
                         <li>
                             <Link
-                                href={`/admin/dashboard`}
-                                className={`dash-link ${pathname === "/admin/technicians" ? "active" : ""}`}
+                                href={`/admin/contacts`}
+                                className={`dash-link ${pathname === "/admin/contacts" ? "active" : ""}`}
                             >
                                 <Image src={UsersThree} alt="Dashboard icon" />
                                 <span className="tooltip">Contacts</span>
@@ -80,15 +84,15 @@ const AdminNavbar = () => {
 
                         <li>
                             <Link
-                                href={`/admin/dashboard`}
-                                className={`dash-link ${pathname === "/admin/plans" ? "active" : ""}`}
+                                href={`/admin/companies`}
+                                className={`dash-link ${pathname === "/admin/companies" ? "active" : ""}`}
                             >
                                 <Image src={BuildingOffice} alt="Plans icon" />
                                 <span className="tooltip">Companies</span>
                             </Link>
                         </li>
 
-                        <li>
+                        {/* <li>
                             <Link
                                 href={`/admin/dashboard`}
                                 className={`dash-link ${pathname === "/" ? "active" : ""}`}
@@ -96,8 +100,44 @@ const AdminNavbar = () => {
                                 <Image src={Calendar} alt="Claims icon" />
                                 <span className="tooltip">Calendar</span>
                             </Link>
-                        </li>
+                        </li> */}
 
+                        <li>
+                            <Link
+                                href={`/admin/opportunities`}
+                                className={`dash-link ${pathname === "/admin/opportunities" ? "active" : ""}`}
+                            >
+                                <Image src={TrendUp} alt="Opportunities icon" />
+                                <span className="tooltip">Opportunities</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href={`/admin/activities`}
+                                className={`dash-link ${pathname === "/admin/activities" ? "active" : ""}`}
+                            >
+                                <Image src={Activities} alt="Activities icon" />
+                                <span className="tooltip">Activities</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href={`/admin/tasks`}
+                                className={`dash-link ${pathname === "/admin/tasks" ? "active" : ""}`}
+                            >
+                                <Image src={Tasks} alt="Tasks icon" />
+                                <span className="tooltip">Tasks</span>
+                            </Link>
+                        </li>
+<li>
+                            <Link
+                                href={`/admin/calls`}
+                                className={`dash-link ${pathname === "/admin/calls" ? "active" : ""}`}
+                            >
+                                <Image src={Calls} alt="Calls icon" />
+                                <span className="tooltip">Calls</span>
+                            </Link>
+                        </li>
 
                     </ul>
                 </div>

@@ -53,7 +53,9 @@ export default function DataTable({
           <thead>
             <tr>
               {columns.map((column) => (
-                <th key={column.key}>{column.label}</th>
+                <th className={column.key === "action" ? "text-center" : ""}>
+                  {column.label}
+                </th>
               ))}
             </tr>
           </thead>

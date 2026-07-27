@@ -93,7 +93,9 @@ function Dashboard() {
       key: "action",
       label: "ACTION",
       render: () => (
+        <div className="text-center">
         <FaRegEye className="eyeBtn" />
+        </div>
       ),
     },
   ];
