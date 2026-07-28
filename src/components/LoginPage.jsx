@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,6 +12,11 @@ import { BsArrowRight } from "react-icons/bs";
 
 
 export default function LoginPage() {
+
+  useEffect(() => {
+  localStorage.removeItem("adminUser");
+  // localStorage.removeItem("adminId"); // if you store adminId separately
+}, []);
 
   const router = useRouter();
 
