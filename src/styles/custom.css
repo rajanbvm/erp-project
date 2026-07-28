@@ -203,7 +203,7 @@ img {
     background-color: var(--primary-light) !important;
     border: solid 1px var(--primary-light) !important;
     color: #fff !important;
-    border-radius: 6px;
+    border-radius: 30px;
     text-decoration: none !important;
     cursor: pointer;
     font-size: 14px;
@@ -223,7 +223,7 @@ img {
     background-color: #fff !important;
     border: solid 1px var(--primary-light) !important;
     color: var(--primary-light) !important;
-    border-radius: 6px;
+    border-radius: 30px;
     text-decoration: none !important;
     cursor: pointer;
     font-size: 14px;
@@ -378,6 +378,9 @@ body.dark-mode .form-control::placeholder {
 
 .form-action {
     margin-top: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dash-logo .text-one {
@@ -755,6 +758,12 @@ body.dark-mode .dash-header .header-section::after {
     margin-bottom: 8px;
 }
 
+.overview-card .growth-text {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 10px;
+}
+
 .RevenueChart {
     width: 100%;
     height: 330px;
@@ -1012,4 +1021,93 @@ table tbody tr td .eyeBtn {
 
 .activity-btn.done {
     background-color: #1D9E75;
+}
+
+.reminder-setting h5 {
+    color: #202C4B;
+    font-size: 18px;
+    margin-bottom: 0;
+}
+
+.reminder-setting {
+    padding: 24px;
+    background-color: #E5E5F0;
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+    justify-content: space-between;
+    border-radius: 10px;
+    border: solid 1px #fff;
+}
+
+.reminder-switch .form-switch .form-check-input {
+    --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23FFF'/%3e%3c/svg%3e");
+    background-color: #CBD5E1;
+    border-color: #CBD5E1;
+}
+
+.reminder-switch .form-switch .form-check-input:checked {
+    background-color: #10B981;
+    border-color: #10B981;
+}
+
+.reminder-switch {
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+}
+
+.reminder-switch span.text-muted {
+    font-size: 14px;
+}
+
+.form-outer {
+    padding: 24px;
+    background-color: #EEEEF7;
+    border-radius: 14px;
+    border: solid 1px #FFFFFF;
+}
+
+.form-title {
+    margin-bottom: 24px;
+    font-size: 18px;
+    color: #202C4B;
+    width: 100%;
+}
+
+.form-outer .form-control,
+.form-outer .form-select {
+    background-color: #e5e5f0 !important;
+    border-color: #fff !important;
+}
+
+.form-select option {
+    background-color: #e5e5f0;
+    color: #24324B;
+}
+
+.upload-div {
+    text-align: center;
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    background-color: #E5E5F0;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 18px;
+    display: flex;
+    min-height: 120px;
+}
+
+.upload-div .icon-text {
+    color: #202C4B;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    display: flex;
 }

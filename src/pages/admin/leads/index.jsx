@@ -4,9 +4,13 @@ import DataTable from "@/components/DataTable";
 import { useMemo, useState } from "react";
 import { FaRegEye } from "react-icons/fa6";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
+import { useRouter } from "next/router";
 
 const ListPage = () => {
 const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+const router = useRouter();
+
    const LeadsColumns = [
     { key: "lead", label: "LEAD" },
     { key: "email", label: "Email" },
@@ -153,8 +157,8 @@ const [selectedStatus, setSelectedStatus] = useState("All Status");
         }}
 
         onAddClick={() => {
-          console.log("Add clicked");
-        }}
+    router.push("/admin/leads/add");
+  }}
       />
 
       <div className="bg-box mb-32">

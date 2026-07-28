@@ -13,6 +13,7 @@ import TrendUp from "@/images/TrendUp.svg";
 import Activities from "@/images/Activities.svg";
 import Tasks from "@/images/Tasks.svg";
 import Calls from "@/images/Calls.svg";
+import Reminders from "@/images/Reminders.svg";
 // import { BASE_URL } from '@/config/api';
 
 
@@ -129,13 +130,22 @@ const AdminNavbar = () => {
                                 <span className="tooltip">Tasks</span>
                             </Link>
                         </li>
-<li>
+                        <li>
                             <Link
                                 href={`/admin/calls`}
                                 className={`dash-link ${pathname === "/admin/calls" ? "active" : ""}`}
                             >
                                 <Image src={Calls} alt="Calls icon" />
                                 <span className="tooltip">Calls</span>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link
+                                href={`/admin/reminders`}
+                                className={`dash-link ${pathname === "/admin/reminders" ? "active" : ""}`}
+                            >
+                                <Image src={Reminders} alt="Reminders icon" />
+                                <span className="tooltip">Reminders</span>
                             </Link>
                         </li>
 

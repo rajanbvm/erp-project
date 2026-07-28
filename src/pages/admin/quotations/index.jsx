@@ -4,9 +4,13 @@ import DataTable from "@/components/DataTable";
 import { useMemo, useState } from "react";
 import { FaRegEye } from "react-icons/fa6";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
+import { useRouter } from "next/router";
 
 const ListPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+  const router = useRouter();
+
   const QuotationColumns = [
     { key: "quotation", label: "Quotation" },
     { key: "customer", label: "Customer" },
@@ -69,7 +73,7 @@ const ListPage = () => {
       valid: "30 Jun 2026",
       status: "Sent",
     },
-     {
+    {
       quotation: "#QT-2026-0188",
       customer: "TechVentures UAE",
       products: "HR + Finance Modules",
@@ -79,7 +83,7 @@ const ListPage = () => {
       valid: "25 Jun 2026",
       status: "Approved",
     },
-     {
+    {
       quotation: "#QT-2026-0187",
       customer: "ABC Industries",
       products: "Inventory Module (Basic)",
@@ -89,7 +93,7 @@ const ListPage = () => {
       valid: "15 Jul 2026",
       status: "Draft",
     },
-     {
+    {
       quotation: "#QT-2026-0186",
       customer: "Gulf Solutions Co.",
       products: "Full ERP Suite",
@@ -162,7 +166,7 @@ const ListPage = () => {
         }}
 
         onAddClick={() => {
-          console.log("Add clicked");
+          router.push("/admin/quotations/add");
         }}
       />
 
