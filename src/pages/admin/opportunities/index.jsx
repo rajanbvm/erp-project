@@ -10,9 +10,13 @@ import opp2 from "@/images/opp2.svg";
 import opp3 from "@/images/opp3.svg";
 import opp4 from "@/images/opp4.svg";
 import opp5 from "@/images/opp5.svg";
+import { useRouter } from "next/router";
 
 const ListPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+const router = useRouter();
+
   const OpportunitiesColumns = [
     { key: "opportunity", label: "Opportunity" },
     { key: "company", label: "COMPANY" },
@@ -200,8 +204,8 @@ const ListPage = () => {
         }}
 
         onAddClick={() => {
-          console.log("Add clicked");
-        }}
+    router.push("/admin/opportunities/add");
+  }}
       />
 
       <div className="bg-box mb-32">

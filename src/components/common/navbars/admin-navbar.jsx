@@ -56,7 +56,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/leads`}
-                                className={`dash-link ${pathname === "/admin/leads" ? "active" : ""}`}
+                                className={`dash-link ${pathname === "/admin/leads" || pathname === "/admin/leads/add" ? "active" : ""}`}
                             >
                                 <Image src={userIcon} alt="Dashboard icon" />
                                 <span className="tooltip">Leads</span>
@@ -66,7 +66,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/quotations`}
-                                className={`dash-link ${pathname === "/admin/quotations" ? "active" : ""}`}
+                                className={`dash-link ${pathname === "/admin/quotations" || pathname === "/admin/quotations/add" ? "active" : ""}`}
                             >
                                 <Image src={FileText} alt="Dashboard icon" />
                                 <span className="tooltip">Quotations</span>
@@ -86,7 +86,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/companies`}
-                                className={`dash-link ${pathname === "/admin/companies" ? "active" : ""}`}
+                                className={`dash-link ${pathname === "/admin/companies" || pathname === "/admin/companies/add" ? "active" : ""}`}
                             >
                                 <Image src={BuildingOffice} alt="Plans icon" />
                                 <span className="tooltip">Companies</span>
@@ -106,7 +106,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/opportunities`}
-                                className={`dash-link ${pathname === "/admin/opportunities" ? "active" : ""}`}
+                                className={`dash-link ${pathname === "/admin/opportunities" || pathname === "/admin/opportunities/add" ? "active" : ""}`}
                             >
                                 <Image src={TrendUp} alt="Opportunities icon" />
                                 <span className="tooltip">Opportunities</span>
@@ -142,7 +142,8 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/reminders`}
-                                className={`dash-link ${pathname === "/admin/reminders" ? "active" : ""}`}
+                                className={`dash-link 
+                                    ${pathname === "/admin/reminders" || pathname === "/admin/reminders/add" ? "active" : ""}`}
                             >
                                 <Image src={Reminders} alt="Reminders icon" />
                                 <span className="tooltip">Reminders</span>
