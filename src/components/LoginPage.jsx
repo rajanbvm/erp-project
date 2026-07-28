@@ -141,7 +141,6 @@ router.push("/admin/dashboard");
                     />
 
                     <span
-                      type="button"
                       className="eye-btn"
                       onClick={togglePassword}
                     >
