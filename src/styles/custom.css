@@ -238,6 +238,25 @@ img {
     box-shadow: 0px 8px 14px 0px #0000001A;
 }
 
+.btn-check+.btn:hover,
+.btn-check+.btn {
+    color: #202c4b;
+    background-color: #e5e5f0;
+    border-color: #fff;
+    padding: 16px;
+    border-radius: 30px;
+}
+
+.btn-check:checked+.btn,
+.btn.active,
+.btn.show,
+.btn:first-child:active,
+:not(.btn-check)+.btn:active {
+    color: #202C4B !important;
+    background-color: #5176B21A !important;
+    border-color: #2F6EFF !important;
+}
+
 .btn-primary:hover {
     background-color: #fff !important;
     border-color: var(--primary-light) !important;
@@ -1110,4 +1129,27 @@ table tbody tr td .eyeBtn {
     align-items: center;
     gap: 12px;
     display: flex;
+}
+
+.badge-head .primary-badge {
+    padding: 5px 12px;
+    border-radius: 30px;
+    font-size: 14px;
+    color: #202C4B;
+    background-color: #DFE1F4;
+}
+
+.badge-head {
+    align-items: center;
+    column-gap: 16px;
+    display: flex;
+    margin-bottom: 24px;
+}
+
+.add-another-btn {
+    background: transparent;
+    padding: 0;
+    border: 0;
+    color: #202C4B;
+    font-weight: 600;
 }

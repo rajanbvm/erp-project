@@ -4,10 +4,14 @@ import DataTable from "@/components/DataTable";
 import { useMemo, useState } from "react";
 import { FaRegEye } from "react-icons/fa6";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
+import { useRouter } from "next/router";
 
 const ListPage = () => {
-const [selectedStatus, setSelectedStatus] = useState("All Status");
-   const ContactsColumns = [
+  const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+  const router = useRouter();
+
+  const ContactsColumns = [
     { key: "contact", label: "Contact" },
     { key: "email", label: "Email" },
     { key: "company", label: "COMPANY" },
@@ -70,25 +74,25 @@ const [selectedStatus, setSelectedStatus] = useState("All Status");
     },
   ];
 
-    const typeColors = {
+  const typeColors = {
     "Primary": "#173404",
     "Secondary": "#0C447C",
   };
 
- const dropdownItems = useMemo(() => {
-  const typees = [...new Set(ContactsData.map((contact) => contact.type))];
+  const dropdownItems = useMemo(() => {
+    const typees = [...new Set(ContactsData.map((contact) => contact.type))];
 
-  return [
-    {
-      label: "All Status",
-      onClick: () => setSelectedStatus("All Status"),
-    },
-    ...typees.map((type) => ({
-      label: type,
-      onClick: () => setSelectedStatus(type),
-    })),
-  ];
-}, []);
+    return [
+      {
+        label: "All Status",
+        onClick: () => setSelectedStatus("All Status"),
+      },
+      ...typees.map((type) => ({
+        label: type,
+        onClick: () => setSelectedStatus(type),
+      })),
+    ];
+  }, []);
 
   const filteredData = useMemo(() => {
     if (selectedStatus === "All Status") {
@@ -108,7 +112,7 @@ const [selectedStatus, setSelectedStatus] = useState("All Status");
     return "#1D9E75";                      // Green (>75)
   };
 
- 
+
 
   return (
     <>
@@ -117,7 +121,7 @@ const [selectedStatus, setSelectedStatus] = useState("All Status");
         // showImport={true}
         showExport={true}
         showAddButton={true}
-        addButtonText="Add New Lead"
+        addButtonText="Add New Contact"
 
         onImportClick={() => {
           console.log("Import clicked");
@@ -128,7 +132,7 @@ const [selectedStatus, setSelectedStatus] = useState("All Status");
         }}
 
         onAddClick={() => {
-          console.log("Add clicked");
+          router.push("/admin/contacts/add");
         }}
       />
 

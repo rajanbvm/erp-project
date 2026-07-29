@@ -1,11 +1,12 @@
 import PageBanner from "@/components/common/PageBanner";
 import PageSearch from "@/components/common/PageSearch";
 import DataTable from "@/components/DataTable";
-import { useMemo, useState } from "react";
-import { FaRegEye } from "react-icons/fa6";
+import { useRouter } from "next/router";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
 
 const ListPage = () => {
+
+    const router = useRouter();
 
   const CallsColumns = [
     {
@@ -113,7 +114,9 @@ const ListPage = () => {
 
         showAddButton={true}
         addButtonText="Log Call"
-        onAddClick={() => console.log("Log Call")}
+        onAddClick={() => {
+          router.push("/admin/calls/add");
+        }}
       />
 
       <div className="bg-box mb-32">

@@ -8,11 +8,12 @@ import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
 import ActIcon1 from "@/images/ActIcon1.svg";
 import ActIcon2 from "@/images/ActIcon2.svg";
 import ActIcon3 from "@/images/ActIcon3.svg";
-import opp4 from "@/images/opp4.svg";
-import opp5 from "@/images/opp5.svg";
+import { useRouter } from "next/router";
 
 const ListPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+  const router = useRouter();
 
 const dueColors = {
   today: "#1D9E75",
@@ -216,7 +217,7 @@ const ActivitiesData = [
 
   return (
     <>
-      <PageBanner title="Opportunities" />
+      <PageBanner title="Activities" />
 
       <div className="row opp-row mb-32">
         {OpportunitiesCards.map((card) => (
@@ -244,8 +245,8 @@ const ActivitiesData = [
           console.log("Export clicked");
         }}
 
-        onAddClick={() => {
-          console.log("Add clicked");
+         onAddClick={() => {
+          router.push("/admin/activities/add");
         }}
       />
 
