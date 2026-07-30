@@ -50,11 +50,26 @@ const ListPage = () => {
     {
       key: "action",
       label: "ACTION",
-      render: () => (
+      render: (row) => (
         <div className="text-center">
-          <FaRegEye className="eyeBtn mx-2" />
-          <RiEdit2Fill className="eyeBtn mx-2" />
-          <RiDeleteBin6Line className="eyeBtn text-danger mx-2" />
+          <FaRegEye
+            className="eyeBtn mx-2"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              console.log(row.id);
+              router.push(`/admin/quotations/${row.id}`);
+            }}
+          />
+
+          <RiEdit2Fill
+            className="eyeBtn mx-2"
+            style={{ cursor: "pointer" }}
+          />
+
+          <RiDeleteBin6Line
+            className="eyeBtn text-danger mx-2"
+            style={{ cursor: "pointer" }}
+          />
         </div>
       ),
     },
@@ -64,6 +79,7 @@ const ListPage = () => {
 
   const QuotationData = [
     {
+      id: 1,
       quotation: "#QT-2026-0189",
       customer: "Falcon Group LLC",
       products: "CRM Enterprise (1 yr)",
@@ -74,6 +90,7 @@ const ListPage = () => {
       status: "Sent",
     },
     {
+      id: 2,
       quotation: "#QT-2026-0188",
       customer: "TechVentures UAE",
       products: "HR + Finance Modules",
@@ -84,6 +101,7 @@ const ListPage = () => {
       status: "Approved",
     },
     {
+      id: 3,
       quotation: "#QT-2026-0187",
       customer: "ABC Industries",
       products: "Inventory Module (Basic)",
@@ -94,6 +112,7 @@ const ListPage = () => {
       status: "Draft",
     },
     {
+      id: 4,
       quotation: "#QT-2026-0186",
       customer: "Gulf Solutions Co.",
       products: "Full ERP Suite",

@@ -280,7 +280,7 @@ const add = () => {
                         </div>
                         <div className="col-lg-6 col-md-6">
                             <div className="form-group">
-                                <label>Assignment Mode</label>
+                                <label>Follow-Up Time</label>
                                 <input type="time" name="" id="" className="form-control" />
                             </div>
                         </div>

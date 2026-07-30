@@ -9,9 +9,12 @@ import DashIcon1 from "@/images/DashIcon1.png";
 import DashIcon2 from "@/images/DashIcon2.png";
 import DashIcon3 from "@/images/DashIcon3.png";
 import DashIcon4 from "@/images/DashIcon4.png";
+import { useRouter } from "next/router";
 
 const ListPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+    const router = useRouter();
 
 const dueColors = {
   today: "#1D9E75",
@@ -215,7 +218,7 @@ const reminderSettings = [
         }}
 
         onAddClick={() => {
-          console.log("Add clicked");
+          router.push("/admin/reminders/add");
         }}
       />
 
