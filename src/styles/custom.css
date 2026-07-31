@@ -1176,6 +1176,18 @@ table tbody tr td .eyeBtn {
     color: #E0A83C;
 }
 
+.badge.bg-success {
+    background-color: #2F9E6B !important;
+    border-color: #2F9E6B !important;
+    color: #fff !important;
+}
+
+.badge.bg-warning {
+    background-color: #E08A3C !important;
+    border-color: #E08A3C !important;
+    color: #fff !important;
+}
+
 .level-btn {
     color: #2f6eff;
     border: 1px solid #2f6eff;
@@ -1199,4 +1211,86 @@ table tbody tr td .eyeBtn {
     border-bottom: solid 1px #FFFFFF;
     padding-bottom: 24px;
     margin-bottom: 24px;
+}
+
+.col-approval-box,
+.approval-box,
+.col-version-box,
+.version-box {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+}
+
+.col-approval-box{
+    justify-content: space-between;
+    margin-left: 60px;
+    position: relative;
+    border-bottom: solid 1px #fff;
+    padding: 24px 0;
+}
+.col-version-box {
+    justify-content: space-between;
+    margin-left: 80px;
+    position: relative;
+    border-bottom: solid 1px #fff;
+    padding: 24px 0;
+}
+.col-approval-box:last-child,
+.col-version-box:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.col-approval-box .icon {
+    color: #fff;
+    border-radius: 50%;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    display: inline-flex;
+    position: absolute;
+    left: -60px;
+    background-color: #C9CEDB;
+}
+
+.col-version-box .icon {
+    color: #fff;
+    background-color: #2F6EFF;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    width: 60px;
+    min-width: 60px;
+    height: 30px;
+    display: inline-flex;
+    position: absolute;
+    left: -80px;
+    padding: 5px 0;
+}
+
+.col-approval-box .text p,
+.col-version-box .text p {
+    margin-bottom: 0;
+}
+
+.col-approval-box .text h6,
+.col-version-box .text h6 {
+    margin: 6px 0;
+}
+
+.approvalRow {
+    position: relative;
+}
+
+.approvalRow::before {
+    content: "";
+    border: 2px dashed #a6c0d6;
+    width: 2px;
+    position: absolute;
+    top: 60px;
+    bottom: 30px;
+    left: 19px;
 }

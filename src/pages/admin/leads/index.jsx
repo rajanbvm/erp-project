@@ -1,17 +1,51 @@
 import PageBanner from "@/components/common/PageBanner";
 import PageSearch from "@/components/common/PageSearch";
 import DataTable from "@/components/DataTable";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import {
+  initializeLeads,
+  getLeads,
+  deleteLead,
+} from "@/utils/leadsStorage";
 import { FaRegEye } from "react-icons/fa6";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
 
+
+
 const ListPage = () => {
-const [selectedStatus, setSelectedStatus] = useState("All Status");
 
-const router = useRouter();
+  const [leadsData, setLeadsData] = useState([]);
 
-   const LeadsColumns = [
+  console.log(leadsData);
+
+
+  const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+  const router = useRouter();
+
+const loadLeads = () => {
+    initializeLeads();
+
+    const data = getLeads();
+
+    console.log("Leads:", data);
+
+    setLeadsData(data);
+};
+
+useEffect(() => {
+    loadLeads();
+}, []);
+
+const handleDelete = (id) => {
+    if (!window.confirm("Are you sure you want to delete this lead?")) return;
+
+    deleteLead(id);
+    loadLeads();
+};
+
+  const LeadsColumns = [
     { key: "lead", label: "LEAD" },
     { key: "email", label: "Email" },
     { key: "company", label: "COMPANY" },
@@ -50,11 +84,23 @@ const router = useRouter();
     {
       key: "action",
       label: "ACTION",
-      render: () => (
+      render: (row) => (
         <div className="text-center">
-          <FaRegEye className="eyeBtn mx-2" />
-          <RiEdit2Fill className="eyeBtn mx-2" />
-          <RiDeleteBin6Line className="eyeBtn text-danger mx-2" />
+          <FaRegEye className="eyeBtn mx-2"
+            onClick={() => {
+              console.log("Clicked Row:", row);
+              router.push(`/admin/leads/${row.id}`);
+            }} />
+          <RiEdit2Fill
+            className="eyeBtn mx-2"
+            style={{ cursor: "pointer" }}
+            onClick={() => router.push(`/admin/leads/edit/${row.id}`)}
+          />
+          <RiDeleteBin6Line
+            className="eyeBtn text-danger mx-2"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleDelete(row.id)}
+          />
         </div>
       ),
     },
@@ -62,40 +108,8 @@ const router = useRouter();
 
 
 
-  const LeadsData = [
-    {
-      lead: "Ahmed Hassan",
-      email: "ahmed@falcon.ae",
-      company: "Falcon Group LLC",
-      source: "Google Ads",
-      score: 95,
-      owner: "John Doe",
-      created: "10 Jun 2026",
-      status: "Qualified",
-    },
-    {
-      lead: "Sara Mehta",
-      email: "sara@techventures.com",
-      company: "ABC Ltd",
-      source: "Website",
-      score: 72,
-      owner: "Sarah Wilson",
-      created: "11 Jun 2026",
-      status: "Proposal sent",
-    },
-    {
-      lead: "Ravi Kumar",
-      email: "ravi@abc-ind.com",
-      company: "XYZ",
-      source: "Facebook",
-      score: 40,
-      owner: "Mike Johnson",
-      created: "12 Jun 2026",
-      status: "Contacted",
-    },
-  ];
 
-    const statusColors = {
+  const statusColors = {
     "Qualified": "#173404",
     "Proposal sent": "#26215C",
     "Contacted": "#412402",
@@ -104,30 +118,30 @@ const router = useRouter();
     "Won": "#04342C",
   };
 
- const dropdownItems = useMemo(() => {
-  const statuses = [...new Set(LeadsData.map((lead) => lead.status))];
+const dropdownItems = useMemo(() => {
+    const statuses = [...new Set(leadsData.map((lead) => lead.status))];
 
-  return [
-    {
-      label: "All Status",
-      onClick: () => setSelectedStatus("All Status"),
-    },
-    ...statuses.map((status) => ({
-      label: status,
-      onClick: () => setSelectedStatus(status),
-    })),
-  ];
-}, []);
+    return [
+        {
+            label: "All Status",
+            onClick: () => setSelectedStatus("All Status"),
+        },
+        ...statuses.map((status) => ({
+            label: status,
+            onClick: () => setSelectedStatus(status),
+        })),
+    ];
+}, [leadsData]);
 
-  const filteredData = useMemo(() => {
+const filteredData = useMemo(() => {
     if (selectedStatus === "All Status") {
-      return LeadsData;
+        return leadsData;
     }
 
-    return LeadsData.filter(
-      (lead) => lead.status === selectedStatus
+    return leadsData.filter(
+        (lead) => lead.status === selectedStatus
     );
-  }, [selectedStatus]);
+}, [selectedStatus, leadsData]);
 
 
 
@@ -137,7 +151,7 @@ const router = useRouter();
     return "#1D9E75";                      // Green (>75)
   };
 
- 
+
 
   return (
     <>
@@ -157,8 +171,8 @@ const router = useRouter();
         }}
 
         onAddClick={() => {
-    router.push("/admin/leads/add");
-  }}
+          router.push("/admin/leads/add");
+        }}
       />
 
       <div className="bg-box mb-32">
