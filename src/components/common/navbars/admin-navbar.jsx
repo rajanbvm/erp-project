@@ -56,7 +56,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/leads`}
-                                className={`dash-link ${pathname === "/admin/leads" || pathname === "/admin/leads/add" ? "active" : ""}`}
+                                className={`dash-link ${pathname.startsWith("/admin/leads") ? "active" : ""}`}
                             >
                                 <Image src={userIcon} alt="Dashboard icon" />
                                 <span className="tooltip">Leads</span>
@@ -66,7 +66,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/quotations`}
-                                className={`dash-link ${pathname === "/admin/quotations" || pathname === "/admin/quotations/add" ? "active" : ""}`}
+                                className={`dash-link ${pathname.startsWith("/admin/quotations") ? "active" : ""}`}
                             >
                                 <Image src={FileText} alt="Dashboard icon" />
                                 <span className="tooltip">Quotations</span>
@@ -76,7 +76,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/contacts`}
-                                className={`dash-link ${pathname === "/admin/contacts" ? "active" : ""}`}
+                                className={`dash-link ${pathname.startsWith("/admin/contacts") ? "active" : ""}`}
                             >
                                 <Image src={UsersThree} alt="Dashboard icon" />
                                 <span className="tooltip">Contacts</span>
@@ -86,7 +86,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/companies`}
-                                className={`dash-link ${pathname === "/admin/companies" || pathname === "/admin/companies/add" ? "active" : ""}`}
+                                className={`dash-link ${pathname.startsWith("/admin/companies") ? "active" : ""}`}
                             >
                                 <Image src={BuildingOffice} alt="Plans icon" />
                                 <span className="tooltip">Companies</span>

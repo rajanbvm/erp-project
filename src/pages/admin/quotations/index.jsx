@@ -57,7 +57,7 @@ const ListPage = () => {
             style={{ cursor: "pointer" }}
             onClick={() => {
               console.log(row.id);
-              router.push(`/admin/quotations/${row.id}`);
+              router.push(`/admin/quotations/view/${row.id}`);
             }}
           />
 

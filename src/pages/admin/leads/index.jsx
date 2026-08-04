@@ -65,7 +65,18 @@ const handleDelete = (id) => {
       ),
     },
     { key: "owner", label: "OWNER" },
-    { key: "created", label: "Created" },
+    { key: "created", label: "Created",
+      render: (row) => (
+        <span
+          style={{
+            minWidth:"100px",
+            // fontWeight: 500,
+          }}
+        >
+          {row.created}
+        </span>
+      ),
+     },
     {
       key: "status",
       label: "Status",
@@ -85,11 +96,11 @@ const handleDelete = (id) => {
       key: "action",
       label: "ACTION",
       render: (row) => (
-        <div className="text-center">
+        <div className="table-actions">
           <FaRegEye className="eyeBtn mx-2"
             onClick={() => {
               console.log("Clicked Row:", row);
-              router.push(`/admin/leads/${row.id}`);
+              router.push(`/admin/leads/view/${row.id}`);
             }} />
           <RiEdit2Fill
             className="eyeBtn mx-2"

@@ -3,31 +3,40 @@ const STORAGE_KEY = "leadsData";
 const defaultLeads = [
   {
     id: 1,
-
-    // Header
     lead: "Ahmed Hassan",
+    designation: "Procurement Head",
+
     company: "Falcon Group LLC",
-    primaryPhone: "+971 52 234 5678",
-    email: "ahmed@falcon.ae",
-
-    // Status Chips
-    status: "Qualified",
-    Leadsource: "Google Ads",
-    score: 95,
-
-    // Lead Information
-    owner: "John Doe",
-    priority: "High",
-    industry: "Construction",
-    companySize: "201-500 Employees",
-    annualRevenue: "AED 120 Million",
     website: "falcongroup.ae",
-    budget: "AED 50,000",
+    industryType: "Construction",
+    companySize: "201-500 Employees",
+    annualRevenue: "$32 Million",
+    businessAddress: "Dubai, UAE",
 
-    // Notes
+    primaryPhone: "+971 52 234 5678",
+    secondaryPhone: "+971 4 123 4567",
+    email: "ahmed@falcon.ae",
+    whatsapp: "+971 52 234 5678",
+    linkedin: "linkedin.com/in/ahmedhassan",
+    preferredCommunication: "Phone",
+
+    source: "Google Ads",
+    owner: "John Doe",
+    status: "Qualified",
+    score: 95,
+    assignmentMode: "Manual",
+    priority: "High",
+
+    budget: "Above $100,000",
+    followUpType: "Phone Call",
+    followUpDate: "2026-06-18",
+    followUpTime: "11:00",
+
+    requirement: "ERP & CRM implementation",
+    remarks: "Interested in cloud solution.",
     notes: "Looking for ERP & CRM implementation within 2 months.",
 
-    // Activity
+     // Activity
     nextFollowUp: "18 Jun 2026, 11:00 AM - Product Demo",
     lastCall: "Yesterday · 14 min · Interested",
     openTasks: "Prepare pricing sheet",
@@ -58,31 +67,40 @@ const defaultLeads = [
 
   {
     id: 2,
-
-    // Header
     lead: "Sara Mehta",
+    designation: "Operations Manager",
+
     company: "ABC Retail Pvt Ltd",
-    primaryPhone: "+91 98765 43210",
-    email: "sara@abcretail.com",
-
-    // Status Chips
-    status: "Proposal Sent",
-    Leadsource: "Website",
-    score: 82,
-
-    // Lead Information
-    owner: "Sarah Wilson",
-    priority: "Medium",
-    industry: "Retail",
-    companySize: "51-200 Employees",
-    annualRevenue: "₹45 Crore",
     website: "abcretail.com",
-    budget: "₹25,00,000",
+    industryType: "Retail",
+    companySize: "51-200 Employees",
+    annualRevenue: "$8 Million",
+    businessAddress: "Jaipur, Rajasthan, India",
 
-    // Notes
+    primaryPhone: "+91 98765 43210",
+    secondaryPhone: "+91 141 456 7890",
+    email: "sara@abcretail.com",
+    whatsapp: "+91 98765 43210",
+    linkedin: "linkedin.com/in/saramehta",
+    preferredCommunication: "Email",
+
+    source: "Website",
+    owner: "Sarah Wilson",
+    status: "Proposal sent",
+    score: 82,
+    assignmentMode: "Manual",
+    priority: "Medium",
+
+    budget: "$25,000 - $50,000",
+    followUpType: "Video Meeting",
+    followUpDate: "2026-06-20",
+    followUpTime: "15:30",
+
+    requirement: "Retail ERP with Inventory Management",
+    remarks: "Proposal submitted. Waiting for approval.",
     notes: "Proposal shared with client. Awaiting management approval.",
 
-    // Activity
+   // Activity
     nextFollowUp: "20 Jun 2026, 03:30 PM - Video Meeting",
     lastCall: "2 Days Ago · 10 min · Proposal Discussed",
     openTasks: "Send revised commercial proposal",
@@ -113,28 +131,37 @@ const defaultLeads = [
 
   {
     id: 3,
-
-    // Header
     lead: "Ravi Kumar",
+    designation: "Purchase Manager",
+
     company: "XYZ Industries",
-    primaryPhone: "+91 99998 87766",
-    email: "ravi@xyzindustries.in",
-
-    // Status Chips
-    status: "Contacted",
-    Leadsource: "Facebook",
-    score: 68,
-
-    // Lead Information
-    owner: "Mike Johnson",
-    priority: "Low",
-    industry: "Manufacturing",
-    companySize: "21-50 Employees",
-    annualRevenue: "₹18 Crore",
     website: "xyzindustries.in",
-    budget: "₹10,00,000",
+    industryType: "Manufacturing",
+    companySize: "21-50 Employees",
+    annualRevenue: "$3 Million",
+    businessAddress: "Ahmedabad, Gujarat, India",
 
-    // Notes
+    primaryPhone: "+91 99998 87766",
+    secondaryPhone: "+91 79 2222 3333",
+    email: "ravi@xyzindustries.in",
+    whatsapp: "+91 99998 87766",
+    linkedin: "linkedin.com/in/ravikumar",
+    preferredCommunication: "WhatsApp",
+
+    source: "Facebook",
+    owner: "Mike Johnson",
+    status: "Contacted",
+    score: 68,
+    assignmentMode: "Manual",
+    priority: "Low",
+
+    budget: "$10,000 - $25,000",
+    followUpType: "Video Meeting",
+    followUpDate: "2026-06-22",
+    followUpTime: "10:00",
+
+    requirement: "Inventory & Production Management System",
+    remarks: "Requested product demo.",
     notes: "Client requested inventory module demonstration before final discussion.",
 
     // Activity

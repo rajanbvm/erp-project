@@ -456,7 +456,7 @@ body.dark-mode .form-control::placeholder {
     justify-content: space-between;
     column-gap: 16px;
     position: relative;
-    width: calc(100% - 24px);
+    /* width: calc(100% - 24px); */
     background: var(--bg-white);
     border-radius: 0 0 16px 16px;
     box-shadow: 0px 7px 18px 0px #0000001A;
@@ -464,7 +464,7 @@ body.dark-mode .form-control::placeholder {
 
 /* Left Bottom Cut */
 .dash-header .header-section::before {
-    content: "";
+    /* content: ""; */
     background: none;
     border-radius: 0 16px 16px 0;
     width: 24px;
@@ -478,7 +478,7 @@ body.dark-mode .form-control::placeholder {
 
 /* Right Bottom Cut */
 .dash-header .header-section::after {
-    content: "";
+    /* content: ""; */
     background: none;
     border-radius: 16px 0 0 16px;
     width: 24px;
@@ -818,7 +818,10 @@ body.dark-mode .dash-header .header-section::after {
 .table-dropdown.btn {
     border-radius: 30px;
 }
-
+.table-actions{
+    text-align: center;
+    min-width: max-content;
+}
 .table-dropdown.btn::after {
     display: none;
 }
@@ -1106,6 +1109,22 @@ table tbody tr td .eyeBtn {
     border-color: #fff !important;
 }
 
+.form-group .form-select.dropdown-toggle {
+    align-items: center;
+    display: flex;
+    color: #202224 !important;
+    background-color: #e5e5f0 !important;
+    border-color: #fff !important;
+}
+.form-group .dropdown-menu{
+    color: #202224 !important;
+    background-color: #e5e5f0 !important;
+    border-color: #fff !important;
+}
+.form-select.dropdown-toggle::after {
+    display: none;
+}
+
 .form-select option {
     background-color: #e5e5f0;
     color: #24324B;
@@ -1222,13 +1241,14 @@ table tbody tr td .eyeBtn {
     column-gap: 16px;
 }
 
-.col-approval-box{
+.col-approval-box {
     justify-content: space-between;
     margin-left: 60px;
     position: relative;
     border-bottom: solid 1px #fff;
     padding: 24px 0;
 }
+
 .col-version-box {
     justify-content: space-between;
     margin-left: 80px;
@@ -1236,6 +1256,7 @@ table tbody tr td .eyeBtn {
     border-bottom: solid 1px #fff;
     padding: 24px 0;
 }
+
 .col-approval-box:last-child,
 .col-version-box:last-child {
     border-bottom: 0;

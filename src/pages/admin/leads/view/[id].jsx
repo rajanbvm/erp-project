@@ -66,7 +66,7 @@ const LeadsDetails = () => {
                             {lead?.status}
                         </span>
                         <span className="level-btn">
-                            {lead?.Leadsource}
+                            {lead?.source}
                         </span>
                         <span className="level-btn">
                             Score {lead?.score}
