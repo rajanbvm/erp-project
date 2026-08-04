@@ -1215,6 +1215,7 @@ table tbody tr td .eyeBtn {
     padding: 10px 16px;
     font-size: 14px;
     line-height: 1;
+    user-select: none;
 }
 
 .row.QuoteInfo .quote-box {

@@ -12,6 +12,7 @@ import { FaCheck, FaRegFileLines } from "react-icons/fa6";
 import Envelope from "@/images/Envelope.svg";
 import { RiEdit2Fill, RiNumber2, RiNumber3, RiNumber4 } from "react-icons/ri";
 import { BsFillSendFill } from 'react-icons/bs';
+import Link from 'next/link';
 
 const LeadsDetails = () => {
 
@@ -106,7 +107,7 @@ const LeadsDetails = () => {
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Lead source</label>
-                                <h6 className="formValue">{lead?.Leadsource}</h6>
+                                <h6 className="formValue">{lead?.source}</h6>
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
@@ -171,7 +172,7 @@ const LeadsDetails = () => {
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Budget</label>
-                                <h6 className="formValue">04 Jul 2026</h6>
+                                <h6 className="formValue">{lead?.budget}</h6>
                             </div>
                         </div>
 
@@ -236,18 +237,19 @@ const LeadsDetails = () => {
                         <BsFillSendFill />
                         <span>Create & Submit for Approval</span>
                     </button>
-                    <button
+                    <Link
+                        href={`/admin/leads/edit/${lead?.id}`}
                         className="btn btn-outline-primary mx-2"
                     >
                         <RiEdit2Fill />
                         <span>Edit</span>
-                    </button>
-                    <button
+                    </Link>
+                    {/* <button
                         className="btn btn-outline-primary mx-2"
                     >
                         <FaRegFileLines />
                         <span>Download PDF</span>
-                    </button>
+                    </button> */}
                 </div>
 
             </div >
