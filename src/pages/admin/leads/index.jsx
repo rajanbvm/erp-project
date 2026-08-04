@@ -24,7 +24,7 @@ const ListPage = () => {
 
   const router = useRouter();
 
-const loadLeads = () => {
+  const loadLeads = () => {
     initializeLeads();
 
     const data = getLeads();
@@ -32,18 +32,18 @@ const loadLeads = () => {
     console.log("Leads:", data);
 
     setLeadsData(data);
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     loadLeads();
-}, []);
+  }, []);
 
-const handleDelete = (id) => {
+  const handleDelete = (id) => {
     if (!window.confirm("Are you sure you want to delete this lead?")) return;
 
     deleteLead(id);
     loadLeads();
-};
+  };
 
   const LeadsColumns = [
     { key: "lead", label: "LEAD" },
@@ -65,18 +65,19 @@ const handleDelete = (id) => {
       ),
     },
     { key: "owner", label: "OWNER" },
-    { key: "created", label: "Created",
+    {
+      key: "created", label: "Created",
       render: (row) => (
         <span
           style={{
-            minWidth:"100px",
+            minWidth: "100px",
             // fontWeight: 500,
           }}
         >
           {row.created}
         </span>
       ),
-     },
+    },
     {
       key: "status",
       label: "Status",
@@ -129,30 +130,30 @@ const handleDelete = (id) => {
     "Won": "#04342C",
   };
 
-const dropdownItems = useMemo(() => {
+  const dropdownItems = useMemo(() => {
     const statuses = [...new Set(leadsData.map((lead) => lead.status))];
 
     return [
-        {
-            label: "All Status",
-            onClick: () => setSelectedStatus("All Status"),
-        },
-        ...statuses.map((status) => ({
-            label: status,
-            onClick: () => setSelectedStatus(status),
-        })),
+      {
+        label: "All Status",
+        onClick: () => setSelectedStatus("All Status"),
+      },
+      ...statuses.map((status) => ({
+        label: status,
+        onClick: () => setSelectedStatus(status),
+      })),
     ];
-}, [leadsData]);
+  }, [leadsData]);
 
-const filteredData = useMemo(() => {
+  const filteredData = useMemo(() => {
     if (selectedStatus === "All Status") {
-        return leadsData;
+      return leadsData;
     }
 
     return leadsData.filter(
-        (lead) => lead.status === selectedStatus
+      (lead) => lead.status === selectedStatus
     );
-}, [selectedStatus, leadsData]);
+  }, [selectedStatus, leadsData]);
 
 
 
