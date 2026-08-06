@@ -2,13 +2,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-// import AdminNavbar from "./navbars/admin-navbar";
 
 import CloseModal from "@/images/CloseModal.svg";
-import headerBg from "@/images/headerBg.svg";
-import Settings from "@/images/setting2.svg";
-import logoutImage from "@/images/logout.svg";
-import { Dropdown, Form, Modal } from "react-bootstrap";
+import { resetERPStorage } from "@/utils/resetStorage";
+import { Form, Modal } from "react-bootstrap";
 import AdminNavbar from "./navbars/admin-navbar";
 import { BsBell, BsSearch, BsSliders2 } from "react-icons/bs";
 
@@ -21,13 +18,6 @@ const Sidebar = () => {
     document.body.classList.toggle("dark-mode", darkMode);
   }, [darkMode]);
 
-  // // Dummy User
-  // const user = {
-  //   firstName: "Rajan",
-  //   lastName: "Dhuria",
-  //   role: "Admin",
-  //   profileImagePath: noImagePlaceholder,
-  // };
 
   return (
     <>
@@ -35,14 +25,7 @@ const Sidebar = () => {
       <AdminNavbar />
 
       {/* Header */}
-      <div className="dash-header" 
-      // style={{
-      //   backgroundImage: `url(${headerBg.src})`,
-      //   backgroundSize: "cover",
-      //   backgroundPosition: "center",
-      //   backgroundRepeat: "no-repeat",
-      // }}
-      >
+      <div className="dash-header">
         <div className="header-section">
           <div className="search-bar">
             <input
@@ -56,7 +39,11 @@ const Sidebar = () => {
           </div>
 
           <div className="header-actions">
-            <span className="settings-icon">
+            <span
+              className="settings-icon"
+              onClick={resetERPStorage}
+              style={{ cursor: "pointer" }}
+            >
               <BsSliders2 />
             </span>
             <span className="settings-icon">
@@ -68,7 +55,7 @@ const Sidebar = () => {
                 id="theme-switch"
                 checked={darkMode}
                 onChange={(e) => setDarkMode(e.target.checked)}
-                // label={darkMode ? "Dark" : "Light"}
+              // label={darkMode ? "Dark" : "Light"}
               />
             </span>
           </div>

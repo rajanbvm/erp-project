@@ -30,7 +30,6 @@ export const industryOptions = [
     "Logistics",
     "Telecommunications",
     "Automobile",
-    "Other",
 ];
 
 export const communicationOptions = [
@@ -58,11 +57,11 @@ export const sourceOptions = [
     "LinkedIn",
     "Referral",
     "Email Campaign",
-    "Cold Call",
-    "Trade Show",
-    "Walk-in",
-    "Existing Customer",
-    "Other",
+    // "Cold Call",
+    // "Trade Show",
+    // "Walk-in",
+    // "Existing Customer",
+    // "Other",
 ];
 
 export const ownerOptions = [
@@ -83,6 +82,18 @@ export const priorityOptions = [
     "Medium",
     "High",
     "Urgent",
+];
+
+export const discountOptions = [
+    { label: "5%", value: "5" },
+    { label: "10%", value: "10" },
+    { label: "15%", value: "15" },
+];
+
+export const vatOptions = [
+    { label: "5%", value: "5" },
+    { label: "10%", value: "10" },
+    { label: "15%", value: "15" },
 ];
 
 export const followUpTypeOptions = [
@@ -120,3 +131,10 @@ export const timeOptions = Array.from({ length: 21 }, (_, i) => {
             .padStart(2, "0")}`,
     };
 });
+
+export const contactTypeOptions = [
+  "Primary",
+  "Secondary",
+  "Decision Maker",
+  "Assistant",
+];

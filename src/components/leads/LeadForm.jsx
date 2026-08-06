@@ -26,7 +26,7 @@ import {
     followUpTypeOptions,
     scoreOptions,
     timeOptions,
-} from "@/utils/leadsDropdown";
+} from "@/utils/menuDropdown";
 import Link from 'next/link';
 
 

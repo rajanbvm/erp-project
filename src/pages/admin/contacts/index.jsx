@@ -1,13 +1,49 @@
 import PageBanner from "@/components/common/PageBanner";
 import PageSearch from "@/components/common/PageSearch";
 import DataTable from "@/components/DataTable";
-import { useMemo, useState } from "react";
 import { FaRegEye } from "react-icons/fa6";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
+import {
+  getContacts,
+  initializeContacts,
+  deleteContact,
+} from "@/utils/contactsStorage";
+import { getCompanies, initializeCompanies } from "@/utils/companiesStorage";
 
 const ListPage = () => {
   const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+  const [contactsData, setContactsData] = useState([]);
+  
+
+  const loadContacts = () => {
+  const companies = getCompanies();
+  const contacts = getContacts();
+
+  const mergedData = contacts.map((contact) => ({
+    ...contact,
+    company:
+      companies.find((company) => company.id === contact.companyId)?.company ||
+      "-",
+  }));
+
+  console.log("Merged Data:", mergedData);
+
+  setContactsData(mergedData);
+};
+
+  useEffect(() => {
+    initializeCompanies();
+    initializeContacts();
+    loadContacts();
+  }, []);
+
+  const handleDelete = (id) => {
+    deleteContact(id);
+    loadContacts();
+  };
 
   const router = useRouter();
 
@@ -15,7 +51,7 @@ const ListPage = () => {
     { key: "contact", label: "Contact" },
     { key: "email", label: "Email" },
     { key: "company", label: "COMPANY" },
-    { key: "role", label: "Role" },
+    { key: "designation", label: "Designation" },
     { key: "phone", label: "Phone" },
     {
       key: "type",
@@ -35,44 +71,19 @@ const ListPage = () => {
     {
       key: "action",
       label: "ACTION",
-      render: () => (
-        <div className="text-center">
+      render: (row) => (
+        <div className="table-actions">
           <FaRegEye className="eyeBtn mx-2" />
           <RiEdit2Fill className="eyeBtn mx-2" />
-          <RiDeleteBin6Line className="eyeBtn text-danger mx-2" />
+          <RiDeleteBin6Line
+            className="eyeBtn text-danger mx-2"
+            onClick={() => handleDelete(row.id)}
+          />
         </div>
       ),
     },
   ];
 
-
-
-  const ContactsData = [
-    {
-      contact: "Ahmed Hassan",
-      email: "ahmed@falcon.ae",
-      company: "Falcon Group LLC",
-      role: "Sales Director",
-      phone: "+971 50 123 4567",
-      type: "Primary",
-    },
-    {
-      contact: "Sara Mehta",
-      email: "sara@techventures.com",
-      company: "ABC Ltd",
-      role: "CTO",
-      phone: "+971 50 123 4567",
-      type: "Secondary",
-    },
-    {
-      contact: "Ravi Kumar",
-      email: "ravi@abc-ind.com",
-      company: "XYZ",
-      role: "Sales Director",
-      phone: "+971 50 123 4567",
-      type: "Primary",
-    },
-  ];
 
   const typeColors = {
     "Primary": "#173404",
@@ -80,7 +91,7 @@ const ListPage = () => {
   };
 
   const dropdownItems = useMemo(() => {
-    const typees = [...new Set(ContactsData.map((contact) => contact.type))];
+    const typees = [...new Set(contactsData.map((contact) => contact.type))];
 
     return [
       {
@@ -92,19 +103,21 @@ const ListPage = () => {
         onClick: () => setSelectedStatus(type),
       })),
     ];
-  }, []);
+  }, [contactsData]);
 
   const filteredData = useMemo(() => {
     if (selectedStatus === "All Status") {
-      return ContactsData;
+      return contactsData;
     }
 
-    return ContactsData.filter(
+    return contactsData.filter(
       (contact) => contact.type === selectedStatus
     );
-  }, [selectedStatus]);
+  }, [selectedStatus, contactsData]);
 
-
+useEffect(() => {
+  console.log("contactsData", contactsData);
+}, [contactsData]);
 
   const getScoreColor = (score) => {
     if (score < 50) return "#E24B4A";      // Red
@@ -112,7 +125,9 @@ const ListPage = () => {
     return "#1D9E75";                      // Green (>75)
   };
 
-
+console.log(getContacts());
+console.log(getCompanies());
+console.log("filteredData", filteredData);
 
   return (
     <>

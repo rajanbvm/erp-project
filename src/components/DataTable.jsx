@@ -53,7 +53,13 @@ export default function DataTable({
           <thead>
             <tr>
               {columns.map((column) => (
-                <th className={column.key === "action" ? "text-center" : ""}>
+                <th
+                  key={column.key}
+                  className={
+                    column.className ||
+                    (column.key === "action" ? "text-center" : "")
+                  }
+                >
                   {column.label}
                 </th>
               ))}
@@ -64,7 +70,13 @@ export default function DataTable({
             {data.map((row, index) => (
               <tr key={index}>
                 {columns.map((column) => (
-                  <td key={column.key}>
+                  <td
+                    key={column.key}
+                    className={
+                      column.className ||
+                      (column.key === "action" ? "text-center" : "")
+                    }
+                  >
                     {column.render
                       ? column.render(row)
                       : row[column.key]}

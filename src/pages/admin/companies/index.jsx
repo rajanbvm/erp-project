@@ -1,10 +1,16 @@
 import PageBanner from "@/components/common/PageBanner";
 import PageSearch from "@/components/common/PageSearch";
 import DataTable from "@/components/DataTable";
-import { useMemo, useState } from "react";
 import { FaRegEye } from "react-icons/fa6";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
+import {
+    initializeCompanies,
+    getCompanies,
+    deleteCompany
+} from "@/utils/companiesStorage";
+import { getContacts } from "@/utils/contactsStorage";
 
 const ListPage = () => {
 
@@ -14,55 +20,60 @@ const ListPage = () => {
     { key: "company", label: "COMPANY" },
     { key: "industry", label: "Industry" },
     { key: "location", label: "Location" },
-    { key: "contact", label: "Contact" },
-    { key: "deals", label: "Deals" },
+    { key: "contact", label: "Contact",className: "text-center" },
+    { key: "deals", label: "Deals", className: "text-center"},
     { key: "revenue", label: "Revenue" },
     { key: "owner", label: "Owner" },
 
     {
       key: "action",
       label: "ACTION",
-      render: () => (
-        <div className="text-center">
-          <FaRegEye className="eyeBtn mx-2" />
-          <RiEdit2Fill className="eyeBtn mx-2" />
-          <RiDeleteBin6Line className="eyeBtn text-danger mx-2" />
-        </div>
-      ),
+      render: (row) => (
+    <div className="table-actions">
+
+        <FaRegEye
+            className="eyeBtn mx-2"
+            onClick={() => router.push(`/admin/companies/view/${row.id}`)}
+        />
+
+        <RiEdit2Fill
+            className="eyeBtn mx-2"
+            onClick={() => router.push(`/admin/companies/edit/${row.id}`)}
+        />
+
+        <RiDeleteBin6Line
+            className="eyeBtn text-danger mx-2"
+            onClick={() => {
+                deleteCompany(row.id);
+                setCompanies(getCompanies());
+            }}
+        />
+
+    </div>
+)
     },
   ];
 
 
 
-  const CompData = [
-    {
-      company: "Falcon Group LLC",
-      industry: "Real Estate",
-      location: "Dubai, UAE",
-      contact: "3",
-      deals: "2",
-      revenue: "$120K",
-      owner: "John Doe",
-    },
-    {
-      company: "Falcon Group LLC",
-      industry: "Real Estate",
-      location: "Dubai, UAE",
-      contact: "3",
-      deals: "2",
-      revenue: "$120K",
-      owner: "John Doe",
-    },
-    {
-      company: "Falcon Group LLC",
-      industry: "Real Estate",
-      location: "Dubai, UAE",
-      contact: "3",
-      deals: "2",
-      revenue: "$120K",
-      owner: "John Doe",
-    },
-  ];
+const [companies, setCompanies] = useState([]);
+const [contacts, setContacts] = useState([]);
+
+useEffect(() => {
+    initializeCompanies();
+
+    setCompanies(getCompanies());
+    setContacts(getContacts());
+}, []);
+
+const companyTableData = useMemo(() => {
+    return companies.map((company) => ({
+        ...company,
+        contact: contacts.filter(
+            (contact) => contact.companyId === company.id
+        ).length,
+    }));
+}, [companies, contacts]);
 
   return (
     <>
@@ -87,11 +98,11 @@ const ListPage = () => {
 
       <div className="bg-box mb-32">
         <DataTable
-          title="All Companies"
-          columns={CompaniesColumns}
-          data={CompData}
-          showViewAll={false}
-        />
+    title="All Companies"
+    columns={CompaniesColumns}
+    data={companyTableData}
+    showViewAll={false}
+/>
       </div>
 
     </>

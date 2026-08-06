@@ -152,7 +152,7 @@ const LeadsDetails = () => {
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Industry</label>
-                                <h6 className="formValue">{lead?.industryType}</h6>
+                                <h6 className="formValue">{lead?.industry}</h6>
                             </div>
                         </div>
                     </div>
