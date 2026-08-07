@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { BsFillSendFill } from "react-icons/bs";
+import { useRouter } from "next/router";
 import { IoMdClose } from "react-icons/io";
 import {
     initializeCompanies,
@@ -8,12 +9,9 @@ import {
 } from "@/utils/companiesStorage";
 
 import {
-    initializeQuotations,
-    getQuotations,
     getQuotationById,
     addQuotation,
     updateQuotation,
-    deleteQuotation,
 } from "@/utils/quotationStorage";
 import {
     industryOptions,
@@ -28,31 +26,56 @@ import CustomDropdown from "../common/CustomDropdown";
 
 const QuotationForm = ({ mode, quotationId }) => {
 
+    const router = useRouter();
+
     const [companyOptions, setCompanyOptions] = useState([]);
+    const [companies, setCompanies] = useState([]);
 
     useEffect(() => {
         initializeCompanies();
 
-        const companies = getCompanies();
+        const companyList = getCompanies();
+
+        setCompanies(companyList);
 
         setCompanyOptions(
-            companies.map((company) => ({
+            companyList.map(company => ({
                 label: company.company,
-                value: company.id, // Recommended: store the ID
+                value: company.company,
             }))
         );
     }, []);
-
     const handleChange = (e) => {
-
         const { name, value } = e.target;
 
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        if (name === "customer") {
+            // const selectedCompany = companies.find(
+            //     (company) => company.id === value
+            // );
+            const selectedCompany = companies.find(
+                (company) => company.company === value
+            );
 
+            if (selectedCompany) {
+                setFormData((prev) => ({
+                    ...prev,
+                    customer: value,
+                    contactPerson: selectedCompany.contactPerson || "",
+                    email: selectedCompany.email || "",
+                    phone: selectedCompany.phone || "",
+                    industry: selectedCompany.industryType || "",
+                }));
+
+                return;
+            }
+        }
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
     };
+
 
     const [formData, setFormData] = useState({
 
@@ -60,8 +83,8 @@ const QuotationForm = ({ mode, quotationId }) => {
         contactPerson: "",
         email: "",
         phone: "",
-        industryType: "",
-        leadSource: "",
+        industry: "",
+        source: "",
 
         quotationValue: "",
         discount: "",
@@ -78,38 +101,32 @@ const QuotationForm = ({ mode, quotationId }) => {
     });
 
     useEffect(() => {
-
-        if (mode !== "edit") return;
-
-        if (!quotationId) return;
+        if (mode !== "edit" || !quotationId) return;
 
         const quotation = getQuotationById(quotationId);
+
+        console.log("quotation", quotation);
 
         if (quotation) {
             setFormData(quotation);
         }
-
     }, [mode, quotationId]);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-        if (!formData.customer.trim()) {
+        if (!formData?.customer.trim()) {
             alert("Customer Name is required.");
             return;
         }
 
         if (mode === "add") {
-
             addQuotation(formData);
-
         } else {
-
             updateQuotation(quotationId, formData);
-
         }
 
         router.push("/admin/quotations");
-
     };
 
     return (
@@ -124,11 +141,9 @@ const QuotationForm = ({ mode, quotationId }) => {
                     </div>
 
                 </div>
-                <form>
+                <form onSubmit={handleSubmit}>
                     <div className="form-outer">
-
                         {/* Customer Info */}
-
                         <div className="row">
                             <h3 className="form-title">Customer Info</h3>
 
@@ -137,7 +152,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                     <label>Customer / Company</label>
                                     <CustomDropdown
                                         name="customer"
-                                        value={formData.customer}
+                                        value={formData?.customer}
                                         placeholder="Select Customer"
                                         options={companyOptions}
                                         onChange={handleChange}
@@ -154,7 +169,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         name="contactPerson"
                                         placeholder="e.g. Contact Person"
                                         className="form-control"
-                                        value={formData.contactPerson}
+                                        value={formData?.contactPerson}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -166,7 +181,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         type="email"
                                         name="email"
                                         className="form-control"
-                                        value={formData.email}
+                                        value={formData?.email}
                                         onChange={handleChange}
                                         placeholder="e.g. name@company.ae"
                                     />
@@ -179,7 +194,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         type="text"
                                         name="phone"
                                         className="form-control"
-                                        value={formData.phone}
+                                        value={formData?.phone}
                                         onChange={handleChange}
                                         placeholder="+971 4 000 0000"
                                     />
@@ -189,8 +204,8 @@ const QuotationForm = ({ mode, quotationId }) => {
                                 <div className="form-group">
                                     <label>Industry Type</label>
                                     <CustomDropdown
-                                        name="industryType"
-                                        value={formData.industryType}
+                                        name="industry"
+                                        value={formData?.industry}
                                         placeholder="Select Industry"
                                         options={industryOptions}
                                         onChange={handleChange}
@@ -202,7 +217,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                     <label>Lead Source</label>
                                     <CustomDropdown
                                         name="source"
-                                        value={formData.source}
+                                        value={formData?.source}
                                         placeholder="Select Source"
                                         options={sourceOptions}
                                         onChange={handleChange}
@@ -220,7 +235,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         type="text"
                                         name="quotationValue"
                                         className="form-control"
-                                        value={formData.quotationValue}
+                                        value={formData?.quotationValue}
                                         onChange={handleChange}
                                         placeholder="e.g. $250"
                                     />
@@ -231,7 +246,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                     <label>Discount %</label>
                                     <CustomDropdown
                                         name="discount"
-                                        value={formData.discount}
+                                        value={formData?.discount}
                                         placeholder="Select Discount %"
                                         options={discountOptions}
                                         onChange={handleChange}
@@ -243,7 +258,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                     <label>Vat %</label>
                                     <CustomDropdown
                                         name="vat"
-                                        value={formData.vat}
+                                        value={formData?.vat}
                                         placeholder="Select Vat %"
                                         options={vatOptions}
                                         onChange={handleChange}
@@ -257,7 +272,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         type="text"
                                         name="paymentTerms"
                                         className="form-control"
-                                        value={formData.paymentTerms}
+                                        value={formData?.paymentTerms}
                                         onChange={handleChange}
                                         placeholder="e.g. $250"
                                     />
@@ -268,7 +283,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                     <label>Owner</label>
                                     <CustomDropdown
                                         name="owner"
-                                        value={formData.owner}
+                                        value={formData?.owner}
                                         placeholder="Assign Owner"
                                         options={ownerOptions}
                                         onChange={handleChange}
@@ -280,7 +295,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                     <label>Priority</label>
                                     <CustomDropdown
                                         name="priority"
-                                        value={formData.priority}
+                                        value={formData?.priority}
                                         placeholder="Select Priority"
                                         options={priorityOptions}
                                         onChange={handleChange}
@@ -293,7 +308,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                     <textarea style={{ minHeight: "120px" }} id="notes"
                                         name="notes"
                                         className="form-control"
-                                        value={formData.notes}
+                                        value={formData?.notes}
                                         onChange={handleChange} placeholder="Add any details relevant to this quotation..."></textarea>
                                 </div>
                             </div>
@@ -303,8 +318,8 @@ const QuotationForm = ({ mode, quotationId }) => {
 
                     <div className="form-action">
                         <button
+                            type="submit"
                             className="btn btn-primary ms-2"
-                            onClick={handleSubmit}
                         >
                             <BsFillSendFill />
                             <span>

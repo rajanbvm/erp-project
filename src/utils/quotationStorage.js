@@ -10,11 +10,11 @@ const defaultQuotations = [
     phone: "+971 52 234 5678",
 
     industry: "Construction",
-    leadSource: "Google Ads",
+    source: "Google Ads",
 
-    quotationValue: 25000,
-    discount: 5,
-    vat: 5,
+    quotationValue: "25000",
+    discount: "5",
+    vat: "5",
 
     paymentTerms: "50% Advance, 50% On Delivery",
     owner: "John Doe",
@@ -38,11 +38,11 @@ const defaultQuotations = [
     phone: "+91 98765 43210",
 
     industry: "Retail",
-    leadSource: "Website",
+    source: "Website",
 
-    quotationValue: 48000,
-    discount: 10,
-    vat: 5,
+    quotationValue: "48000",
+    discount: "10",
+    vat: "5",
 
     paymentTerms: "100% Advance",
     owner: "Sarah Wilson",

@@ -17,9 +17,6 @@ const ListPage = () => {
 
   const [leadsData, setLeadsData] = useState([]);
 
-  console.log(leadsData);
-
-
   const [selectedStatus, setSelectedStatus] = useState("All Status");
 
   const router = useRouter();
@@ -28,8 +25,6 @@ const ListPage = () => {
     initializeLeads();
 
     const data = getLeads();
-
-    console.log("Leads:", data);
 
     setLeadsData(data);
   };
@@ -100,7 +95,6 @@ const ListPage = () => {
         <div className="table-actions">
           <FaRegEye className="eyeBtn mx-2"
             onClick={() => {
-              console.log("Clicked Row:", row);
               router.push(`/admin/leads/view/${row.id}`);
             }} />
           <RiEdit2Fill

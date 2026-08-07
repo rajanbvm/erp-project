@@ -49,9 +49,6 @@ export default function LoginPage() {
 
     e.preventDefault();
 
-    console.log("Email:", form.email);
-  console.log("Password:", form.password);
-
     setLoading(true);
 
 
@@ -71,7 +68,6 @@ export default function LoginPage() {
         })
       );
 
-console.log("Redirecting...");
 router.push("/admin/dashboard");
 
 

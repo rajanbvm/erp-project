@@ -1,5 +1,5 @@
 
-import LeadForm from "@/components/leads/LeadForm";
+import QuotationForm from "@/components/quotations/QuotationForm";
 import { useRouter } from "next/router";
 
 export default function EditQuotation() {

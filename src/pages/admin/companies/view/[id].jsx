@@ -4,6 +4,11 @@ import {
 } from "@/utils/companiesStorage";
 
 import {
+    initializeQuotations,
+    getQuotations
+} from "@/utils/quotationStorage";
+
+import {
     getContacts
 } from "@/utils/contactsStorage";
 
@@ -17,6 +22,7 @@ import Phone from "@/images/Phone.svg";
 import Envelope from "@/images/Envelope.svg";
 
 import { RiEdit2Fill } from "react-icons/ri";
+import DataTable from '@/components/DataTable';
 
 
 const CompaniesDetails = () => {
@@ -26,30 +32,55 @@ const CompaniesDetails = () => {
 
     const [company, setCompany] = useState(null);
     const [contacts, setContacts] = useState([]);
+    const [quotations, setQuotations] = useState([]);
 
 
     useEffect(() => {
 
-        if (!router.isReady) return;
+    if (!router.isReady) return;
 
+    const companyData = getCompanyById(id);
+    setCompany(companyData);
 
-        const companyData = getCompanyById(id);
+    const contactData = getContacts();
+    setContacts(
+        contactData.filter(item => item.companyId === id)
+    );
 
-        setCompany(companyData);
+    initializeQuotations();
 
+    const quotationData = getQuotations();
 
-        const contactData = getContacts();
+    setQuotations(
+        quotationData.filter(
+            item => item.customer === companyData.company
+        )
+    );
 
-        const companyContacts = contactData.filter(
-            item => item.companyId === id
-        );
+}, [router.isReady, id]);
 
-        setContacts(companyContacts);
-
-
-    }, [router.isReady, id]);
-
-
+    const quotationColumns = [
+        {
+            key: "quotationNo",
+            label: "Quotation No"
+        },
+        {
+            key: "created",
+            label: "Date"
+        },
+        {
+            key: "customer",
+            label: "Customer"
+        },
+        {
+            key: "quotationValue",
+            label: "Amount"
+        },
+        {
+            key: "status",
+            label: "Status"
+        }
+    ];
 
     if (!company) {
         return (
@@ -63,7 +94,15 @@ const CompaniesDetails = () => {
         );
     }
 
+    const handleViewAllQuotations = () => {
+        router.push(`/admin/quotations`);
+    };
 
+    const quotationData = getQuotations();
+
+    console.log("Company ID:", id);
+    console.log("First Quotation:", quotationData[0]);
+    console.log("First Quotation companyId:", quotationData[0]?.companyId);
 
     return (
         <>
@@ -71,7 +110,7 @@ const CompaniesDetails = () => {
             <PageBanner title="Companies" />
 
 
-            <div className="bg-box">
+            <div className="bg-box mb-3">
                 {/* Header */}
                 <div className="table-header">
                     <div>
@@ -121,7 +160,7 @@ const CompaniesDetails = () => {
                             <div className="quote-box">
                                 <Image src={Envelope} />
                                 <span>
-                                    {contacts.length} Contacts
+                                    {contacts?.length} Contacts
                                 </span>
                             </div>
                         </div>
@@ -129,13 +168,13 @@ const CompaniesDetails = () => {
 
                     <div className="row QuoteInfo RowBorderBottom">
                         <div className="col-lg-3 col-md-6">
-                            <div className="form-group">
+                            <div className="form-group mb-0">
                                 <label>
                                     Company Name
                                 </label>
 
                                 <h6 className="formValue">
-                                    {company.company}
+                                    {company?.company}
                                 </h6>
                             </div>
                         </div>
@@ -149,7 +188,7 @@ const CompaniesDetails = () => {
                                 </label>
 
                                 <h6 className="formValue">
-                                    {company.phone}
+                                    {company?.phone}
                                 </h6>
                             </div>
                         </div>
@@ -163,7 +202,7 @@ const CompaniesDetails = () => {
                                 </label>
 
                                 <h6 className="formValue">
-                                    {company.email}
+                                    {company?.email}
                                 </h6>
                             </div>
                         </div>
@@ -177,7 +216,7 @@ const CompaniesDetails = () => {
                                 </label>
 
                                 <h6 className="formValue">
-                                    {company.website}
+                                    {company?.website}
                                 </h6>
                             </div>
                         </div>
@@ -191,7 +230,7 @@ const CompaniesDetails = () => {
                                 </label>
 
                                 <h6 className="formValue">
-                                    {company.companySize}
+                                    {company?.companySize}
                                 </h6>
                             </div>
                         </div>
@@ -205,7 +244,7 @@ const CompaniesDetails = () => {
                                 </label>
 
                                 <h6 className="formValue">
-                                    {company.gstin}
+                                    {company?.gstin}
                                 </h6>
                             </div>
                         </div>
@@ -216,7 +255,7 @@ const CompaniesDetails = () => {
                                 </label>
 
                                 <h6 className="formValue">
-                                    {company.industry}
+                                    {company?.industry}
                                 </h6>
                             </div>
                         </div>
@@ -228,7 +267,7 @@ const CompaniesDetails = () => {
                                 </label>
 
                                 <h6 className="formValue">
-                                    {company.billingAddress}
+                                    {company?.billingAddress}
                                 </h6>
                             </div>
                         </div>
@@ -242,7 +281,7 @@ const CompaniesDetails = () => {
                                 </label>
 
                                 <h6 className="formValue">
-                                    {company.notes}
+                                    {company?.notes}
                                 </h6>
                             </div>
                         </div>
@@ -259,6 +298,18 @@ const CompaniesDetails = () => {
                         Edit
                     </button>
                 </div>
+            </div>
+
+            <div className="bg-box mt-3">
+
+                <DataTable
+                    title="Recent Quotations"
+                    description="Latest quotations of this company"
+                    columns={quotationColumns}
+                    data={quotations}
+                    onViewAll={handleViewAllQuotations}
+                />
+
             </div>
         </>
     )

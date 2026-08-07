@@ -121,9 +121,6 @@ const ContactsForm = ({ mode, contactId }) => {
 
         const contact = getContactById(contactId);
 
-
-        console.log("Contact from storage", contact);
-
         if (contact) {
             setFormData(contact);
         }
@@ -185,7 +182,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         type="text"
                                         name="contact"
                                         className="form-control"
-                                        value={formData.contact}
+                                        value={formData?.contact}
                                         onChange={handleChange}
                                         placeholder="e.g. Rajesh Mehta"
                                     />
@@ -199,7 +196,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         type="text"
                                         name="designation"
                                         className="form-control"
-                                        value={formData.designation}
+                                        value={formData?.designation}
                                         onChange={handleChange}
                                         placeholder="e.g. Sales Director"
                                     />
@@ -213,7 +210,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         type="text"
                                         name="department"
                                         className="form-control"
-                                        value={formData.department}
+                                        value={formData?.department}
                                         onChange={handleChange}
                                         placeholder="e.g. Sales"
                                     />
@@ -227,7 +224,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         type="text"
                                         name="phone"
                                         className="form-control"
-                                        value={formData.phone}
+                                        value={formData?.phone}
                                         onChange={handleChange}
                                         placeholder="+971 50 123 4567"
                                     />
@@ -241,7 +238,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         type="email"
                                         name="email"
                                         className="form-control"
-                                        value={formData.email}
+                                        value={formData?.email}
                                         onChange={handleChange}
                                         placeholder="name@company.ae"
                                     />
@@ -254,7 +251,7 @@ const ContactsForm = ({ mode, contactId }) => {
 
                                     <CustomDropdown
                                         name="preferredCommunication"
-                                        value={formData.preferredCommunication}
+                                        value={formData?.preferredCommunication}
                                         placeholder="Select"
                                         options={communicationOptions}
                                         onChange={handleChange}
@@ -274,7 +271,7 @@ const ContactsForm = ({ mode, contactId }) => {
 
                                     <CustomDropdown
                                         name="companyId"
-                                        value={formData.companyId}
+                                        value={formData?.companyId}
                                         placeholder="Select Company"
                                         options={companyOptions}
                                         onChange={handleChange}
@@ -289,7 +286,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         type="text"
                                         name="reportingManager"
                                         className="form-control"
-                                        value={formData.reportingManager}
+                                        value={formData?.reportingManager}
                                         onChange={handleChange}
                                         placeholder="e.g. Anita Sharma"
                                     />
@@ -303,7 +300,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                             id="primaryContact"
                                             className="form-check-input"
                                             type="checkbox"
-                                            checked={formData.isPrimary}
+                                            checked={formData?.isPrimary}
                                             onChange={(e) =>
                                                 setFormData((prev) => ({
                                                     ...prev,
@@ -363,7 +360,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                     <label>Country</label>
                                     <CustomDropdown
                                         name="country"
-                                        value={formData.country}
+                                        value={formData?.country}
                                         placeholder="Select Country"
                                         options={countryOptions}
                                         onChange={handleChange}
@@ -375,7 +372,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                     <label>State</label>
                                     <CustomDropdown
                                         name="state"
-                                        value={formData.state}
+                                        value={formData?.state}
                                         placeholder="Select State"
                                         options={stateOptions}
                                         onChange={handleChange}
@@ -387,7 +384,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                     <label>City</label>
                                     <CustomDropdown
                                         name="city"
-                                        value={formData.city}
+                                        value={formData?.city}
                                         placeholder="Select City"
                                         options={cityOptions}
                                         onChange={handleChange}
@@ -401,7 +398,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         type="text"
                                         name="pincode"
                                         className="form-control"
-                                        value={formData.pincode}
+                                        value={formData?.pincode}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -414,7 +411,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         type="text"
                                         name="street"
                                         className="form-control"
-                                        value={formData.street}
+                                        value={formData?.street}
                                         onChange={handleChange}
                                         placeholder="Street Address"
                                     />

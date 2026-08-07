@@ -67,23 +67,31 @@ export default function DataTable({
           </thead>
 
           <tbody>
-            {data.map((row, index) => (
-              <tr key={index}>
-                {columns.map((column) => (
-                  <td
-                    key={column.key}
-                    className={
-                      column.className ||
-                      (column.key === "action" ? "text-center" : "")
-                    }
-                  >
-                    {column.render
-                      ? column.render(row)
-                      : row[column.key]}
-                  </td>
-                ))}
+            {data.length > 0 ? (
+              data.map((row, index) => (
+                <tr key={index}>
+                  {columns.map((column) => (
+                    <td
+                      key={column.key}
+                      className={
+                        column.className ||
+                        (column.key === "action" ? "text-center" : "")
+                      }
+                    >
+                      {column.render
+                        ? column.render(row)
+                        : row[column.key]}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={columns.length} className="text-center py-4">
+                  No quotations found.
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

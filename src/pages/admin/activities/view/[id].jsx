@@ -24,15 +24,10 @@ const LeadsDetails = () => {
     useEffect(() => {
         if (!router.isReady) return;
 
-        console.log("Router Query:", router.query);
-        console.log("ID:", id);
-        console.log("ID Type:", typeof id);
 
         const leads = getLeads();
-        console.log("All Leads:", leads);
 
         const foundLead = getLeadById(id);
-        console.log("Found Lead:", foundLead);
 
         setLead(foundLead || null);
     }, [router.isReady, id]);

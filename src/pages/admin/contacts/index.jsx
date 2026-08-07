@@ -29,7 +29,6 @@ const ListPage = () => {
       "-",
   }));
 
-  console.log("Merged Data:", mergedData);
 
   setContactsData(mergedData);
 };
@@ -116,7 +115,6 @@ const ListPage = () => {
   }, [selectedStatus, contactsData]);
 
 useEffect(() => {
-  console.log("contactsData", contactsData);
 }, [contactsData]);
 
   const getScoreColor = (score) => {
@@ -125,9 +123,6 @@ useEffect(() => {
     return "#1D9E75";                      // Green (>75)
   };
 
-console.log(getContacts());
-console.log(getCompanies());
-console.log("filteredData", filteredData);
 
   return (
     <>

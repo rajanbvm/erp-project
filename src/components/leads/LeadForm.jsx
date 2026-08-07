@@ -85,7 +85,6 @@ const LeadForm = ({ mode, leadId }) => {
 
         const lead = getLeadById(leadId);
 
-        console.log("Lead from storage", lead);
 
         if (lead) {
             setFormData(lead);
