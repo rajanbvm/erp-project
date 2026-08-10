@@ -1,69 +1,173 @@
 const STORAGE_KEY = "contactsData";
 
 const defaultContacts = [
-  {
-    id: "CNT-001",
-    companyId: "CMP-001",
-    contact: "Ahmed Hassan",
-    email: "ahmed@falcon.ae",
-    designation: "Sales Director",
-    phone: "+971 50 123 4567",
-    type: "Primary",
-  },
-  {
-    id: "CNT-002",
-    companyId: "CMP-002",
-    contact: "Sara Mehta",
-    email: "sara@abctechno.ae",
-    designation: "CTO",
-    phone: "+971 52 987 6543",
-    type: "Secondary",
-  },
-  {
-    id: "CNT-003",
-    companyId: "CMP-003",
-    contact: "Ravi Kumar",
-    email: "ravi@prernatech.com",
-    designation: "Procurement Manager",
-    phone: "+91 98765 43210",
-    type: "Primary",
-  },
-  {
-    id: "CNT-004",
-    companyId: "CMP-004",
-    contact: "Fatima Omar",
-    email: "fatima@rdinfotech.ae",
-    designation: "CEO",
-    phone: "+971 55 234 5678",
-    type: "Secondary",
-  },
-  {
-    id: "CNT-005",
-    companyId: "CMP-005",
-    contact: "David Wilson",
-    email: "david@jkenterprises.ae",
-    designation: "Managing Director",
-    phone: "+971 56 456 7890",
-    type: "Primary",
-  },
-  {
-    id: "CNT-006",
-    companyId: "CMP-001",
-    contact: "Mohammed Ali",
-    email: "mohammed@falcon.ae",
-    designation: "Finance Manager",
-    phone: "+971 58 123 4567",
-    type: "Secondary",
-  },
-  {
-    id: "CNT-007",
-    companyId: "CMP-002",
-    contact: "Ayesha Khan",
-    email: "ayesha@abctechno.ae",
-    designation: "HR Manager",
-    phone: "+971 54 765 4321",
-    type: "Primary",
-  },
+    {
+        id: "CNT-001",
+        companyId: "CMP-001",
+
+        contact: "Ahmed Hassan",
+        designation: "Sales Director",
+        department: "Sales",
+
+        email: "ahmed@falcon.ae",
+        phone: "+971 50 123 4567",
+        preferredCommunication: "WhatsApp",
+
+        reportingManager: "John Doe",
+
+        isPrimary: true,
+        type: "Primary",
+
+        street: "14th Floor, Falcon Tower",
+        city: "Dubai",
+        state: "Dubai",
+        pincode: "00000",
+        country: "UAE",
+    },
+
+    {
+        id: "CNT-002",
+        companyId: "CMP-002",
+
+        contact: "Sara Mehta",
+        designation: "CTO",
+        department: "Technology",
+
+        email: "sara@abctechno.ae",
+        phone: "+971 52 987 6543",
+        preferredCommunication: "Email",
+
+        reportingManager: "Sarah Wilson",
+
+        isPrimary: false,
+        type: "Secondary",
+
+        street: "Business Bay",
+        city: "Dubai",
+        state: "Dubai",
+        pincode: "00000",
+        country: "UAE",
+    },
+
+    {
+        id: "CNT-003",
+        companyId: "CMP-003",
+
+        contact: "Ravi Kumar",
+        designation: "Procurement Manager",
+        department: "Procurement",
+
+        email: "ravi@prernatech.com",
+        phone: "+91 98765 43210",
+        preferredCommunication: "Phone",
+
+        reportingManager: "Mike Johnson",
+
+        isPrimary: true,
+        type: "Primary",
+
+        street: "Tech Park Road",
+        city: "Sharjah",
+        state: "Sharjah",
+        pincode: "00000",
+        country: "UAE",
+    },
+
+    {
+        id: "CNT-004",
+        companyId: "CMP-004",
+
+        contact: "Fatima Omar",
+        designation: "CEO",
+        department: "Management",
+
+        email: "fatima@rdinfotech.ae",
+        phone: "+971 55 234 5678",
+        preferredCommunication: "Email",
+
+        reportingManager: "Tom Jane",
+
+        isPrimary: false,
+        type: "Secondary",
+
+        street: "Industrial Area",
+        city: "Ajman",
+        state: "Ajman",
+        pincode: "00000",
+        country: "UAE",
+    },
+
+    {
+        id: "CNT-005",
+        companyId: "CMP-005",
+
+        contact: "David Wilson",
+        designation: "Managing Director",
+        department: "Management",
+
+        email: "david@jkenterprises.ae",
+        phone: "+971 56 456 7890",
+        preferredCommunication: "WhatsApp",
+
+        reportingManager: "G.I. Shmoe",
+
+        isPrimary: true,
+        type: "Primary",
+
+        street: "Al Nakheel Street",
+        city: "Ras Al Khaimah",
+        state: "Ras Al Khaimah",
+        pincode: "00000",
+        country: "UAE",
+    },
+
+    {
+        id: "CNT-006",
+        companyId: "CMP-001",
+
+        contact: "Mohammed Ali",
+        designation: "Finance Manager",
+        department: "Finance",
+
+        email: "mohammed@falcon.ae",
+        phone: "+971 58 123 4567",
+        preferredCommunication: "Phone",
+
+        reportingManager: "John Doe",
+
+        isPrimary: false,
+        type: "Secondary",
+
+        street: "14th Floor, Falcon Tower",
+        city: "Dubai",
+        state: "Dubai",
+        pincode: "00000",
+        country: "UAE",
+    },
+
+    {
+        id: "CNT-007",
+        companyId: "CMP-002",
+
+        contact: "Ayesha Khan",
+        designation: "HR Manager",
+        department: "Human Resources",
+
+        email: "ayesha@abctechno.ae",
+        phone: "+971 54 765 4321",
+        preferredCommunication: "WhatsApp",
+
+        reportingManager: "Sarah Wilson",
+
+        isPrimary: true,
+        type: "Primary",
+
+        street: "Business Bay",
+        city: "Dubai",
+        state: "Dubai",
+        pincode: "00000",
+        country: "UAE",
+    },
 ];
 
 export const initializeContacts = () => {

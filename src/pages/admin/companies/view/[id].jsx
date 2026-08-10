@@ -23,6 +23,8 @@ import Envelope from "@/images/Envelope.svg";
 
 import { RiEdit2Fill } from "react-icons/ri";
 import DataTable from '@/components/DataTable';
+import { FaRegEye } from 'react-icons/fa6';
+import Link from 'next/link';
 
 
 const CompaniesDetails = () => {
@@ -79,7 +81,38 @@ const CompaniesDetails = () => {
         {
             key: "status",
             label: "Status"
-        }
+        },
+        {
+                key: "action",
+                label: "Action",
+                render: (row) => (
+                    <div className="text-center">
+        
+                        <FaRegEye
+                            className="eyeBtn mx-2"
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                                router.push(`/admin/quotations/view/${row.id}`)
+                            }
+                        />
+        
+                        <RiEdit2Fill
+                            className="eyeBtn mx-2"
+                            style={{ cursor: "pointer" }}
+                            onClick={() =>
+                                router.push(`/admin/quotations/edit/${row.id}`)
+                            }
+                        />
+         {/*
+                        <RiDeleteBin6Line
+                            className="eyeBtn text-danger mx-2"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleDelete(row.id)}
+                        /> */}
+        
+                    </div>
+                ),
+            },
     ];
 
     if (!company) {
@@ -290,13 +323,15 @@ const CompaniesDetails = () => {
 
                 {/* Action */}
 
+                    
                 <div className="form-action mt-3">
-                    <button
-                        className="btn btn-outline-primary"
+                    <Link
+                        href={`/admin/companies/edit/${company?.id}`}
+                        className="btn btn-outline-primary mx-2"
                     >
                         <RiEdit2Fill />
-                        Edit
-                    </button>
+                        <span>Edit</span>
+                    </Link>
                 </div>
             </div>
 

@@ -1,48 +1,61 @@
-import PageBanner from '@/components/common/PageBanner'
+import PageBanner from "@/components/common/PageBanner";
 import {
-    getLeads,
-    getLeadById,
-} from "@/utils/leadsStorage";
+    getContactById,
+} from "@/utils/contactsStorage";
+
+import {
+    getCompanyById,
+} from "@/utils/companiesStorage";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Image from 'next/image';
+import Image from "next/image";
+
 import Buildings from "@/images/Buildings.svg";
 import Phone from "@/images/Phone.svg";
-import { FaCheck, FaRegFileLines } from "react-icons/fa6";
 import Envelope from "@/images/Envelope.svg";
-import { RiEdit2Fill, RiNumber2, RiNumber3, RiNumber4 } from "react-icons/ri";
-import { BsFillSendFill } from 'react-icons/bs';
-import Link from 'next/link';
 
-const LeadsDetails = () => {
+import { RiEdit2Fill } from "react-icons/ri";
+import Link from "next/link";
 
+const ContactsDetails = () => {
     const router = useRouter();
     const { id } = router.query;
 
-    const [lead, setLead] = useState(null);
+const [contact, setContact] = useState(null);
+const [company, setCompany] = useState(null);
 
-    useEffect(() => {
-        if (!router.isReady) return;
+useEffect(() => {
+    if (!router.isReady || !id) return;
 
+    const foundContact = getContactById(id);
 
-        const leads = getLeads();
+    console.log("Selected Contact:", foundContact);
 
-        const foundLead = getLeadById(id);
+    setContact(foundContact || null);
 
-        setLead(foundLead || null);
-    }, [router.isReady, id]);
+    if (foundContact?.companyId) {
+        const foundCompany = getCompanyById(foundContact.companyId);
+
+        console.log("Linked Company:", foundCompany);
+
+        setCompany(foundCompany || null);
+    } else {
+        setCompany(null);
+    }
+}, [router.isReady, id]);
 
     if (!router.isReady) {
         return null;
     }
 
-
-    if (!lead) {
+    if (!contact) {
         return (
             <>
-                <PageBanner title="Lead Details" />
+                <PageBanner title="Contact Details" />
+
                 <div className="bg-box text-center p-5">
-                    <h4>Loading...</h4>
+                    <h4>Contact not found</h4>
                 </div>
             </>
         );
@@ -50,207 +63,475 @@ const LeadsDetails = () => {
 
     return (
         <>
-            <PageBanner title="Leads" />
+            <PageBanner title="Contacts" />
 
             <div className="bg-box">
+
+                {/* =========================
+                    HEADER
+                ========================== */}
                 <div className="table-header">
+
                     <div>
-                        <h3>{lead?.lead}</h3>
+                        <h3>{contact?.contact || "-"}</h3>
+
+                        <p className="mb-0">
+                            {contact?.designation || "-"}
+                            {contact?.department
+                                ? ` · ${contact.department}`
+                                : ""}
+                        </p>
                     </div>
+
                     <div className="QuoteDetailsStatus">
-                        <span className="level-btn">
-                            {lead?.status}
-                        </span>
-                        <span className="level-btn">
-                            {lead?.source}
-                        </span>
-                        <span className="level-btn">
-                            Score {lead?.score}
-                        </span>
+
+                        {contact?.isPrimary && (
+                            <span className="level-btn">
+                                Primary Contact
+                            </span>
+                        )}
+
+                        {contact?.type && (
+                            <span className="level-btn">
+                                {contact.type}
+                            </span>
+                        )}
+
+                        {contact?.designation && (
+                            <span className="level-btn">
+                                {contact.designation}
+                            </span>
+                        )}
+
                     </div>
+
                 </div>
+
+
+                {/* =========================
+                    CONTACT INFO
+                ========================== */}
                 <div className="form-outer mb-3">
-                    <h3 className="form-title">Lead Info</h3>
+
+                    <h3 className="form-title">
+                        Contact Info
+                    </h3>
+
+
+                    {/* Phone / Email / Company */}
                     <div className="row QuoteInfo RowBorderBottom">
+
+                        {/* Company */}
                         <div className="col-lg-4">
                             <div className="quote-box">
-                                <Image src={Buildings} />
-                                <span>{lead?.company}</span>
+
+                                <Image
+                                    src={Buildings}
+                                    alt="Company"
+                                />
+
+                                <span>
+                                    {company?.company || "-"}
+                                </span>
+
                             </div>
                         </div>
+
+
+                        {/* Phone */}
                         <div className="col-lg-4">
                             <div className="quote-box">
-                                <Image src={Phone} />
-                                <span>{lead?.primaryPhone}</span>
+
+                                <Image
+                                    src={Phone}
+                                    alt="Phone"
+                                />
+
+                                <span>
+                                    {contact?.phone || "-"}
+                                </span>
+
                             </div>
                         </div>
+
+
+                        {/* Email */}
                         <div className="col-lg-4">
                             <div className="quote-box">
-                                <Image src={Envelope} />
-                                <span>{lead?.email}</span>
+
+                                <Image
+                                    src={Envelope}
+                                    alt="Email"
+                                />
+
+                                <span>
+                                    {contact?.email || "-"}
+                                </span>
+
                             </div>
                         </div>
+
                     </div>
 
-                    <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Lead Name</label>
-                                <h6 className="formValue">{lead?.lead}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Lead source</label>
-                                <h6 className="formValue">{lead?.source}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Score</label>
-                                <h6 className="formValue">{lead?.score}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Owner</label>
-                                <h6 className="formValue">
-                                    {lead?.owner}
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
+
+                    {/* =========================
+                        BASIC INFORMATION
+                    ========================== */}
                     <div className="row QuoteInfo RowBorderBottom">
 
+                        {/* Full Name */}
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
-                                <label>Priority</label>
-                                <h6 className="formValue">{lead?.priority}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Created</label>
+
+                                <label>
+                                    Full Name
+                                </label>
+
                                 <h6 className="formValue">
-                                    {lead?.created}
+                                    {contact?.contact || "-"}
                                 </h6>
+
                             </div>
                         </div>
+
+ {/* Email */}
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
-                                <label>Status</label>
+
+                                <label>
+                                    Email Address
+                                </label>
+
                                 <h6 className="formValue">
-                                    {lead?.status}
+                                    {contact?.email || "-"}
                                 </h6>
+
                             </div>
                         </div>
+
+                        {/* Phone */}
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
-                                <label>Industry</label>
-                                <h6 className="formValue">{lead?.industry}</h6>
+
+                                <label>
+                                    Phone Number
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.phone || "-"}
+                                </h6>
+
                             </div>
                         </div>
+
                     </div>
+
+
+                    {/* =========================
+                        COMMUNICATION
+                    ========================== */}
+                    <div className="row QuoteInfo">
+
+                       
+ {/* Designation */}
+                        <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Designation
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.designation || "-"}
+                                </h6>
+
+                            </div>
+                        </div>
+
+
+                        {/* Department */}
+                        <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Department
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.department || "-"}
+                                </h6>
+
+                            </div>
+                        </div>
+
+                        {/* Preferred Communication */}
+                        <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Preferred Communication
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.preferredCommunication || "-"}
+                                </h6>
+
+                            </div>
+                        </div>
+
+
+                        {/* Contact ID */}
+                        {/* <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Contact ID
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.id || "-"}
+                                </h6>
+
+                            </div>
+                        </div> */}
+
+
+                        {/* Company ID */}
+                        {/* <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Company ID
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.companyId || "-"}
+                                </h6>
+
+                            </div>
+                        </div> */}
+
+                    </div>
+
+                </div>
+
+
+                {/* =========================
+                    COMPANY ASSOCIATION
+                ========================== */}
+                <div className="form-outer mb-3">
+
+                    <h3 className="form-title">
+                        Company Association
+                    </h3>
+
+
+                    <div className="row QuoteInfo">
+
+                        {/* Linked Company */}
+                        <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Linked Company
+                                </label>
+
+                                <h6 className="formValue">
+                                    {company?.company || "-"}
+                                </h6>
+
+                            </div>
+                        </div>
+
+
+                        {/* Reporting Manager */}
+                        <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Reporting Manager
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.reportingManager || "-"}
+                                </h6>
+
+                            </div>
+                        </div>
+
+
+                        {/* Contact Type */}
+                        <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Contact Type
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.type || "-"}
+                                </h6>
+
+                            </div>
+                        </div>
+
+
+                        {/* Primary Contact */}
+                        <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Primary Contact
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.isPrimary
+                                        ? "Yes"
+                                        : "No"}
+                                </h6>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {/* =========================
+                    ADDRESS
+                ========================== */}
+                <div className="form-outer mb-3">
+
+                    <h3 className="form-title">
+                        Address
+                    </h3>
+
+
+                    {/* Street */}
                     <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Annual Revenue</label>
-                                <h6 className="formValue">{lead?.annualRevenue}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Website</label>
-                                <h6 className="formValue">{lead?.website}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Budget</label>
-                                <h6 className="formValue">{lead?.budget}</h6>
-                            </div>
-                        </div>
 
-                    </div>
-
-                    <div className="row">
                         <div className="col-lg-12">
+
                             <div className="form-group mb-0">
-                                <label>Notes</label>
+
+                                <label>
+                                    Street Address
+                                </label>
+
                                 <h6 className="formValue">
-                                    {lead?.notes}
+                                    {contact?.street || "-"}
                                 </h6>
+
                             </div>
+
                         </div>
+
+                    </div>
+
+
+                    {/* City / State / Pincode / Country */}
+                    <div className="row QuoteInfo">
+
+                        {/* City */}
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    City
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.city || "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* State */}
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    State
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.state || "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* Pincode */}
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Pincode
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.pincode || "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* Country */}
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Country
+                                </label>
+
+                                <h6 className="formValue">
+                                    {contact?.country || "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
 
-                <div className="form-outer mb-3">
-                    <h3 className="form-title mb-0">Version History</h3>
-                    <div className="">
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Next Follow-Up</p>
-                                    <h6 className="mb-0">{lead?.nextFollowUp}</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Last Call</p>
-                                    <h6 className="mb-0">{lead?.lastCall}</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Open Tasks</p>
-                                    <h6 className="mb-0">{lead?.openTasks}</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Director Final Approval</p>
-                                    <h6 className="mb-0">{lead?.meetingsScheduled}</h6>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-
+                {/* =========================
+                    ACTIONS
+                ========================== */}
                 <div className="form-action">
-                    <button
-                        className="btn btn-primary ms-2"
-                    >
-                        <BsFillSendFill />
-                        <span>Create & Submit for Approval</span>
-                    </button>
+
                     <Link
-                        href={`/admin/leads/edit/${lead?.id}`}
+                        href={`/admin/contacts/edit/${contact?.id}`}
                         className="btn btn-outline-primary mx-2"
                     >
+
                         <RiEdit2Fill />
-                        <span>Edit</span>
+
+                        <span>
+                            Edit Contact
+                        </span>
+
                     </Link>
-                    {/* <button
-                        className="btn btn-outline-primary mx-2"
-                    >
-                        <FaRegFileLines />
-                        <span>Download PDF</span>
-                    </button> */}
+
                 </div>
 
-            </div >
-
+            </div>
         </>
-    )
-}
+    );
+};
 
-export default LeadsDetails
+export default ContactsDetails;

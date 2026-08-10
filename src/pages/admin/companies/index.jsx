@@ -14,6 +14,14 @@ import { getContacts } from "@/utils/contactsStorage";
 
 const ListPage = () => {
 
+   const handleDelete = (id) => {
+  
+       if (!confirm("Delete this Company?")) return;
+  
+     deleteCompany(row.id);
+                setCompanies(getCompanies());
+    };
+
     const router = useRouter();
 
   const CompaniesColumns = [
@@ -36,17 +44,14 @@ const ListPage = () => {
             onClick={() => router.push(`/admin/companies/view/${row.id}`)}
         />
 
-        <RiEdit2Fill
+        {/* <RiEdit2Fill
             className="eyeBtn mx-2"
             onClick={() => router.push(`/admin/companies/edit/${row.id}`)}
-        />
+        /> */}
 
         <RiDeleteBin6Line
             className="eyeBtn text-danger mx-2"
-            onClick={() => {
-                deleteCompany(row.id);
-                setCompanies(getCompanies());
-            }}
+            onClick={() => handleDelete(row?.id)}
         />
 
     </div>

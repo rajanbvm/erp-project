@@ -24,8 +24,6 @@ const LeadsDetails = () => {
     useEffect(() => {
         if (!router.isReady) return;
 
-        const leads = getLeads();
-
         const foundLead = getLeadById(id);
 
         setLead(foundLead || null);
@@ -225,12 +223,12 @@ const LeadsDetails = () => {
 
 
                 <div className="form-action">
-                    <button
+                    {/* <button
                         className="btn btn-primary ms-2"
                     >
                         <BsFillSendFill />
                         <span>Create & Submit for Approval</span>
-                    </button>
+                    </button> */}
                     <Link
                         href={`/admin/leads/edit/${lead?.id}`}
                         className="btn btn-outline-primary mx-2"

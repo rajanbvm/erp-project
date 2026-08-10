@@ -40,7 +40,11 @@ const ListPage = () => {
   }, []);
 
   const handleDelete = (id) => {
+
+     if (!confirm("Delete this Contact?")) return;
+
     deleteContact(id);
+
     loadContacts();
   };
 
@@ -72,11 +76,13 @@ const ListPage = () => {
       label: "ACTION",
       render: (row) => (
         <div className="table-actions">
-          <FaRegEye className="eyeBtn mx-2" />
+          <FaRegEye className="eyeBtn mx-2" 
+          onClick={() =>router.push(`/admin/contacts/view/${row.id}`)}
+          />
           <RiEdit2Fill className="eyeBtn mx-2" />
           <RiDeleteBin6Line
             className="eyeBtn text-danger mx-2"
-            onClick={() => handleDelete(row.id)}
+            onClick={() => handleDelete(row?.id)}
           />
         </div>
       ),

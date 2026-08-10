@@ -105,14 +105,14 @@ const QuotationDetails = () => {
                         </div>
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
-                                <label>Discount</label>
-                                <h6 className="formValue">{quotation?.quotationValue}</h6>
+                                <label>Discount %</label>
+                                <h6 className="formValue">{quotation?.discount} %</h6>
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Tax %</label>
-                                <h6 className="formValue">{quotation?.vat}</h6>
+                                <h6 className="formValue">{quotation?.vat} %</h6>
                             </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
