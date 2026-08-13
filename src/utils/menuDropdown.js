@@ -138,3 +138,10 @@ export const contactTypeOptions = [
   "Decision Maker",
   "Assistant",
 ];
+
+export const activityStatusOptions = [
+    "Scheduled",
+    "Pending",
+    "Completed",
+    "Overdue",
+];

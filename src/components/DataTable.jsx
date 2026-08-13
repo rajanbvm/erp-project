@@ -88,7 +88,7 @@ export default function DataTable({
             ) : (
               <tr>
                 <td colSpan={columns.length} className="text-center py-4">
-                  No quotations found.
+                  No entry found.
                 </td>
               </tr>
             )}

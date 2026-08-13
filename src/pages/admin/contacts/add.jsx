@@ -1,4 +1,4 @@
-import ContactsForm from "@/components/contacts/ContactsForm";
+import ContactsForm from "@/components/ContactsForm";
 
 
 export default function AddContact() {

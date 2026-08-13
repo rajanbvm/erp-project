@@ -2,162 +2,163 @@ import PageBanner from "@/components/common/PageBanner";
 import Image from "next/image";
 import PageSearch from "@/components/common/PageSearch";
 import DataTable from "@/components/DataTable";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaRegEye } from "react-icons/fa6";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
 import ActIcon1 from "@/images/ActIcon1.svg";
 import ActIcon2 from "@/images/ActIcon2.svg";
 import ActIcon3 from "@/images/ActIcon3.svg";
 import { useRouter } from "next/router";
+import DeleteModal from "@/components/common/DeleteModal";
+
+import {
+  initializeActivities,
+  getActivities,
+  deleteActivity,
+} from "@/utils/activitiesStorage";
+
+import {
+  initializeCompanies,
+  getCompanies,
+} from "@/utils/companiesStorage";
 
 const ListPage = () => {
+
+  const [activities, setActivities] = useState([]);
+  const [companies, setCompanies] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
+
+  const handleDelete = (id) => {
+    setSelectedActivityId(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (!selectedActivityId) return;
+
+    deleteActivity(selectedActivityId);
+
+    setActivities(getActivities());
+
+    setShowDeleteModal(false);
+    setSelectedActivityId(null);
+  };
+
+  useEffect(() => {
+    initializeActivities();
+    initializeCompanies();
+
+    setActivities(getActivities() || []);
+    setCompanies(getCompanies() || []);
+  }, []);
+
+  const activitiesData = useMemo(() => {
+    return activities.map((activity) => {
+      const company = companies.find(
+        (item) => item?.id === activity?.relatedTo
+      );
+
+      return {
+        ...activity,
+        title: activity?.taskTitle,
+        relatedTo: company?.company || "-",
+      };
+    });
+  }, [activities, companies]);
 
   const router = useRouter();
 
-const dueColors = {
-  today: "#1D9E75",
-  overdue: "#FF4D4F",
-  tomorrow: "#1D9E75",
-};
+  const dueColors = {
+    today: "#1D9E75",
+    overdue: "#FF4D4F",
+    tomorrow: "#1D9E75",
+  };
 
-const ActivitiesColumns = [
-  {
-    key: "type",
-    label: "TYPE",
-  },
-  {
-    key: "title",
-    label: "TITLE",
-  },
-  {
-    key: "relatedTo",
-    label: "RELATED TO",
-  },
-  {
-    key: "due",
-    label: "DUE",
-    render: (row) => (
-      <span style={{ color: dueColors[row.dueType] }}>
-        {row.due}
-      </span>
-    ),
-  },
-  {
-    key: "assignee",
-    label: "ASSIGNEE",
-  },
-  {
-    key: "status",
-    label: "STATUS",
-    render: (row) => (
-      <span
-        style={{
-          color: statusColors[row.status],
-          fontWeight: 600,
-        }}
-      >
-        {row.status}
-      </span>
-    ),
-  },
-  {
-    key: "action",
-    label: "ACTION",
-    render: (row) => (
-      <div className="d-flex align-items-center justify-content-center gap-3">
-        <FaRegEye className="eyeBtn" />
-        <RiEdit2Fill className="eyeBtn" />
-        <RiDeleteBin6Line className="eyeBtn text-danger" />
-
-        <button
-          className={`activity-btn ${
-            row.button === "Done"
-              ? "done"
-              : row.button === "Mark done"
-              ? "mark-done"
-              : "send-now"
-          }`}
+  const ActivitiesColumns = [
+    {
+      key: "type",
+      label: "TYPE",
+    },
+    {
+      key: "title",
+      label: "TITLE",
+    },
+    {
+      key: "relatedTo",
+      label: "RELATED TO",
+    },
+    {
+      key: "dueDate",
+      label: "DUE",
+      render: (row) => (
+        <span style={{ color: dueColors[row?.dueType] }}>
+          {row?.dueDate}
+        </span>
+      ),
+    },
+    {
+      key: "assignee",
+      label: "ASSIGNEE",
+    },
+    {
+      key: "status",
+      label: "STATUS",
+      render: (row) => (
+        <span
+          style={{
+            color: statusColors[row?.status],
+            fontWeight: 600,
+          }}
         >
-          {row.button}
-        </button>
-      </div>
-    ),
-  },
-];
+          {row?.status}
+        </span>
+      ),
+    },
+    {
+      key: "action",
+      label: "ACTION",
+      render: (row) => (
+        <div className="d-flex align-items-center justify-content-center gap-3">
+          <FaRegEye
+            className="eyeBtn"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              router.push(`/admin/activities/view/${row?.id}`);
+            }}
+          />
 
-const ActivitiesData = [
-  {
-    type: "Call",
-    title: "Follow-up – budget discussion",
-    relatedTo: "Falcon Group LLC",
-    due: "Today 2:00 PM",
-    dueType: "today",
-    assignee: "John Doe",
-    status: "Scheduled",
-    button: "Done",
-  },
-  {
-    type: "Meeting",
-    title: "Product demo – CRM Enterprise",
-    relatedTo: "TechVentures UAE",
-    due: "Overdue · 28 Jun",
-    dueType: "overdue",
-    assignee: "Sarah Wilson",
-    status: "Scheduled",
-    button: "Done",
-  },
-  {
-    type: "Task",
-    title: "Prepare proposal for Gulf Solutions",
-    relatedTo: "Gulf Solutions Co.",
-    due: "Today 2:00 PM",
-    dueType: "today",
-    assignee: "Mike Johnson",
-    status: "Overdue",
-    button: "Mark done",
-  },
-  {
-    type: "Email",
-    title: "Send pricing proposal",
-    relatedTo: "ABC Industries",
-    due: "Today 4:30 PM",
-    dueType: "today",
-    assignee: "John Doe",
-    status: "Pending",
-    button: "Send now",
-  },
-  {
-    type: "Task",
-    title: "Prepare proposal for Gulf Solutions",
-    relatedTo: "Falcon Group LLC",
-    due: "Overdue · 28 Jun",
-    dueType: "overdue",
-    assignee: "Sarah Wilson",
-    status: "Scheduled",
-    button: "Done",
-  },
-  {
-    type: "Call",
-    title: "Follow-up – budget discussion",
-    relatedTo: "TechVentures UAE",
-    due: "Today 2:00 PM",
-    dueType: "today",
-    assignee: "Mike Johnson",
-    status: "Overdue",
-    button: "Mark done",
-  },
-  {
-    type: "Meeting",
-    title: "Product demo – CRM Enterprise",
-    relatedTo: "Gulf Solutions Co.",
-    due: "Tomorrow",
-    dueType: "tomorrow",
-    assignee: "John Doe",
-    status: "Pending",
-    button: "Send now",
-  },
-];
+          <RiEdit2Fill
+            className="eyeBtn"
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              router.push(`/admin/activities/edit/${row?.id}`);
+            }}
+          />
+
+          <RiDeleteBin6Line
+            className="eyeBtn text-danger"
+            style={{ cursor: "pointer" }}
+            onClick={() => handleDelete(row?.id)}
+          />
+
+          {/* <button
+            className={`activity-btn ${row?.button === "Done"
+                ? "done"
+                : row?.button === "Mark done"
+                  ? "mark-done"
+                  : "send-now"
+              }`}
+          >
+            {row?.button}
+          </button> */}
+        </div>
+      ),
+    },
+  ];
+
 
   const statusColors = {
     "Scheduled": "#0C447C",
@@ -166,7 +167,13 @@ const ActivitiesData = [
   };
 
   const dropdownItems = useMemo(() => {
-    const statuses = [...new Set(ActivitiesData.map((item) => item.status))];
+    const statuses = [
+      ...new Set(
+        activitiesData
+          .map((item) => item?.status)
+          .filter(Boolean)
+      ),
+    ];
 
     return [
       {
@@ -178,17 +185,17 @@ const ActivitiesData = [
         onClick: () => setSelectedStatus(status),
       })),
     ];
-  }, []);
+  }, [activitiesData]);
 
   const filteredData = useMemo(() => {
     if (selectedStatus === "All Status") {
-      return ActivitiesData;
+      return activitiesData;
     }
 
-    return ActivitiesData.filter(
+    return activitiesData.filter(
       (item) => item.status === selectedStatus
     );
-  }, [selectedStatus]);
+  }, [selectedStatus, activitiesData]);
 
 
   const OpportunitiesCards = [
@@ -213,7 +220,7 @@ const ActivitiesData = [
 
   ];
 
-  
+
 
   return (
     <>
@@ -245,7 +252,7 @@ const ActivitiesData = [
           console.log("Export clicked");
         }}
 
-         onAddClick={() => {
+        onAddClick={() => {
           router.push("/admin/activities/add");
         }}
       />
@@ -259,6 +266,17 @@ const ActivitiesData = [
           showDropdown={true}
           dropdownTitle={selectedStatus}
           dropdownItems={dropdownItems}
+        />
+
+        <DeleteModal
+          show={showDeleteModal}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setSelectedActivityId(null);
+          }}
+          onConfirm={confirmDelete}
+          title="Delete Activity"
+          message="Are you sure you want to delete this activity?"
         />
       </div>
 

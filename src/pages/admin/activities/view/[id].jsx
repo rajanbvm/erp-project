@@ -1,48 +1,63 @@
-import PageBanner from '@/components/common/PageBanner'
-import {
-    getLeads,
-    getLeadById,
-} from "@/utils/leadsStorage";
+import PageBanner from "@/components/common/PageBanner";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Image from 'next/image';
-import Buildings from "@/images/Buildings.svg";
-import Phone from "@/images/Phone.svg";
-import { FaCheck, FaRegFileLines } from "react-icons/fa6";
-import Envelope from "@/images/Envelope.svg";
-import { RiEdit2Fill, RiNumber2, RiNumber3, RiNumber4 } from "react-icons/ri";
-import { BsFillSendFill } from 'react-icons/bs';
-import Link from 'next/link';
+import Link from "next/link";
+import { RiEdit2Fill } from "react-icons/ri";
+import { IoMdClose } from "react-icons/io";
 
-const LeadsDetails = () => {
+import {
+    getActivityById,
+} from "@/utils/activitiesStorage";
 
+import {
+    initializeCompanies,
+    getCompanyById,
+} from "@/utils/companiesStorage";
+
+const ActivitiesDetails = () => {
     const router = useRouter();
     const { id } = router.query;
 
-    const [lead, setLead] = useState(null);
+    const [activity, setActivity] = useState(null);
+    const [company, setCompany] = useState(null);
 
     useEffect(() => {
         if (!router.isReady) return;
 
+        initializeCompanies();
 
-        const leads = getLeads();
+        const foundActivity = getActivityById(id);
 
-        const foundLead = getLeadById(id);
+        if (foundActivity) {
+            setActivity(foundActivity);
 
-        setLead(foundLead || null);
+            const foundCompany = getCompanyById(
+                foundActivity?.relatedTo
+            );
+
+            setCompany(foundCompany || null);
+        }
     }, [router.isReady, id]);
 
     if (!router.isReady) {
         return null;
     }
 
-
-    if (!lead) {
+    if (!activity) {
         return (
             <>
-                <PageBanner title="Lead Details" />
+                <PageBanner title="Activity Details" />
+
                 <div className="bg-box text-center p-5">
-                    <h4>Loading...</h4>
+                    <h4>Activity not found.</h4>
+
+                    <Link
+                        href="/admin/activities"
+                        className="btn btn-outline-primary mt-3"
+                    >
+                        <IoMdClose />
+                        <span>Back to Activities</span>
+                    </Link>
                 </div>
             </>
         );
@@ -50,207 +65,170 @@ const LeadsDetails = () => {
 
     return (
         <>
-            <PageBanner title="Leads" />
+            <PageBanner title="Activities" />
 
             <div className="bg-box">
                 <div className="table-header">
                     <div>
-                        <h3>{lead?.lead}</h3>
+                        <h3>{activity?.taskTitle}</h3>
+                        {/* <p className="mb-0">Activity Details</p> */}
                     </div>
+
                     <div className="QuoteDetailsStatus">
                         <span className="level-btn">
-                            {lead?.status}
+                            {activity?.status}
                         </span>
+
                         <span className="level-btn">
-                            {lead?.source}
-                        </span>
-                        <span className="level-btn">
-                            Score {lead?.score}
+                            {activity?.type}
                         </span>
                     </div>
                 </div>
+
                 <div className="form-outer mb-3">
-                    <h3 className="form-title">Lead Info</h3>
-                    <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-4">
-                            <div className="quote-box">
-                                <Image src={Buildings} />
-                                <span>{lead?.company}</span>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                            <div className="quote-box">
-                                <Image src={Phone} />
-                                <span>{lead?.primaryPhone}</span>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                            <div className="quote-box">
-                                <Image src={Envelope} />
-                                <span>{lead?.email}</span>
-                            </div>
-                        </div>
-                    </div>
+                    <h3 className="form-title">Task Information</h3>
 
                     <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-3 col-md-6">
+                        <div className="col-lg-4 col-md-6">
                             <div className="form-group mb-0">
-                                <label>Lead Name</label>
-                                <h6 className="formValue">{lead?.lead}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Lead source</label>
-                                <h6 className="formValue">{lead?.source}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Score</label>
-                                <h6 className="formValue">{lead?.score}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Owner</label>
+                                <label>Task Title</label>
                                 <h6 className="formValue">
-                                    {lead?.owner}
+                                    {activity?.taskTitle || "-"}
                                 </h6>
                             </div>
                         </div>
-                    </div>
-                    <div className="row QuoteInfo RowBorderBottom">
 
-                        <div className="col-lg-3 col-md-6">
+                        <div className="col-lg-4 col-md-6">
                             <div className="form-group mb-0">
-                                <label>Priority</label>
-                                <h6 className="formValue">{lead?.priority}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Created</label>
+                                <label>Type</label>
                                 <h6 className="formValue">
-                                    {lead?.created}
+                                    {activity?.type || "-"}
                                 </h6>
                             </div>
                         </div>
-                        <div className="col-lg-3 col-md-6">
+
+                        <div className="col-lg-4 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Status</label>
                                 <h6 className="formValue">
-                                    {lead?.status}
+                                    {activity?.status || "-"}
                                 </h6>
                             </div>
                         </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Industry</label>
-                                <h6 className="formValue">{lead?.industry}</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Annual Revenue</label>
-                                <h6 className="formValue">{lead?.annualRevenue}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Website</label>
-                                <h6 className="formValue">{lead?.website}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Budget</label>
-                                <h6 className="formValue">{lead?.budget}</h6>
-                            </div>
-                        </div>
-
                     </div>
 
-                    <div className="row">
-                        <div className="col-lg-12">
+                    <div className="row QuoteInfo">
+                        <div className="col-lg-4 col-md-6">
                             <div className="form-group mb-0">
-                                <label>Notes</label>
+                                <label>Assignee</label>
                                 <h6 className="formValue">
-                                    {lead?.notes}
+                                    {activity?.assignee || "-"}
+                                </h6>
+                            </div>
+                        </div>
+
+                        <div className="col-lg-4 col-md-6">
+                            <div className="form-group mb-0">
+                                <label>Due Date</label>
+                                <h6 className="formValue">
+                                    {activity?.dueDate || "-"}
+                                </h6>
+                            </div>
+                        </div>
+
+                        <div className="col-lg-4 col-md-6">
+                            <div className="form-group mb-0">
+                                <label>Activity ID</label>
+                                <h6 className="formValue">
+                                    {activity?.id || "-"}
                                 </h6>
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div className="form-outer mb-3">
-                    <h3 className="form-title mb-0">Version History</h3>
-                    <div className="">
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Next Follow-Up</p>
-                                    <h6 className="mb-0">{lead?.nextFollowUp}</h6>
-                                </div>
+                    <h3 className="form-title">Related Company</h3>
+
+                    <div className="row QuoteInfo RowBorderBottom">
+                        <div className="col-lg-4 col-md-6">
+                            <div className="form-group mb-0">
+                                <label>Company</label>
+                                <h6 className="formValue">
+                                    {company?.company || "-"}
+                                </h6>
                             </div>
                         </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Last Call</p>
-                                    <h6 className="mb-0">{lead?.lastCall}</h6>
-                                </div>
+
+                        <div className="col-lg-4 col-md-6">
+                            <div className="form-group mb-0">
+                                <label>Industry</label>
+                                <h6 className="formValue">
+                                    {company?.industry || "-"}
+                                </h6>
                             </div>
                         </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Open Tasks</p>
-                                    <h6 className="mb-0">{lead?.openTasks}</h6>
-                                </div>
+
+                        <div className="col-lg-4 col-md-6">
+                            <div className="form-group mb-0">
+                                <label>Company Owner</label>
+                                <h6 className="formValue">
+                                    {company?.owner || "-"}
+                                </h6>
                             </div>
                         </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Director Final Approval</p>
-                                    <h6 className="mb-0">{lead?.meetingsScheduled}</h6>
-                                </div>
+                    </div>
+
+                    <div className="row QuoteInfo">
+                        <div className="col-lg-4 col-md-6">
+                            <div className="form-group mb-0">
+                                <label>Phone</label>
+                                <h6 className="formValue">
+                                    {company?.phone || "-"}
+                                </h6>
+                            </div>
+                        </div>
+
+                        <div className="col-lg-4 col-md-6">
+                            <div className="form-group mb-0">
+                                <label>Email</label>
+                                <h6 className="formValue">
+                                    {company?.email || "-"}
+                                </h6>
+                            </div>
+                        </div>
+
+                        <div className="col-lg-4 col-md-6">
+                            <div className="form-group mb-0">
+                                <label>Website</label>
+                                <h6 className="formValue">
+                                    {company?.website || "-"}
+                                </h6>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
                 <div className="form-action">
-                    <button
+                    <Link
+                        href={`/admin/activities/edit/${activity?.id}`}
                         className="btn btn-primary ms-2"
                     >
-                        <BsFillSendFill />
-                        <span>Create & Submit for Approval</span>
-                    </button>
-                    <Link
-                        href={`/admin/leads/edit/${lead?.id}`}
-                        className="btn btn-outline-primary mx-2"
-                    >
                         <RiEdit2Fill />
-                        <span>Edit</span>
+                        <span>Edit Activity</span>
                     </Link>
-                    {/* <button
+
+                    <Link
+                        href="/admin/activities"
                         className="btn btn-outline-primary mx-2"
                     >
-                        <FaRegFileLines />
-                        <span>Download PDF</span>
-                    </button> */}
+                        <IoMdClose />
+                        <span>Back to Activities</span>
+                    </Link>
                 </div>
-
-            </div >
-
+            </div>
         </>
-    )
-}
+    );
+};
 
-export default LeadsDetails
+export default ActivitiesDetails;

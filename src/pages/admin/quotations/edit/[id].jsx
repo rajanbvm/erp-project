@@ -1,5 +1,5 @@
 
-import QuotationForm from "@/components/quotations/QuotationForm";
+import QuotationForm from "@/components/QuotationForm";
 import { useRouter } from "next/router";
 
 export default function EditQuotation() {

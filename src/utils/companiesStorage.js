@@ -5,106 +5,131 @@ const defaultCompanies = [
     id: "CMP-001",
     company: "Falcon Group LLC",
     industry: "Real Estate",
-    location: "Dubai, UAE",
     deals: "2",
     revenue: "$120K",
     owner: "John Doe",
 
     phone: "+971 4 222 0000",
+    alternatePhone: "+123 456 0000",
     email: "ahmed@falcon.ae",
     website: "www.falcongroup.com",
 
-    companySize: "51 - 200 employees",
+    companySize: "51 - 200 Employees",
     gstin: "08AAACF1234M1Z9",
+    panNo: "AAACF1234",
 
-    billingAddress: "14th Floor, Falcon Tower, Jaipur",
+    country: "AE",
+    state: "DU",
+    city: "Dubai",
+    pincode: "00000",
+    street: "14th Floor, Falcon Tower",
 
-
-    notes: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    notes:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   },
+
   {
     id: "CMP-002",
     company: "ABC Techno",
     industry: "IT & Software",
-    location: "Fujairah, UAE",
     deals: "4",
     revenue: "$140K",
     owner: "Sarah Wilson",
 
     phone: "+971 4 222 0000",
+    alternatePhone: "+123 456 0000",
     email: "ahmed@falcon.ae",
     website: "www.falcongroup.com",
 
-    companySize: "51 - 200 employees",
+    companySize: "51 - 200 Employees",
     gstin: "08AAACF1234M1Z9",
 
-    billingAddress: "14th Floor, Falcon Tower, Jaipur",
+    country: "AE",
+    state: "FU",
+    city: "Fujairah",
+    pincode: "00000",
+    street: "14th Floor, Falcon Tower",
 
-
-    notes: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    notes:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   },
+
   {
     id: "CMP-003",
     company: "Prerna Tech",
     industry: "Retail",
-    location: "Sharjah, UAE",
     deals: "4",
     revenue: "$160K",
     owner: "Mike Johnson",
 
     phone: "+971 4 222 0000",
+    alternatePhone: "+123 456 0000",
     email: "ahmed@falcon.ae",
     website: "www.falcongroup.com",
 
-    companySize: "51 - 200 employees",
+    companySize: "51 - 200 Employees",
     gstin: "08AAACF1234M1Z9",
 
-    billingAddress: "14th Floor, Falcon Tower, Jaipur",
+    country: "AE",
+    state: "SH",
+    city: "Sharjah",
+    pincode: "00000",
+    street: "14th Floor, Falcon Tower",
 
-
-    notes: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    notes:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   },
+
   {
     id: "CMP-004",
     company: "RD Infotech",
     industry: "Manufacturing",
-    location: "Ajman, UAE",
     deals: "4",
     revenue: "$180K",
     owner: "Tom Jane",
 
     phone: "+971 4 222 0000",
+    alternatePhone: "+123 456 0000",
     email: "ahmed@falcon.ae",
     website: "www.falcongroup.com",
 
-    companySize: "51 - 200 employees",
+    companySize: "51 - 200 Employees",
     gstin: "08AAACF1234M1Z9",
 
-    billingAddress: "14th Floor, Falcon Tower, Jaipur",
+    country: "AE",
+    state: "AJ",
+    city: "Ajman",
+    pincode: "00000",
+    street: "14th Floor, Falcon Tower",
 
-
-    notes: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    notes:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   },
+
   {
     id: "CMP-005",
     company: "JK Enterprises",
     industry: "Construction",
-    location: "Ras Al Khaimah, UAE",
     deals: "4",
     revenue: "$200K",
     owner: "G.I. Shmoe",
 
     phone: "+971 4 222 0000",
+    alternatePhone: "+123 456 0000",
     email: "ahmed@falcon.ae",
     website: "www.falcongroup.com",
 
-    companySize: "51 - 200 employees",
+    companySize: "51 - 200 Employees",
     gstin: "08AAACF1234M1Z9",
 
-    billingAddress: "14th Floor, Falcon Tower, Jaipur",
+    country: "AE",
+    state: "RK",
+    city: "Ras Al Khaimah",
+    pincode: "00000",
+    street: "14th Floor, Falcon Tower",
 
-
-    notes: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+    notes:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
   },
 ];
 

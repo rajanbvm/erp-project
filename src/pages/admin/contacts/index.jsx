@@ -5,6 +5,7 @@ import { FaRegEye } from "react-icons/fa6";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
+import DeleteModal from "@/components/common/DeleteModal";
 import {
   getContacts,
   initializeContacts,
@@ -13,25 +14,28 @@ import {
 import { getCompanies, initializeCompanies } from "@/utils/companiesStorage";
 
 const ListPage = () => {
-  const [selectedStatus, setSelectedStatus] = useState("All Status");
 
+  const [selectedStatus, setSelectedStatus] = useState("All Status");
   const [contactsData, setContactsData] = useState([]);
-  
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedContactId, setSelectedContactId] = useState(null);
+
 
   const loadContacts = () => {
-  const companies = getCompanies();
-  const contacts = getContacts();
+    const companies = getCompanies();
+    const contacts = getContacts();
 
-  const mergedData = contacts.map((contact) => ({
-    ...contact,
-    company:
-      companies.find((company) => company.id === contact.companyId)?.company ||
-      "-",
-  }));
+    const mergedData = contacts.map((contact) => ({
+      ...contact,
+      company:
+        companies.find((company) => company.id === contact.companyId)?.company ||
+        "-",
+    }));
 
 
-  setContactsData(mergedData);
-};
+    setContactsData(mergedData);
+  };
 
   useEffect(() => {
     initializeCompanies();
@@ -40,12 +44,19 @@ const ListPage = () => {
   }, []);
 
   const handleDelete = (id) => {
+    setSelectedContactId(id);
+    setShowDeleteModal(true);
+  };
 
-     if (!confirm("Delete this Contact?")) return;
+  const confirmDelete = () => {
+    if (!selectedContactId) return;
 
-    deleteContact(id);
+    deleteContact(selectedContactId);
 
     loadContacts();
+
+    setShowDeleteModal(false);
+    setSelectedContactId(null);
   };
 
   const router = useRouter();
@@ -62,11 +73,11 @@ const ListPage = () => {
       render: (row) => (
         <span
           style={{
-            color: typeColors[row.type] || "#222",
+            color: typeColors[row?.type] || "#222",
             fontWeight: 500,
           }}
         >
-          {row.type}
+          {row?.type}
         </span>
       ),
     },
@@ -76,10 +87,15 @@ const ListPage = () => {
       label: "ACTION",
       render: (row) => (
         <div className="table-actions">
-          <FaRegEye className="eyeBtn mx-2" 
-          onClick={() =>router.push(`/admin/contacts/view/${row.id}`)}
+          <FaRegEye className="eyeBtn mx-2"
+            onClick={() => router.push(`/admin/contacts/view/${row?.id}`)}
           />
-          <RiEdit2Fill className="eyeBtn mx-2" />
+          <RiEdit2Fill
+            className="eyeBtn mx-2"
+            onClick={() =>
+              router.push(`/admin/contacts/edit/${row?.id}`)
+            }
+          />
           <RiDeleteBin6Line
             className="eyeBtn text-danger mx-2"
             onClick={() => handleDelete(row?.id)}
@@ -120,8 +136,8 @@ const ListPage = () => {
     );
   }, [selectedStatus, contactsData]);
 
-useEffect(() => {
-}, [contactsData]);
+  useEffect(() => {
+  }, [contactsData]);
 
   const getScoreColor = (score) => {
     if (score < 50) return "#E24B4A";      // Red
@@ -161,6 +177,17 @@ useEffect(() => {
           showDropdown={true}
           dropdownTitle={selectedStatus}
           dropdownItems={dropdownItems}
+        />
+
+        <DeleteModal
+          show={showDeleteModal}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setSelectedContactId(null);
+          }}
+          onConfirm={confirmDelete}
+          title="Delete Contact"
+          message="Are you sure you want to delete this contact?"
         />
       </div>
 

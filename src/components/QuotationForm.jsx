@@ -21,8 +21,8 @@ import {
     discountOptions,
     vatOptions,
 } from "@/utils/menuDropdown";
-import PageBanner from "../common/PageBanner";
-import CustomDropdown from "../common/CustomDropdown";
+import PageBanner from "@/components/common/PageBanner";
+import CustomDropdown from "@/components/common/CustomDropdown";
 
 const QuotationForm = ({ mode, quotationId }) => {
 

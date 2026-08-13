@@ -4,7 +4,7 @@ import PageBanner from "@/components/common/PageBanner";
 import { IoMdClose } from "react-icons/io";
 
 import { BsFillSendFill } from "react-icons/bs";
-import CustomDropdown from '../common/CustomDropdown';
+import CustomDropdown from '@/components/common/CustomDropdown';
 import {
     getCountryOptions,
     getStateOptions,
@@ -96,25 +96,25 @@ const ContactsForm = ({ mode, contactId }) => {
     });
 
     useEffect(() => {
-        if (!formData.country) {
+        if (!formData?.country) {
             setStateOptions([]);
             setCityOptions([]);
             return;
         }
 
-        setStateOptions(getStateOptions(formData.country));
-    }, [formData.country]);
+        setStateOptions(getStateOptions(formData?.country));
+    }, [formData?.country]);
 
     useEffect(() => {
-        if (!formData.country || !formData.state) {
+        if (!formData?.country || !formData?.state) {
             setCityOptions([]);
             return;
         }
 
         setCityOptions(
-            getCityOptions(formData.country, formData.state)
+            getCityOptions(formData?.country, formData?.state)
         );
-    }, [formData.country, formData.state]);
+    }, [formData?.country, formData?.state]);
 
     useEffect(() => {
         if (mode !== "edit" || !contactId) return;
@@ -128,17 +128,17 @@ const ContactsForm = ({ mode, contactId }) => {
 
     const handleSubmit = () => {
 
-        if (!formData.contact.trim()) {
+        if (!formData?.contact.trim()) {
             alert("Contact Name is required.");
             return;
         }
 
-        if (!formData.email.trim()) {
+        if (!formData?.email.trim()) {
             alert("Email is required.");
             return;
         }
 
-        if (!formData.companyId) {
+        if (!formData?.companyId) {
             alert("Please select a company.");
             return;
         }
@@ -330,7 +330,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                                     className="btn-check"
                                                     id={`btn-check-${index}`}
                                                     name="type"
-                                                    checked={formData.type === role}
+                                                    checked={formData?.type === role}
                                                     onChange={() =>
                                                         setFormData((prev) => ({
                                                             ...prev,
@@ -360,10 +360,11 @@ const ContactsForm = ({ mode, contactId }) => {
                                     <label>Country</label>
                                     <CustomDropdown
                                         name="country"
-                                        value={formData?.country}
+                                        value={formData?.country || ""}
                                         placeholder="Select Country"
                                         options={countryOptions}
                                         onChange={handleChange}
+                                        searchable
                                     />
                                 </div>
                             </div>
@@ -376,6 +377,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         placeholder="Select State"
                                         options={stateOptions}
                                         onChange={handleChange}
+                                        searchable
                                     />
                                 </div>
                             </div>
@@ -388,6 +390,7 @@ const ContactsForm = ({ mode, contactId }) => {
                                         placeholder="Select City"
                                         options={cityOptions}
                                         onChange={handleChange}
+                                        searchable
                                     />
                                 </div>
                             </div>
@@ -397,13 +400,14 @@ const ContactsForm = ({ mode, contactId }) => {
                                     <input
                                         type="text"
                                         name="pincode"
+                                        placeholder="e.g. 302001"
                                         className="form-control"
                                         value={formData?.pincode}
                                         onChange={handleChange}
                                     />
                                 </div>
                             </div>
-                            <div className="col-lg-12">
+                            <div className="col-lg-8 col-md-6">
                                 <div className="form-group">
                                     <label>Street Address</label>
 

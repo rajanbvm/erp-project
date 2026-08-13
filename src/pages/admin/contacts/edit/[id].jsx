@@ -1,5 +1,5 @@
 
-import LeadForm from "@/components/leads/LeadForm";
+import ContactsForm from "@/components/ContactsForm";
 import { useRouter } from "next/router";
 
 export default function EditLead() {
@@ -8,9 +8,9 @@ export default function EditLead() {
 
     return (
         <>
-            <LeadForm
+            <ContactsForm
                 mode="edit"
-                leadId={router.query.id}
+                contactId={router.query.id}
             />
         </>
     );

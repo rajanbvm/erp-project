@@ -1,4 +1,4 @@
-import CompaniesForm from '@/components/companies/CompaniesForm';
+import CompaniesForm from '@/components/CompaniesForm';
 
 export default function AddCompany() {
 

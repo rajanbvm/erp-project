@@ -1,18 +1,13 @@
-
-import CompaniesForm from "@/components/companies/CompaniesForm";
-import LeadForm from "@/components/leads/LeadForm";
+import CompaniesForm from "@/components/CompaniesForm";
 import { useRouter } from "next/router";
 
-export default function EditLead() {
-
+export default function EditCompany() {
     const router = useRouter();
 
     return (
-        <>
-            <CompaniesForm
-                mode="edit"
-                leadId={router.query.id}
-            />
-        </>
+        <CompaniesForm
+            mode="edit"
+            companyId={router.query.id}
+        />
     );
 }

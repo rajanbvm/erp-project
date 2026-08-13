@@ -27,11 +27,11 @@ const router = useRouter();
       render: (row) => (
         <span
           style={{
-            color: statusColors[row.stage] || "#222",
+            color: statusColors[row?.stage] || "#222",
             fontWeight: 500,
           }}
         >
-          {row.stage}
+          {row?.stage}
         </span>
       ),
     },
@@ -43,7 +43,7 @@ const router = useRouter();
             // fontWeight: 500,
           }}
         >
-          {row.value}
+          {row?.value}
         </span>
       ),
      },

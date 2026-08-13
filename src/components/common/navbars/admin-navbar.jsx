@@ -106,7 +106,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/opportunities`}
-                                className={`dash-link ${pathname === "/admin/opportunities" || pathname === "/admin/opportunities/add" ? "active" : ""}`}
+                                className={`dash-link ${pathname?.startsWith("/admin/opportunities") ? "active" : ""}`}
                             >
                                 <Image src={TrendUp} alt="Opportunities icon" />
                                 <span className="tooltip">Opportunities</span>
@@ -115,13 +115,13 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href={`/admin/activities`}
-                                className={`dash-link ${pathname === "/admin/activities" ? "active" : ""}`}
+                                className={`dash-link ${pathname?.startsWith("/admin/activities") ? "active" : ""}`}
                             >
                                 <Image src={Activities} alt="Activities icon" />
                                 <span className="tooltip">Activities</span>
                             </Link>
                         </li>
-                        <li>
+                        {/* <li>
                             <Link
                                 href={`/admin/tasks`}
                                 className={`dash-link ${pathname === "/admin/tasks" ? "active" : ""}`}
@@ -129,8 +129,8 @@ const AdminNavbar = () => {
                                 <Image src={Tasks} alt="Tasks icon" />
                                 <span className="tooltip">Tasks</span>
                             </Link>
-                        </li>
-                        <li>
+                        </li> */}
+                        {/* <li>
                             <Link
                                 href={`/admin/calls`}
                                 className={`dash-link ${pathname === "/admin/calls" ? "active" : ""}`}
@@ -138,7 +138,7 @@ const AdminNavbar = () => {
                                 <Image src={Calls} alt="Calls icon" />
                                 <span className="tooltip">Calls</span>
                             </Link>
-                        </li>
+                        </li> */}
                         <li>
                             <Link
                                 href={`/admin/reminders`}

@@ -16,10 +16,10 @@ import {
   BsArrowUpRight,
 } from "react-icons/bs";
 
-import DashIcon1 from "@/images/DashIcon1.png";
-import DashIcon2 from "@/images/DashIcon2.png";
-import DashIcon3 from "@/images/DashIcon3.png";
-import DashIcon4 from "@/images/DashIcon4.png";
+import DashIcon1 from "@/images/DashIcon1.svg";
+import DashIcon2 from "@/images/DashIcon2.svg";
+import DashIcon3 from "@/images/DashIcon3.svg";
+import DashIcon4 from "@/images/DashIcon4.svg";
 
 import { IoChevronDown } from "react-icons/io5";
 import { CiCalendarDate } from "react-icons/ci";

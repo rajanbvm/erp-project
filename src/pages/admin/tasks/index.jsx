@@ -42,7 +42,7 @@ const ListPage = () => {
       render: (row) => (
         <input
           type="checkbox"
-          checked={row.completed}
+          checked={row?.completed}
           readOnly
           className="form-check-input"
         />
@@ -55,13 +55,13 @@ const ListPage = () => {
       render: (row) => (
         <span
           style={{
-            textDecoration: row.completed
+            textDecoration: row?.completed
               ? "line-through"
               : "none",
             color: "#2C2C2C",
           }}
         >
-          {row.task}
+          {row?.task}
         </span>
       ),
     },
@@ -77,11 +77,11 @@ const ListPage = () => {
       render: (row) => (
         <span
           style={{
-            color: priorityColors[row.priority],
+            color: priorityColors[row?.priority],
             fontWeight: 500,
           }}
         >
-          {row.priority}
+          {row?.priority}
         </span>
       ),
     },
@@ -92,10 +92,10 @@ const ListPage = () => {
       render: (row) => (
         <span
           style={{
-            color: dueColors[row.dueType],
+            color: dueColors[row?.dueType],
           }}
         >
-          {row.due}
+          {row?.due}
         </span>
       ),
     },
@@ -111,11 +111,11 @@ const ListPage = () => {
       render: (row) => (
         <span
           style={{
-            color: statusColors[row.status],
+            color: statusColors[row?.status],
             fontWeight: 600,
           }}
         >
-          {row.status}
+          {row?.status}
         </span>
       ),
     },

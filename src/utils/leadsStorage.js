@@ -37,7 +37,8 @@ const defaultLeads = [
     notes: "Looking for ERP & CRM implementation within 2 months.",
 
      // Activity
-    nextFollowUp: "18 Jun 2026, 11:00 AM - Product Demo",
+    // nextFollowUp: "18 Jun 2026, 11:00 AM - Product Demo",
+
     lastCall: "Yesterday · 14 min · Interested",
     openTasks: "Prepare pricing sheet",
     meetingsScheduled: "1 upcoming, 2 completed",
@@ -101,7 +102,8 @@ const defaultLeads = [
     notes: "Proposal shared with client. Awaiting management approval.",
 
    // Activity
-    nextFollowUp: "20 Jun 2026, 03:30 PM - Video Meeting",
+    // nextFollowUp: "20 Jun 2026, 03:30 PM - Video Meeting",
+
     lastCall: "2 Days Ago · 10 min · Proposal Discussed",
     openTasks: "Send revised commercial proposal",
     meetingsScheduled: "2 upcoming, 1 completed",
@@ -165,7 +167,8 @@ const defaultLeads = [
     notes: "Client requested inventory module demonstration before final discussion.",
 
     // Activity
-    nextFollowUp: "22 Jun 2026, 10:00 AM - Phone Call",
+    // nextFollowUp: "22 Jun 2026, 10:00 AM - Phone Call",
+
     lastCall: "Today · 8 min · Demo Scheduled",
     openTasks: "Prepare inventory module presentation",
     meetingsScheduled: "1 upcoming, 0 completed",

@@ -2,6 +2,7 @@ import PageBanner from "@/components/common/PageBanner";
 import PageSearch from "@/components/common/PageSearch";
 import DataTable from "@/components/DataTable";
 import { useEffect, useMemo, useState } from "react";
+import DeleteModal from "@/components/common/DeleteModal";
 import {
   initializeLeads,
   getLeads,
@@ -16,8 +17,10 @@ import { useRouter } from "next/router";
 const ListPage = () => {
 
   const [leadsData, setLeadsData] = useState([]);
-
   const [selectedStatus, setSelectedStatus] = useState("All Status");
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedLeadId, setSelectedLeadId] = useState(null);
 
   const router = useRouter();
 
@@ -34,10 +37,19 @@ const ListPage = () => {
   }, []);
 
   const handleDelete = (id) => {
-    if (!window.confirm("Are you sure you want to delete this lead?")) return;
+    setSelectedLeadId(id);
+    setShowDeleteModal(true);
+  };
 
-    deleteLead(id);
+  const confirmDelete = () => {
+    if (!selectedLeadId) return;
+
+    deleteLead(selectedLeadId);
+
     loadLeads();
+
+    setShowDeleteModal(false);
+    setSelectedLeadId(null);
   };
 
   const LeadsColumns = [
@@ -51,11 +63,11 @@ const ListPage = () => {
       render: (row) => (
         <span
           style={{
-            color: getScoreColor(row.score),
+            color: getScoreColor(row?.score),
             fontWeight: 500,
           }}
         >
-          {row.score}
+          {row?.score}
         </span>
       ),
     },
@@ -69,7 +81,7 @@ const ListPage = () => {
             // fontWeight: 500,
           }}
         >
-          {row.created}
+          {row?.created}
         </span>
       ),
     },
@@ -79,11 +91,11 @@ const ListPage = () => {
       render: (row) => (
         <span
           style={{
-            color: statusColors[row.status] || "#222",
+            color: statusColors[row?.status] || "#222",
             fontWeight: 500,
           }}
         >
-          {row.status}
+          {row?.status}
         </span>
       ),
     },
@@ -95,17 +107,17 @@ const ListPage = () => {
         <div className="table-actions">
           <FaRegEye className="eyeBtn mx-2"
             onClick={() => {
-              router.push(`/admin/leads/view/${row.id}`);
+              router.push(`/admin/leads/view/${row?.id}`);
             }} />
           <RiEdit2Fill
             className="eyeBtn mx-2"
             style={{ cursor: "pointer" }}
-            onClick={() => router.push(`/admin/leads/edit/${row.id}`)}
+            onClick={() => router.push(`/admin/leads/edit/${row?.id}`)}
           />
           <RiDeleteBin6Line
             className="eyeBtn text-danger mx-2"
             style={{ cursor: "pointer" }}
-            onClick={() => handleDelete(row.id)}
+            onClick={() => handleDelete(row?.id)}
           />
         </div>
       ),
@@ -190,6 +202,17 @@ const ListPage = () => {
           showDropdown={true}
           dropdownTitle={selectedStatus}
           dropdownItems={dropdownItems}
+        />
+
+        <DeleteModal
+          show={showDeleteModal}
+          onClose={() => {
+            setShowDeleteModal(false);
+            setSelectedLeadId(null);
+          }}
+          onConfirm={confirmDelete}
+          title="Delete Lead"
+          message="Are you sure you want to delete this lead?"
         />
       </div>
 

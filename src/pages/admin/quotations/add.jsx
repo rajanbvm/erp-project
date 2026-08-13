@@ -1,4 +1,4 @@
-import QuotationForm from "@/components/quotations/QuotationForm";
+import QuotationForm from "@/components/QuotationForm";
 
 
 export default function AddQuotation() {

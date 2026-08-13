@@ -92,7 +92,7 @@ const CompaniesDetails = () => {
                             className="eyeBtn mx-2"
                             style={{ cursor: "pointer" }}
                             onClick={() =>
-                                router.push(`/admin/quotations/view/${row.id}`)
+                                router.push(`/admin/quotations/view/${row?.id}`)
                             }
                         />
         
@@ -100,14 +100,14 @@ const CompaniesDetails = () => {
                             className="eyeBtn mx-2"
                             style={{ cursor: "pointer" }}
                             onClick={() =>
-                                router.push(`/admin/quotations/edit/${row.id}`)
+                                router.push(`/admin/quotations/edit/${row?.id}`)
                             }
                         />
          {/*
                         <RiDeleteBin6Line
                             className="eyeBtn text-danger mx-2"
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleDelete(row.id)}
+                            onClick={() => handleDelete(row?.id)}
                         /> */}
         
                     </div>

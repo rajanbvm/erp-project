@@ -16,6 +16,16 @@ import Link from 'next/link';
 
 const LeadsDetails = () => {
 
+    const formatDate = (date) => {
+        if (!date) return "-";
+
+        return new Date(date).toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        });
+    };
+
     const router = useRouter();
     const { id } = router.query;
 
@@ -190,7 +200,11 @@ const LeadsDetails = () => {
                             <div className="approval-box">
                                 <div className="text">
                                     <p>Next Follow-Up</p>
-                                    <h6 className="mb-0">{lead?.nextFollowUp}</h6>
+                                    {/* <h6 className="mb-0">{lead?.nextFollowUp}</h6> */}
+                                    <h6 className="mb-0">
+                                        {lead?.followUpType || "-"} {formatDate(lead?.followUpDate)}
+                                        {lead?.followUpTime ? ` • ${lead.followUpTime}` : ""}
+                                    </h6>
                                 </div>
                             </div>
                         </div>

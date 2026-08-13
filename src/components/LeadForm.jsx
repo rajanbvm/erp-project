@@ -7,12 +7,17 @@ import {
     updateLead,
     getLeadById
 } from "@/utils/leadsStorage";
+import {
+    initializeCompanies,
+    getCompanies,
+    getCompanyById,
+} from "@/utils/companiesStorage";
 
 import Image from "next/image";
 import UploadIcon from "@/images/UploadIcon.svg";
 import { FaRegFileLines } from "react-icons/fa6";
 import { BsFillSendFill } from "react-icons/bs";
-import CustomDropdown from '../common/CustomDropdown';
+import CustomDropdown from '@/components/common/CustomDropdown';
 import {
     companySizeOptions,
     budgetOptions,
@@ -34,6 +39,49 @@ const LeadForm = ({ mode, leadId }) => {
 
     const router = useRouter();
 
+    const [companies, setCompanies] = useState([]);
+
+    useEffect(() => {
+        initializeCompanies();
+
+        const companyList = getCompanies();
+
+        setCompanies(companyList);
+    }, []);
+
+    const companyOptions = companies.map((company) => ({
+        label: company.company,
+        value: company.id,
+    }));
+
+    const handleCompanyChange = (e) => {
+
+        const companyId = e.target.value;
+
+        const selectedCompany = getCompanyById(companyId);
+
+        if (!selectedCompany) {
+            return;
+        }
+
+        setFormData((prev) => ({
+            ...prev,
+
+            companyId: selectedCompany?.id,
+            company: selectedCompany?.company,
+
+            website: selectedCompany?.website || "",
+            industryType: selectedCompany?.industry || "",
+            companySize: selectedCompany?.companySize || "",
+            annualRevenue: selectedCompany?.revenue || "",
+            businessAddress: selectedCompany?.billingAddress || "",
+            owner: selectedCompany?.owner || "",
+
+            primaryPhone: selectedCompany?.phone || "",
+            email: selectedCompany?.email || "",
+        }));
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -46,6 +94,8 @@ const LeadForm = ({ mode, leadId }) => {
     const [formData, setFormData] = useState({
         lead: "",
         designation: "",
+
+        companyId: "",
 
         status: "",
         score: "",
@@ -92,17 +142,17 @@ const LeadForm = ({ mode, leadId }) => {
     }, [mode, leadId]);
 
     const handleSubmit = () => {
-        if (!formData.lead.trim()) {
+        if (!formData?.lead.trim()) {
             alert("Lead Name is required.");
             return;
         }
 
-        if (!formData.company.trim()) {
+        if (!formData?.company.trim()) {
             alert("Company Name is required.");
             return;
         }
 
-        if (!formData.email.trim()) {
+        if (!formData?.email.trim()) {
             alert("Email is required.");
             return;
         }
@@ -118,7 +168,7 @@ const LeadForm = ({ mode, leadId }) => {
 
     return (
         <>
-        <PageBanner title="Leads" />
+            <PageBanner title="Leads" />
             <div className="bg-box">
                 <div className="table-header">
                     <div>
@@ -143,7 +193,7 @@ const LeadForm = ({ mode, leadId }) => {
                                         type="text"
                                         name="lead"
                                         className="form-control"
-                                        value={formData.lead}
+                                        value={formData?.lead}
                                         onChange={handleChange}
                                         placeholder="e.g. Rohan Mehta"
                                     />
@@ -156,7 +206,7 @@ const LeadForm = ({ mode, leadId }) => {
                                         type="text"
                                         name="designation"
                                         className="form-control"
-                                        value={formData.designation}
+                                        value={formData?.designation}
                                         onChange={handleChange}
                                         placeholder="e.g. Procurement Head"
                                     />
@@ -165,22 +215,10 @@ const LeadForm = ({ mode, leadId }) => {
 
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
-                                    <label>Company Size</label>
-                                    <CustomDropdown
-                                        name="companySize"
-                                        value={formData.companySize}
-                                        placeholder="Select Company Size"
-                                        options={companySizeOptions}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-lg-4 col-md-6">
-                                <div className="form-group">
                                     <label>Budget</label>
                                     <CustomDropdown
                                         name="budget"
-                                        value={formData.budget}
+                                        value={formData?.budget}
                                         placeholder="Select Budget"
                                         options={budgetOptions}
                                         onChange={handleChange}
@@ -194,7 +232,7 @@ const LeadForm = ({ mode, leadId }) => {
                                     <input type="text"
                                         name="requirement"
                                         className="form-control"
-                                        value={formData.requirement}
+                                        value={formData?.requirement}
                                         onChange={handleChange}
                                         maxLength="40"
                                         placeholder="Briefly describe what the prospect is looking for..." />
@@ -208,7 +246,7 @@ const LeadForm = ({ mode, leadId }) => {
                                         name="remarks"
                                         className="form-control"
                                         maxLength="40"
-                                        value={formData.remarks}
+                                        value={formData?.remarks}
                                         onChange={handleChange}
                                         placeholder="Internal remarks..."
                                     />
@@ -223,12 +261,13 @@ const LeadForm = ({ mode, leadId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Company Name</label>
-                                    <input id="company"
+                                    <CustomDropdown
                                         name="company"
-                                        className="form-control"
-                                        value={formData.company}
-                                        onChange={handleChange}
-                                        placeholder="e.g. Nirvana Retail Pvt Ltd" />
+                                        value={formData?.companyId}
+                                        placeholder="Select Company"
+                                        options={companyOptions}
+                                        onChange={handleCompanyChange}
+                                    />
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -239,8 +278,8 @@ const LeadForm = ({ mode, leadId }) => {
                                         name="website"
                                         className="form-control"
                                         placeholder="www.google.com"
-                                        value={formData.website}
-                                        onChange={handleChange}
+                                        value={formData?.website}
+                                        readOnly
                                     />
                                 </div>
                             </div>
@@ -249,10 +288,10 @@ const LeadForm = ({ mode, leadId }) => {
                                     <label>Industry Type</label>
                                     <CustomDropdown
                                         name="industryType"
-                                        value={formData.industryType}
+                                        value={formData?.industryType}
                                         placeholder="Select Industry"
                                         options={industryOptions}
-                                        onChange={handleChange}
+                                        readOnly
                                     />
                                 </div>
                             </div>
@@ -264,9 +303,9 @@ const LeadForm = ({ mode, leadId }) => {
                                         name="annualRevenue"
                                         type="text"
                                         className="form-control"
-                                        value={formData.annualRevenue}
-                                        onChange={handleChange}
+                                        value={formData?.annualRevenue}
                                         placeholder="e.g. 2,00,00,000"
+                                        readOnly
                                     />
                                 </div>
                             </div>
@@ -278,9 +317,9 @@ const LeadForm = ({ mode, leadId }) => {
                                         name="businessAddress"
                                         type="text"
                                         className="form-control"
-                                        value={formData.businessAddress}
-                                        onChange={handleChange}
+                                        value={formData?.businessAddress}
                                         placeholder="e.g. C-Scheme, Jaipur"
+                                        readOnly
                                     />
                                 </div>
                             </div>
@@ -299,8 +338,8 @@ const LeadForm = ({ mode, leadId }) => {
                                         type="text"
                                         className="form-control"
                                         placeholder="+91 1234567890"
-                                        value={formData.primaryPhone}
-                                        onChange={handleChange}
+                                        value={formData?.primaryPhone}
+                                        readOnly
                                     />
                                 </div>
                             </div>
@@ -313,7 +352,7 @@ const LeadForm = ({ mode, leadId }) => {
                                         placeholder="Optional"
                                         type="text"
                                         className="form-control"
-                                        value={formData.secondaryPhone}
+                                        value={formData?.secondaryPhone}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -326,8 +365,8 @@ const LeadForm = ({ mode, leadId }) => {
                                         type="email"
                                         name="email"
                                         className="form-control"
-                                        value={formData.email}
-                                        onChange={handleChange}
+                                        value={formData?.email}
+                                        readOnly
                                         placeholder="e.g. rohan@company.com"
                                     />
                                 </div>
@@ -339,8 +378,9 @@ const LeadForm = ({ mode, leadId }) => {
                                         name="whatsapp"
                                         type="text"
                                         className="form-control"
-                                        value={formData.whatsapp}
-                                        onChange={handleChange} placeholder="e.g. +91 1234567890" />
+                                        value={formData?.whatsapp}
+                                        onChange={handleChange}
+                                        placeholder="e.g. +91 1234567890" />
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -350,7 +390,7 @@ const LeadForm = ({ mode, leadId }) => {
                                         name="linkedin"
                                         type="text"
                                         className="form-control"
-                                        value={formData.linkedin}
+                                        value={formData?.linkedin}
                                         onChange={handleChange} placeholder="e.g. linkedin.com/in/..." />
                                 </div>
                             </div>
@@ -359,7 +399,7 @@ const LeadForm = ({ mode, leadId }) => {
                                     <label>Preferred Communication</label>
                                     <CustomDropdown
                                         name="preferredCommunication"
-                                        value={formData.preferredCommunication}
+                                        value={formData?.preferredCommunication}
                                         placeholder="Select Preference"
                                         options={communicationOptions}
                                         onChange={handleChange}
@@ -377,7 +417,7 @@ const LeadForm = ({ mode, leadId }) => {
                                     <label>Lead Source</label>
                                     <CustomDropdown
                                         name="source"
-                                        value={formData.source}
+                                        value={formData?.source}
                                         placeholder="Select Source"
                                         options={sourceOptions}
                                         onChange={handleChange}
@@ -388,12 +428,13 @@ const LeadForm = ({ mode, leadId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Lead Owner</label>
-                                    <CustomDropdown
+                                    <input
+                                        type="text"
                                         name="owner"
-                                        value={formData.owner}
-                                        placeholder="Assign Owner"
-                                        options={ownerOptions}
-                                        onChange={handleChange}
+                                        className="form-control"
+                                        value={formData?.owner}
+                                        readOnly
+                                        placeholder="e.g. rohan@company.com"
                                     />
                                 </div>
                             </div>
@@ -402,7 +443,7 @@ const LeadForm = ({ mode, leadId }) => {
                                     <label>Lead Status</label>
                                     <CustomDropdown
                                         name="status"
-                                        value={formData.status}
+                                        value={formData?.status}
                                         placeholder="Select Status"
                                         options={statusOptions}
                                         onChange={handleChange}
@@ -415,7 +456,7 @@ const LeadForm = ({ mode, leadId }) => {
 
                                     <CustomDropdown
                                         name="score"
-                                        value={formData.score}
+                                        value={formData?.score}
                                         placeholder="Select Score"
                                         options={scoreOptions}
                                         onChange={handleChange}
@@ -427,7 +468,7 @@ const LeadForm = ({ mode, leadId }) => {
                                     <label>Assignment Mode</label>
                                     <CustomDropdown
                                         name="assignmentMode"
-                                        value={formData.assignmentMode}
+                                        value={formData?.assignmentMode}
                                         placeholder="Select Mode"
                                         options={assignmentModeOptions}
                                         onChange={handleChange}
@@ -439,7 +480,7 @@ const LeadForm = ({ mode, leadId }) => {
                                     <label>Priority</label>
                                     <CustomDropdown
                                         name="priority"
-                                        value={formData.priority}
+                                        value={formData?.priority}
                                         placeholder="Select Priority"
                                         options={priorityOptions}
                                         onChange={handleChange}
@@ -452,20 +493,21 @@ const LeadForm = ({ mode, leadId }) => {
                     <div className="form-outer mb-3">
                         <div className="row">
                             <h3 className="form-title">Notes, Documents & Follow-Up</h3>
-                            <div className="col-lg-6 col-md-6">
+                            <div className="col-lg-12 col-md-12">
                                 <div className="form-group">
                                     <label>Notes</label>
                                     <textarea style={{ minHeight: "120px" }} id="notes"
                                         name="notes"
                                         className="form-control"
-                                        value={formData.notes}
+                                        value={formData?.notes}
                                         onChange={handleChange} placeholder="Add any internal notes or discussion points..."></textarea>
                                 </div>
                             </div>
 
-                            <div className="col-lg-6 col-md-6">
+                            {/* <div className="col-lg-6 col-md-6">
                                 <div className="form-group">
                                     <label>Attach Documents</label>
+
                                     <label htmlFor="uploadFiles" className="w-100">
                                         <input
                                             id="uploadFiles"
@@ -475,6 +517,8 @@ const LeadForm = ({ mode, leadId }) => {
                                             accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png"
                                             onChange={(e) => {
                                                 const file = e.target.files?.[0];
+
+                                                if (!file) return;
 
                                                 setFormData((prev) => ({
                                                     ...prev,
@@ -491,21 +535,26 @@ const LeadForm = ({ mode, leadId }) => {
                                                     width={24}
                                                     height={24}
                                                 />
-                                                <span>Upload Files</span>
+
+                                                <span>
+                                                    {formData?.documents?.name || "Upload Files"}
+                                                </span>
                                             </div>
 
-                                            <p className="mb-0">Click to browse PDF, DOC, XLS, PPT, JPG, PNG · up to 25MB each</p>
+                                            <p className="mb-0">
+                                                Click to browse PDF, DOC, XLS, PPT, JPG, PNG · up to 25MB each
+                                            </p>
                                         </div>
                                     </label>
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Follow-Up Type</label>
 
                                     <CustomDropdown
                                         name="followUpType"
-                                        value={formData.followUpType}
+                                        value={formData?.followUpType}
                                         placeholder="Select Follow-Up Type"
                                         options={followUpTypeOptions}
                                         onChange={handleChange}
@@ -520,7 +569,7 @@ const LeadForm = ({ mode, leadId }) => {
                                         name="followUpDate"
                                         type="date"
                                         className="form-control"
-                                        value={formData.followUpDate}
+                                        value={formData?.followUpDate}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -531,7 +580,7 @@ const LeadForm = ({ mode, leadId }) => {
 
                                     <CustomDropdown
                                         name="followUpTime"
-                                        value={formData.followUpTime}
+                                        value={formData?.followUpTime}
                                         placeholder="Select Time"
                                         options={timeOptions}
                                         onChange={handleChange}

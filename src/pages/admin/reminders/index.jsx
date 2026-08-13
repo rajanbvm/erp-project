@@ -45,11 +45,11 @@ const reminderColumns = [
     render: (row) => (
       <span
         style={{
-          color: statusColors[row.status],
+          color: statusColors[row?.status],
           fontWeight: 600,
         }}
       >
-        {row.status}
+        {row?.status}
       </span>
     ),
   },
