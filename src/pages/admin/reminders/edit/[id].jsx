@@ -1,5 +1,5 @@
 
-import LeadForm from "@/components/leads/LeadForm";
+import LeadForm from "@/components/LeadForm";
 import { useRouter } from "next/router";
 
 export default function EditLead() {

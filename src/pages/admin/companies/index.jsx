@@ -126,7 +126,7 @@ const ListPage = () => {
     <>
       <PageBanner title="Companies" />
       <PageSearch
-        showExport={true}
+        showExport={false}
         showAddButton={true}
         addButtonText="Add New Companies"
 
