@@ -19,13 +19,10 @@ import { FaRegFileLines } from "react-icons/fa6";
 import { BsFillSendFill } from "react-icons/bs";
 import CustomDropdown from '@/components/common/CustomDropdown';
 import {
-    companySizeOptions,
     budgetOptions,
-    industryOptions,
     communicationOptions,
     statusOptions,
     sourceOptions,
-    ownerOptions,
     assignmentModeOptions,
     priorityOptions,
     followUpTypeOptions,
