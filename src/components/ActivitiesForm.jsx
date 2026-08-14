@@ -24,7 +24,10 @@ import {
     updateActivity,
 } from "@/utils/activitiesStorage";
 
-const ActivitiesForm = ({ mode = "add", activityId }) => {
+const ActivitiesForm = ({
+    mode = "add",
+    activityId,
+}) => {
 
     const router = useRouter();
 
@@ -34,6 +37,7 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
         taskTitle: "",
         assignee: "",
         dueDate: "",
+        dueTime: "",
         type: "Phone",
         relatedTo: "",
         status: "Scheduled",
@@ -41,7 +45,7 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
 
     /*
     |--------------------------------------------------------------------------
-    | Load Companies
+    | Load Data
     |--------------------------------------------------------------------------
     */
 
@@ -58,14 +62,16 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
 
     /*
     |--------------------------------------------------------------------------
-    | Company Dropdown Options
+    | Company Options
     |--------------------------------------------------------------------------
     */
 
-    const companyOptions = companies.map((company) => ({
-        label: company?.company,
-        value: company?.id,
-    }));
+    const companyOptions = companies.map(
+        (company) => ({
+            label: company?.company,
+            value: company?.id,
+        })
+    );
 
     /*
     |--------------------------------------------------------------------------
@@ -74,13 +80,44 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
     */
 
     useEffect(() => {
-        if (mode !== "edit" || !activityId) return;
 
-        const activity = getActivityById(activityId);
+        if (
+            mode !== "edit" ||
+            !activityId
+        ) {
+            return;
+        }
+
+        const activity =
+            getActivityById(activityId);
 
         if (activity) {
-            setFormData(activity);
+
+            setFormData({
+                taskTitle:
+                    activity?.taskTitle || "",
+
+                assignee:
+                    activity?.assignee || "",
+
+                dueDate:
+                    activity?.dueDate || "",
+
+                dueTime:
+                    activity?.dueTime || "",
+
+                type:
+                    activity?.type || "Phone",
+
+                relatedTo:
+                    activity?.relatedTo || "",
+
+                status:
+                    activity?.status || "Scheduled",
+            });
+
         }
+
     }, [mode, activityId]);
 
     /*
@@ -91,7 +128,10 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
 
     const handleChange = (e) => {
 
-        const { name, value } = e.target;
+        const {
+            name,
+            value,
+        } = e.target;
 
         setFormData((prev) => ({
             ...prev,
@@ -107,6 +147,7 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
     */
 
     const handleSubmit = (e) => {
+
         e.preventDefault();
 
         if (!formData?.taskTitle?.trim()) {
@@ -124,18 +165,35 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
             return;
         }
 
+        if (!formData?.dueTime) {
+            alert("Due Time is required.");
+            return;
+        }
+
         if (!formData?.relatedTo) {
             alert("Please select a company.");
             return;
         }
 
+        const activityData = {
+            ...formData,
+        };
+
         if (mode === "add") {
-            addActivity(formData);
+
+            addActivity(activityData);
+
         } else {
-            updateActivity(activityId, formData);
+
+            updateActivity(
+                activityId,
+                activityData
+            );
+
         }
 
         router.push("/admin/activities");
+
     };
 
     return (
@@ -144,11 +202,10 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
 
             <div className="bg-box">
 
-                {/* Header */}
-
                 <div className="table-header">
 
                     <div>
+
                         <h3>
                             {mode === "edit"
                                 ? "Edit Task"
@@ -160,16 +217,13 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
                                 ? "Update Task Information"
                                 : "Create a New Task"}
                         </p>
+
                     </div>
 
                 </div>
 
 
                 <form onSubmit={handleSubmit}>
-
-                    {/* =====================================================
-                        TASK INFORMATION
-                    ===================================================== */}
 
                     <div className="form-outer mb-3">
 
@@ -249,11 +303,39 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
 
                             </div>
 
+
+                            {/* Due Time */}
+
+                            <div className="col-lg-4 col-md-6">
+
+                                <div className="form-group">
+
+                                    <label>
+                                        Due Time
+                                    </label>
+
+                                    <input
+                                        type="time"
+                                        name="dueTime"
+                                        className="form-control"
+                                        value={formData?.dueTime}
+                                        onChange={handleChange}
+                                    />
+
+                                </div>
+
+                            </div>
+
+
                             {/* Type */}
 
                             <div className="col-lg-4 col-md-6">
+
                                 <div className="form-group">
-                                    <label>Type</label>
+
+                                    <label>
+                                        Type
+                                    </label>
 
                                     <CustomDropdown
                                         name="type"
@@ -262,12 +344,18 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
                                         options={communicationOptions}
                                         onChange={handleChange}
                                     />
+
                                 </div>
+
                             </div>
 
+
                             {/* Related To */}
+
                             <div className="col-lg-4 col-md-6">
+
                                 <div className="form-group">
+
                                     <label>
                                         Related To
                                     </label>
@@ -281,11 +369,19 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
                                     />
 
                                 </div>
+
                             </div>
 
+
+                            {/* Status */}
+
                             <div className="col-lg-4 col-md-6">
+
                                 <div className="form-group">
-                                    <label>Status</label>
+
+                                    <label>
+                                        Status
+                                    </label>
 
                                     <CustomDropdown
                                         name="status"
@@ -294,17 +390,15 @@ const ActivitiesForm = ({ mode = "add", activityId }) => {
                                         options={activityStatusOptions}
                                         onChange={handleChange}
                                     />
+
                                 </div>
+
                             </div>
 
                         </div>
 
                     </div>
 
-
-                    {/* =====================================================
-                        ACTION BUTTONS
-                    ===================================================== */}
 
                     <div className="form-action">
 

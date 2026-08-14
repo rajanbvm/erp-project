@@ -34,6 +34,10 @@ import {
 } from "@/utils/menuDropdown";
 import Link from 'next/link';
 
+import {
+    notifyAdded,
+    notifyUpdated,
+} from "@/utils/notificationHelpers";
 
 const LeadForm = ({ mode, leadId }) => {
 
@@ -146,15 +150,65 @@ const LeadForm = ({ mode, leadId }) => {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        if (mode !== "edit" || !leadId) return;
+        if (mode !== "edit" || !leadId || companies.length === 0) return;
 
         const lead = getLeadById(leadId);
 
+        if (!lead) return;
 
-        if (lead) {
-            setFormData(lead);
-        }
-    }, [mode, leadId]);
+        const selectedCompany =
+            companies.find(
+                (company) =>
+                    company?.id === lead?.companyId ||
+                    company?.company === lead?.company
+            );
+
+        setFormData({
+            ...lead,
+            companyId: selectedCompany?.id || lead?.companyId || "",
+            company: selectedCompany?.company || lead?.company || "",
+
+            website:
+                selectedCompany?.website ||
+                lead?.website ||
+                "",
+
+            industryType:
+                selectedCompany?.industry ||
+                lead?.industryType ||
+                "",
+
+            companySize:
+                selectedCompany?.companySize ||
+                lead?.companySize ||
+                "",
+
+            annualRevenue:
+                selectedCompany?.revenue ||
+                lead?.annualRevenue ||
+                "",
+
+            businessAddress:
+                selectedCompany?.billingAddress ||
+                lead?.businessAddress ||
+                "",
+
+            owner:
+                selectedCompany?.owner ||
+                lead?.owner ||
+                "",
+
+            primaryPhone:
+                selectedCompany?.phone ||
+                lead?.primaryPhone ||
+                "",
+
+            email:
+                selectedCompany?.email ||
+                lead?.email ||
+                "",
+        });
+    }, [mode, leadId, companies]);
 
     const handleSubmit = () => {
         const newErrors = {};
@@ -217,13 +271,27 @@ const LeadForm = ({ mode, leadId }) => {
         setErrors({});
 
         if (mode === "add") {
-            addLead(dataToSave);
+            const newLead = addLead(dataToSave);
+
+            notifyAdded(
+                "Lead",
+                dataToSave?.lead,
+                newLead?.id
+            );
         } else {
             updateLead(leadId, dataToSave);
+
+            notifyUpdated(
+                "Lead",
+                dataToSave?.lead,
+                leadId
+            );
         }
 
         router.push("/admin/leads");
     };
+
+
 
     return (
         <>
@@ -367,13 +435,21 @@ const LeadForm = ({ mode, leadId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Industry Type</label>
-                                    <CustomDropdown
+                                    <input
+                                        type="text"
+                                        name="industryType"
+                                        className="form-control"
+                                        placeholder="www.google.com"
+                                        value={formData?.industryType}
+                                        readOnly
+                                    />
+                                    {/* <CustomDropdown
                                         name="industryType"
                                         value={formData?.industryType}
                                         placeholder="Select Industry"
                                         options={industryOptions}
                                         readOnly
-                                    />
+                                    /> */}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">

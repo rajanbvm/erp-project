@@ -226,12 +226,18 @@ export const deleteLead = (id) => {
 export const addLead = (lead) => {
   const data = getLeads();
 
-  data.push({
+  const newLead = {
     ...lead,
-    id: data.length ? Math.max(...data.map((x) => x.id)) + 1 : 1,
-  });
+    id: data.length
+      ? Math.max(...data.map((x) => x.id)) + 1
+      : 1,
+  };
+
+  data.push(newLead);
 
   saveLeads(data);
+
+  return newLead;
 };
 
 export const updateLead = (id, updatedLead) => {
