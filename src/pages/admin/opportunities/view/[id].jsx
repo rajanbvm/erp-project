@@ -1,255 +1,440 @@
-import PageBanner from '@/components/common/PageBanner'
+import PageBanner from "@/components/common/PageBanner";
 import {
-    getLeads,
-    getLeadById,
-} from "@/utils/leadsStorage";
+    initializeOpportunities,
+    getOpportunityById,
+} from "@/utils/opportunitiesStorage";
+
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Image from 'next/image';
+import Image from "next/image";
+
 import Buildings from "@/images/Buildings.svg";
 import Phone from "@/images/Phone.svg";
-import { FaCheck, FaRegFileLines } from "react-icons/fa6";
 import Envelope from "@/images/Envelope.svg";
-import { RiEdit2Fill, RiNumber2, RiNumber3, RiNumber4 } from "react-icons/ri";
-import { BsFillSendFill } from 'react-icons/bs';
-import Link from 'next/link';
 
-const LeadsDetails = () => {
+import { RiEdit2Fill } from "react-icons/ri";
+import Link from "next/link";
+
+
+const OpportunitiesDetails = () => {
 
     const router = useRouter();
     const { id } = router.query;
 
-    const [lead, setLead] = useState(null);
+    const [opportunity, setOpportunity] =
+        useState(null);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Load Opportunity
+    |--------------------------------------------------------------------------
+    */
 
     useEffect(() => {
+
         if (!router.isReady) return;
 
-        const leads = getLeads();
+        initializeOpportunities();
 
-        const foundLead = getLeadById(id);
+        const foundOpportunity =
+            getOpportunityById(id);
 
-        setLead(foundLead || null);
+        setOpportunity(
+            foundOpportunity || null
+        );
+
     }, [router.isReady, id]);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Loading
+    |--------------------------------------------------------------------------
+    */
 
     if (!router.isReady) {
         return null;
     }
 
 
-    if (!lead) {
+    /*
+    |--------------------------------------------------------------------------
+    | Opportunity Not Found
+    |--------------------------------------------------------------------------
+    */
+
+    if (!opportunity) {
         return (
             <>
-                <PageBanner title="Lead Details" />
+                <PageBanner title="Opportunity Details" />
+
                 <div className="bg-box text-center p-5">
-                    <h4>Loading...</h4>
+
+                    <h4>
+                        Opportunity not found.
+                    </h4>
+
                 </div>
             </>
         );
     }
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Format Value
+    |--------------------------------------------------------------------------
+    */
+
+    const formattedValue = Number(
+        opportunity?.value || 0
+    ).toLocaleString();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Format Close Date
+    |--------------------------------------------------------------------------
+    */
+
+    const formattedCloseDate =
+        opportunity?.closeDate
+            ? new Date(
+                  opportunity.closeDate
+              ).toLocaleDateString(
+                  "en-GB",
+                  {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                  }
+              )
+            : "-";
+
+
     return (
         <>
-            <PageBanner title="Leads" />
+            <PageBanner title="Opportunities" />
+
 
             <div className="bg-box">
+
+
+                {/* =====================================================
+                    HEADER
+                ===================================================== */}
+
                 <div className="table-header">
+
                     <div>
-                        <h3>{lead?.lead}</h3>
+
+                        <h3>
+                            {opportunity?.opportunity}
+                        </h3>
+
                     </div>
+
+
                     <div className="QuoteDetailsStatus">
+
                         <span className="level-btn">
-                            {lead?.status}
+                            {opportunity?.stage}
                         </span>
+
                         <span className="level-btn">
-                            {lead?.source}
+                            {opportunity?.probability}%
                         </span>
+
                         <span className="level-btn">
-                            Score {lead?.score}
+                            ${formattedValue}
                         </span>
-                    </div>
-                </div>
-                <div className="form-outer mb-3">
-                    <h3 className="form-title">Lead Info</h3>
-                    <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-4">
-                            <div className="quote-box">
-                                <Image src={Buildings} />
-                                <span>{lead?.company}</span>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                            <div className="quote-box">
-                                <Image src={Phone} />
-                                <span>{lead?.primaryPhone}</span>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                            <div className="quote-box">
-                                <Image src={Envelope} />
-                                <span>{lead?.email}</span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Lead Name</label>
-                                <h6 className="formValue">{lead?.lead}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Lead source</label>
-                                <h6 className="formValue">{lead?.source}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Score</label>
-                                <h6 className="formValue">{lead?.score}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Owner</label>
-                                <h6 className="formValue">
-                                    {lead?.owner}
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row QuoteInfo RowBorderBottom">
-
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Priority</label>
-                                <h6 className="formValue">{lead?.priority}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Created</label>
-                                <h6 className="formValue">
-                                    {lead?.created}
-                                </h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Status</label>
-                                <h6 className="formValue">
-                                    {lead?.status}
-                                </h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Industry</label>
-                                <h6 className="formValue">{lead?.industry}</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Annual Revenue</label>
-                                <h6 className="formValue">{lead?.annualRevenue}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Website</label>
-                                <h6 className="formValue">{lead?.website}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Budget</label>
-                                <h6 className="formValue">{lead?.budget}</h6>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <div className="form-group mb-0">
-                                <label>Notes</label>
-                                <h6 className="formValue">
-                                    {lead?.notes}
-                                </h6>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
+
+
+                {/* =====================================================
+                    OPPORTUNITY INFORMATION
+                ===================================================== */}
 
                 <div className="form-outer mb-3">
-                    <h3 className="form-title mb-0">Version History</h3>
-                    <div className="">
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Next Follow-Up</p>
-                                    <h6 className="mb-0">{lead?.nextFollowUp}</h6>
-                                </div>
+
+                    <h3 className="form-title">
+                        Opportunity Information
+                    </h3>
+
+
+                    {/* Company / Contact / Value */}
+
+                    <div className="row QuoteInfo RowBorderBottom">
+
+
+                        {/* Company */}
+
+                        <div className="col-lg-4">
+
+                            <div className="quote-box">
+
+                                <Image
+                                    src={Buildings}
+                                    alt="Company"
+                                />
+
+                                <span>
+                                    {opportunity?.company ||
+                                        "-"}
+                                </span>
+
                             </div>
+
                         </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Last Call</p>
-                                    <h6 className="mb-0">{lead?.lastCall}</h6>
-                                </div>
+
+
+                        {/* Contact */}
+
+                        <div className="col-lg-4">
+
+                            <div className="quote-box">
+
+                                <Image
+                                    src={Envelope}
+                                    alt="Contact"
+                                />
+
+                                <span>
+                                    {opportunity?.contact ||
+                                        "-"}
+                                </span>
+
                             </div>
+
                         </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Open Tasks</p>
-                                    <h6 className="mb-0">{lead?.openTasks}</h6>
-                                </div>
+
+
+                        {/* Owner */}
+
+                        {/* <div className="col-lg-4">
+
+                            <div className="quote-box">
+
+                                <Image
+                                    src={Phone}
+                                    alt="Owner"
+                                />
+
+                                <span>
+                                    {opportunity?.owner ||
+                                        "-"}
+                                </span>
+
                             </div>
-                        </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Director Final Approval</p>
-                                    <h6 className="mb-0">{lead?.meetingsScheduled}</h6>
-                                </div>
-                            </div>
-                        </div>
+
+                        </div> */}
+
                     </div>
+
+
+                    {/* Opportunity Name / Company / Contact */}
+
+                    <div className="row QuoteInfo RowBorderBottom">
+
+
+                        <div className="col-lg-4 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Opportunity Name
+                                </label>
+
+                                <h6 className="formValue">
+                                    {opportunity?.opportunity ||
+                                        "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-4 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Company
+                                </label>
+
+                                <h6 className="formValue">
+                                    {opportunity?.company ||
+                                        "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-4 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Contact
+                                </label>
+
+                                <h6 className="formValue">
+                                    {opportunity?.contact ||
+                                        "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* Value / Probability / Stage */}
+
+                    <div className="row QuoteInfo RowBorderBottom">
+
+
+                        <div className="col-lg-4 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Value
+                                </label>
+
+                                <h6
+                                    className="formValue"
+                                    style={{
+                                        color:
+                                            "#1D9E75",
+                                    }}
+                                >
+                                    ${formattedValue}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-4 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Probability
+                                </label>
+
+                                <h6 className="formValue">
+                                    {opportunity?.probability}%
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-4 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Stage
+                                </label>
+
+                                <h6 className="formValue">
+                                    {opportunity?.stage ||
+                                        "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* Owner / Close Date */}
+
+                    <div className="row QuoteInfo">
+
+
+                        <div className="col-lg-4 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Owner
+                                </label>
+
+                                <h6 className="formValue">
+                                    {opportunity?.owner ||
+                                        "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-4 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Expected Close Date
+                                </label>
+
+                                <h6 className="formValue">
+                                    {formattedCloseDate}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
                 </div>
 
+                {/* =====================================================
+                    ACTION BUTTONS
+                ===================================================== */}
 
                 <div className="form-action">
-                    <button
-                        className="btn btn-primary ms-2"
-                    >
-                        <BsFillSendFill />
-                        <span>Create & Submit for Approval</span>
-                    </button>
+
+
                     <Link
-                        href={`/admin/leads/edit/${lead?.id}`}
+                        href={`/admin/opportunities/edit/${opportunity?.id}`}
                         className="btn btn-outline-primary mx-2"
                     >
+
                         <RiEdit2Fill />
-                        <span>Edit</span>
+
+                        <span>
+                            Edit
+                        </span>
+
                     </Link>
-                    {/* <button
-                        className="btn btn-outline-primary mx-2"
-                    >
-                        <FaRegFileLines />
-                        <span>Download PDF</span>
-                    </button> */}
+
+
                 </div>
 
-            </div >
+
+            </div>
 
         </>
-    )
-}
+    );
+};
 
-export default LeadsDetails
+
+export default OpportunitiesDetails;

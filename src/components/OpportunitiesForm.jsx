@@ -8,6 +8,7 @@ import Link from "next/link";
 
 import {
     ownerOptions,
+    scoreOptions,
 } from "@/utils/menuDropdown";
 
 import {
@@ -49,7 +50,7 @@ const OpportunitiesForm = ({
         closeDate: "",
     });
 
-
+    const [errors, setErrors] = useState({});
     /*
     |--------------------------------------------------------------------------
     | Stage Options
@@ -182,21 +183,37 @@ const OpportunitiesForm = ({
     */
 
     const handleChange = (e) => {
-
         const { name, value } = e.target;
+
+        if (name === "value" && !/^\d*$/.test(value)) {
+            return;
+        }
 
         setFormData((prev) => ({
             ...prev,
             [name]: value,
 
-            // Reset contact when company changes
             ...(name === "company"
                 ? { contact: "" }
                 : {}),
         }));
 
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+            ...(name === "company"
+                ? { contact: "" }
+                : {}),
+        }));
     };
 
+
+    const today = new Date();
+    const todayDate = `${today.getFullYear()}-${String(
+        today.getMonth() + 1
+    ).padStart(2, "0")}-${String(
+        today.getDate()
+    ).padStart(2, "0")}`;
 
     /*
     |--------------------------------------------------------------------------
@@ -205,63 +222,73 @@ const OpportunitiesForm = ({
     */
 
     const handleSubmit = (e) => {
-
         e.preventDefault();
 
+        const newErrors = {};
+
         if (!formData?.opportunity?.trim()) {
-            alert("Opportunity Name is required.");
-            return;
+            newErrors.opportunity =
+                "Opportunity Name is required.";
         }
 
         if (!formData?.company) {
-            alert("Please select a company.");
-            return;
+            newErrors.company =
+                "Please select a company.";
         }
 
         if (!formData?.contact) {
-            alert("Please select a contact.");
-            return;
+            newErrors.contact =
+                "Please select a contact.";
         }
 
         if (!formData?.value) {
-            alert("Value is required.");
-            return;
+            newErrors.value =
+                "Value is required.";
         }
 
         if (!formData?.probability) {
-            alert("Probability is required.");
-            return;
+            newErrors.probability =
+                "Probability is required.";
+        } else if (
+            Number(formData?.probability) < 0 ||
+            Number(formData?.probability) > 100
+        ) {
+            newErrors.probability =
+                "Probability must be between 0 and 100.";
         }
 
         if (!formData?.stage) {
-            alert("Please select a stage.");
-            return;
+            newErrors.stage =
+                "Please select a stage.";
         }
 
         if (!formData?.owner) {
-            alert("Please select an owner.");
-            return;
+            newErrors.owner =
+                "Please select an owner.";
         }
 
         if (!formData?.closeDate) {
-            alert("Expected Close Date is required.");
+            newErrors.closeDate =
+                "Expected Close Date is required.";
+        } else if (formData?.closeDate < todayDate) {
+            newErrors.closeDate =
+                "Previous dates are not allowed.";
+        }
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length > 0) {
             return;
         }
 
-
         if (mode === "add") {
-
             addOpportunity(formData);
-
         } else {
-
             updateOpportunity(
                 opportunityId,
                 formData
             );
-
         }
-
 
         router.push("/admin/opportunities");
     };
@@ -324,11 +351,20 @@ const OpportunitiesForm = ({
                                     <input
                                         type="text"
                                         name="opportunity"
-                                        className="form-control"
+                                        className={`form-control ${errors?.opportunity
+                                            ? "is-invalid"
+                                            : ""
+                                            }`}
                                         value={formData?.opportunity}
                                         onChange={handleChange}
                                         placeholder="e.g. CRM Software Deployment"
                                     />
+
+                                    {errors?.opportunity && (
+                                        <div className="form-error">
+                                            {errors?.opportunity}
+                                        </div>
+                                    )}
 
                                 </div>
 
@@ -351,7 +387,14 @@ const OpportunitiesForm = ({
                                         placeholder="Select Company"
                                         options={companyOptions}
                                         onChange={handleChange}
+                                        className={errors?.company ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.company && (
+                                        <div className="form-error">
+                                            {errors?.company}
+                                        </div>
+                                    )}
 
                                 </div>
 
@@ -373,9 +416,15 @@ const OpportunitiesForm = ({
                                         value={formData?.contact}
                                         placeholder="Select Contact"
                                         options={contactOptions}
+                                        className={errors?.contact ? "is-invalid" : ""}
                                         onChange={handleChange}
                                     />
 
+                                    {errors?.contact && (
+                                        <div className="form-error">
+                                            {errors?.contact}
+                                        </div>
+                                    )}
                                 </div>
 
                             </div>
@@ -384,7 +433,6 @@ const OpportunitiesForm = ({
                             {/* Value */}
 
                             <div className="col-lg-4 col-md-6">
-
                                 <div className="form-group">
 
                                     <label>
@@ -392,43 +440,58 @@ const OpportunitiesForm = ({
                                     </label>
 
                                     <input
-                                        type="number"
+                                        type="text"
                                         name="value"
-                                        className="form-control"
+                                        className={`form-control ${errors?.value
+                                            ? "is-invalid"
+                                            : ""
+                                            }`}
                                         value={formData?.value}
                                         onChange={handleChange}
                                         placeholder="00"
-                                        min="0"
+                                        inputMode="numeric"
+                                        pattern="[0-9]*"
                                     />
 
-                                </div>
+                                    {errors?.value && (
+                                        <div className="form-error">
+                                            {errors?.value}
+                                        </div>
+                                    )}
 
+                                </div>
                             </div>
 
 
                             {/* Probability */}
 
                             <div className="col-lg-4 col-md-6">
-
                                 <div className="form-group">
 
                                     <label>
                                         Probability (%)
                                     </label>
 
-                                    <input
-                                        type="number"
+                                    <CustomDropdown
                                         name="probability"
-                                        className="form-control"
                                         value={formData?.probability}
+                                        placeholder="Select Probability"
+                                        options={scoreOptions}
                                         onChange={handleChange}
-                                        placeholder="20"
-                                        min="0"
-                                        max="100"
+                                        className={
+                                            errors?.probability
+                                                ? "is-invalid"
+                                                : ""
+                                        }
                                     />
 
-                                </div>
+                                    {errors?.probability && (
+                                        <div className="form-error">
+                                            {errors?.probability}
+                                        </div>
+                                    )}
 
+                                </div>
                             </div>
 
 
@@ -447,8 +510,15 @@ const OpportunitiesForm = ({
                                         value={formData?.stage}
                                         placeholder="Select Stage"
                                         options={stageOptions}
+                                        className={errors?.stage ? "is-invalid" : ""}
                                         onChange={handleChange}
                                     />
+
+                                    {errors?.stage && (
+                                        <div className="form-error">
+                                            {errors?.stage}
+                                        </div>
+                                    )}
 
                                 </div>
 
@@ -470,8 +540,15 @@ const OpportunitiesForm = ({
                                         value={formData?.owner}
                                         placeholder="Select Owner"
                                         options={ownerOptions}
+                                        className={errors?.owner ? "is-invalid" : ""}
                                         onChange={handleChange}
                                     />
+
+                                    {errors?.owner && (
+                                        <div className="form-error">
+                                            {errors?.owner}
+                                        </div>
+                                    )}
 
                                 </div>
 
@@ -481,7 +558,6 @@ const OpportunitiesForm = ({
                             {/* Expected Close Date */}
 
                             <div className="col-lg-4 col-md-6">
-
                                 <div className="form-group">
 
                                     <label>
@@ -491,13 +567,22 @@ const OpportunitiesForm = ({
                                     <input
                                         type="date"
                                         name="closeDate"
-                                        className="form-control"
+                                        className={`form-control ${errors?.closeDate
+                                            ? "is-invalid"
+                                            : ""
+                                            }`}
                                         value={formData?.closeDate}
                                         onChange={handleChange}
+                                        min={todayDate}
                                     />
 
-                                </div>
+                                    {errors?.closeDate && (
+                                        <div className="form-error">
+                                            {errors?.closeDate}
+                                        </div>
+                                    )}
 
+                                </div>
                             </div>
 
                         </div>

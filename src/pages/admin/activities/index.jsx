@@ -226,7 +226,7 @@ const ListPage = () => {
     <>
       <PageBanner title="Activities" />
 
-      <div className="row opp-row mb-32">
+      {/* <div className="row opp-row mb-32">
         {OpportunitiesCards.map((card) => (
           <div key={card.id} className="col-lg-4 col-md-6">
             <div className="overview-card">
@@ -236,7 +236,7 @@ const ListPage = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <PageSearch
         // showImport={true}

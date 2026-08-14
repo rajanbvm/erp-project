@@ -106,11 +106,11 @@ export const followUpTypeOptions = [
 ];
 
 export const scoreOptions = [
-    { label: "90 - 100 (Hot)", value: "100" },
-    { label: "80 - 89 (High)", value: "80" },
-    { label: "60 - 79 (Medium)", value: "60" },
-    { label: "40 - 59 (Low)", value: "40" },
-    { label: "0 - 39 (Cold)", value: "20" },
+    { label: "90 - 100 (Hot)", value: "95" },
+    { label: "80 - 85 (High)", value: "80" },
+    { label: "60 - 75 (Medium)", value: "65" },
+    { label: "40 - 55 (Low)", value: "50" },
+    { label: "0 - 35 (Cold)", value: "25" },
 ];
 
 export const timeOptions = Array.from({ length: 21 }, (_, i) => {

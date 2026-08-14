@@ -55,12 +55,15 @@ const LeadForm = ({ mode, leadId }) => {
     }));
 
     const handleCompanyChange = (e) => {
-
         const companyId = e.target.value;
 
         const selectedCompany = getCompanyById(companyId);
 
         if (!selectedCompany) {
+            setErrors((prev) => ({
+                ...prev,
+                companyId: "Company Name is required.",
+            }));
             return;
         }
 
@@ -80,6 +83,11 @@ const LeadForm = ({ mode, leadId }) => {
             primaryPhone: selectedCompany?.phone || "",
             email: selectedCompany?.email || "",
         }));
+
+        setErrors((prev) => ({
+            ...prev,
+            companyId: "",
+        }));
     };
 
     const handleChange = (e) => {
@@ -88,6 +96,11 @@ const LeadForm = ({ mode, leadId }) => {
         setFormData((prev) => ({
             ...prev,
             [name]: value,
+        }));
+
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
         }));
     };
 
@@ -130,6 +143,8 @@ const LeadForm = ({ mode, leadId }) => {
         documents: [],
     });
 
+    const [errors, setErrors] = useState({});
+
     useEffect(() => {
         if (mode !== "edit" || !leadId) return;
 
@@ -142,25 +157,69 @@ const LeadForm = ({ mode, leadId }) => {
     }, [mode, leadId]);
 
     const handleSubmit = () => {
-        if (!formData?.lead.trim()) {
-            alert("Lead Name is required.");
+        const newErrors = {};
+
+        if (!formData?.lead?.trim()) {
+            newErrors.lead = "Lead Name is required.";
+        }
+
+        if (!formData?.companyId) {
+            newErrors.companyId = "Company Name is required.";
+        }
+
+        if (!formData?.source) {
+            newErrors.source = "Lead Source is required.";
+        }
+
+        if (!formData?.score) {
+            newErrors.score = "Lead Score is required.";
+        }
+
+        if (!formData?.owner?.trim()) {
+            newErrors.owner = "Lead Owner is required.";
+        }
+
+        if (!formData?.status) {
+            newErrors.status = "Lead Status is required.";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+
+            setTimeout(() => {
+                const firstErrorField = document.querySelector(".is-invalid");
+
+                if (firstErrorField) {
+                    firstErrorField.scrollIntoView({
+                        behavior: "smooth",
+                        // block: "center",
+                    });
+
+                    firstErrorField.focus?.();
+                }
+            }, 0);
+
             return;
         }
 
-        if (!formData?.company.trim()) {
-            alert("Company Name is required.");
-            return;
-        }
+        const dataToSave = {
+            ...formData,
+            created:
+                mode === "edit" && formData?.created
+                    ? formData.created
+                    : new Date().toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                    }),
+        };
 
-        if (!formData?.email.trim()) {
-            alert("Email is required.");
-            return;
-        }
+        setErrors({});
 
         if (mode === "add") {
-            addLead(formData);
+            addLead(dataToSave);
         } else {
-            updateLead(leadId, formData);
+            updateLead(leadId, dataToSave);
         }
 
         router.push("/admin/leads");
@@ -189,14 +248,21 @@ const LeadForm = ({ mode, leadId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Lead Name</label>
+
                                     <input
                                         type="text"
                                         name="lead"
-                                        className="form-control"
+                                        className={`form-control ${errors?.lead ? "is-invalid" : ""}`}
                                         value={formData?.lead}
                                         onChange={handleChange}
                                         placeholder="e.g. Rohan Mehta"
                                     />
+
+                                    {errors?.lead && (
+                                        <div className="form-error">
+                                            {errors?.lead}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -222,7 +288,14 @@ const LeadForm = ({ mode, leadId }) => {
                                         placeholder="Select Budget"
                                         options={budgetOptions}
                                         onChange={handleChange}
+                                        className={errors?.budget ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.budget && (
+                                        <div className="form-error">
+                                            {errors?.budget}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -261,13 +334,21 @@ const LeadForm = ({ mode, leadId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Company Name</label>
+
                                     <CustomDropdown
                                         name="company"
                                         value={formData?.companyId}
                                         placeholder="Select Company"
                                         options={companyOptions}
                                         onChange={handleCompanyChange}
+                                        className={errors?.companyId ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.companyId && (
+                                        <div className="form-error">
+                                            {errors?.companyId}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -361,14 +442,16 @@ const LeadForm = ({ mode, leadId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Email Address</label>
+
                                     <input
                                         type="email"
                                         name="email"
-                                        className="form-control"
+                                        className={`form-control`}
                                         value={formData?.email}
                                         readOnly
                                         placeholder="e.g. rohan@company.com"
                                     />
+
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -421,7 +504,14 @@ const LeadForm = ({ mode, leadId }) => {
                                         placeholder="Select Source"
                                         options={sourceOptions}
                                         onChange={handleChange}
+                                        className={errors?.source ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.source && (
+                                        <div className="form-error">
+                                            {errors?.source}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -431,11 +521,17 @@ const LeadForm = ({ mode, leadId }) => {
                                     <input
                                         type="text"
                                         name="owner"
-                                        className="form-control"
+                                        className={`form-control ${errors?.owner ? "is-invalid" : ""}`}
                                         value={formData?.owner}
                                         readOnly
                                         placeholder="e.g. rohan@company.com"
                                     />
+
+                                    {errors?.owner && (
+                                        <div className="invalid-feedback">
+                                            {errors?.owner}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -447,7 +543,14 @@ const LeadForm = ({ mode, leadId }) => {
                                         placeholder="Select Status"
                                         options={statusOptions}
                                         onChange={handleChange}
+                                        className={errors?.status ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.status && (
+                                        <div className="form-error">
+                                            {errors?.status}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -460,7 +563,14 @@ const LeadForm = ({ mode, leadId }) => {
                                         placeholder="Select Score"
                                         options={scoreOptions}
                                         onChange={handleChange}
+                                        className={errors?.score ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.score && (
+                                        <div className="form-error">
+                                            {errors?.score}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">

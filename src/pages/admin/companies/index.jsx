@@ -8,7 +8,8 @@ import { useEffect, useMemo, useState } from "react";
 import {
   initializeCompanies,
   getCompanies,
-  deleteCompany
+  getCompanyById,
+  deleteCompany,
 } from "@/utils/companiesStorage";
 import {
   getCountryOptions,
@@ -78,6 +79,7 @@ const ListPage = () => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
+  const selectedCompany = getCompanyById(selectedCompanyId);
 
   const countryOptions = getCountryOptions();
 
@@ -159,7 +161,12 @@ const ListPage = () => {
           }}
           onConfirm={confirmDelete}
           title="Delete Company"
-          message="Are you sure you want to delete this company?"
+          message={
+            <>
+              Are you sure you want to delete{" "}
+              <span className="fw-bold text-black">"{selectedCompany?.company} ?"</span>
+            </>
+          }
         />
       </div>
 

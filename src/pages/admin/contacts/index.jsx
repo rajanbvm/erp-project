@@ -9,6 +9,7 @@ import DeleteModal from "@/components/common/DeleteModal";
 import {
   getContacts,
   initializeContacts,
+  getContactById,
   deleteContact,
 } from "@/utils/contactsStorage";
 import { getCompanies, initializeCompanies } from "@/utils/companiesStorage";
@@ -20,6 +21,7 @@ const ListPage = () => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedContactId, setSelectedContactId] = useState(null);
+  const selectedContact = getContactById(selectedContactId);
 
 
   const loadContacts = () => {
@@ -187,7 +189,14 @@ const ListPage = () => {
           }}
           onConfirm={confirmDelete}
           title="Delete Contact"
-          message="Are you sure you want to delete this contact?"
+          // message={`Are you sure you want to delete "${selectedContact?.contact}"?`}
+           message={
+            <>
+              Are you sure you want to delete{" "}
+              <span className="fw-bold text-black">"{selectedContact?.contact} ?"</span>
+            </>
+          }
+
         />
       </div>
 

@@ -8,6 +8,7 @@ const CustomDropdown = ({
     placeholder,
     onChange,
     searchable = false,
+    className = "",
 }) => {
     const [search, setSearch] = useState("");
 
@@ -49,7 +50,7 @@ const CustomDropdown = ({
         <Dropdown>
             <Dropdown.Toggle
                 variant="light"
-                className="form-select"
+                className={`form-select ${className}`}
             >
                 {selected
                     ? typeof selected === "object"

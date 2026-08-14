@@ -152,12 +152,22 @@ export const getCompanyById = (id) => {
 export const addCompany = (company) => {
   const companies = getCompanies();
 
-  companies.unshift({
+  const newCompany = {
     ...company,
-    id: `CMP-${Date.now()}`,
-  });
+    id: generateCompanyId(companies),
+  };
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(companies));
+  const updatedCompanies = [
+    ...companies,
+    newCompany,
+  ];
+
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify(updatedCompanies)
+  );
+
+  return newCompany;
 };
 
 export const updateCompany = (id, data) => {
@@ -173,3 +183,24 @@ export const deleteCompany = (id) => {
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(companies));
 }; 
+
+const generateCompanyId = (companies) => {
+  if (!companies.length) {
+    return "CMP-001";
+  }
+
+  const numbers = companies
+    .map((company) => {
+      const match = company?.id?.match(/CMP-(\d+)/);
+
+      return match ? parseInt(match[1], 10) : 0;
+    })
+    .filter(Boolean);
+
+  const nextNumber =
+    numbers.length > 0
+      ? Math.max(...numbers) + 1
+      : 1;
+
+  return `CMP-${String(nextNumber).padStart(3, "0")}`;
+};

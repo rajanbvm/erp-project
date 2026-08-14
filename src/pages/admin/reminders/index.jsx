@@ -188,7 +188,7 @@ const reminderSettings = [
     <>
       <PageBanner title="Reminders" />
 
-      <div className="row opp-row mb-32">
+      {/* <div className="row opp-row mb-32">
         {RemindersCards.map((card) => (
           <div key={card.id} className="col-lg-3 col-md-6">
             <div className="overview-card">
@@ -201,7 +201,7 @@ const reminderSettings = [
             </div>
           </div>
         ))}
-      </div>
+      </div> */}
 
       <PageSearch
         // showImport={true}

@@ -1,16 +1,16 @@
 
-import LeadForm from "@/components/LeadForm";
+import OpportunitiesForm from "@/components/OpportunitiesForm";
 import { useRouter } from "next/router";
 
-export default function EditLead() {
+export default function EditOpportunities() {
 
     const router = useRouter();
 
     return (
         <>
-            <LeadForm
+            <OpportunitiesForm
                 mode="edit"
-                leadId={router.query.id}
+                opportunityId={router?.query.id}
             />
         </>
     );

@@ -3,6 +3,7 @@ import { initializeContacts } from "./contactsStorage";
 import { initializeLeads } from "./leadsStorage";
 import { initializeQuotations } from "./quotationStorage";
 import { initializeActivities } from "./activitiesStorage";
+import { initializeOpportunities } from "./opportunitiesStorage";
 
 export const resetERPStorage = () => {
     localStorage.removeItem("companiesData");
@@ -10,12 +11,14 @@ export const resetERPStorage = () => {
     localStorage.removeItem("leadsData");
     localStorage.removeItem("quotationData");
     localStorage.removeItem("activitiesData");
+    localStorage.removeItem("opportunitiesData");
 
     initializeCompanies();
     initializeContacts();
     initializeLeads();
     initializeQuotations();
     initializeActivities();
+    initializeOpportunities();
 
     window.location.reload();
 };
