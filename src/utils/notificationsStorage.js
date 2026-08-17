@@ -1,130 +1,342 @@
 const STORAGE_KEY = "notificationsData";
 
-const defaultNotifications = [];
-
-const generateNotificationId = () => {
-    const notifications = getNotifications();
-
-    return `NOT-${String(notifications.length + 1).padStart(3, "0")}`;
-};
-
-export const initializeNotifications = () => {
-    if (typeof window === "undefined") return;
-
-    const existingData = localStorage.getItem(STORAGE_KEY);
-
-    if (!existingData) {
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(defaultNotifications)
-        );
-    }
-};
+/* =========================================================
+   GET NOTIFICATIONS
+========================================================= */
 
 export const getNotifications = () => {
-    if (typeof window === "undefined") return [];
+    if (typeof window === "undefined") {
+        return [];
+    }
 
     const data = localStorage.getItem(STORAGE_KEY);
 
     return data ? JSON.parse(data) : [];
 };
 
-export const addNotification = ({
-    type,
-    action,
-    title,
-    message,
-    recordId = null,
-}) => {
-    if (typeof window === "undefined") return;
 
-    const notifications = getNotifications();
+/* =========================================================
+   SAVE NOTIFICATIONS
+========================================================= */
 
-    const newNotification = {
-        id: generateNotificationId(),
-        type,
-        action,
-        title,
-        message,
-        recordId,
-        isRead: false,
-        createdAt: new Date().toISOString(),
-    };
-
-    notifications.unshift(newNotification);
+const saveNotifications = (notifications) => {
+    if (typeof window === "undefined") {
+        return;
+    }
 
     localStorage.setItem(
         STORAGE_KEY,
         JSON.stringify(notifications)
     );
 
-    // Notify other components immediately
-    window.dispatchEvent(new Event("notificationsUpdated"));
+    window.dispatchEvent(
+        new Event("notificationsUpdated")
+    );
+};
+
+
+/* =========================================================
+   ADD NOTIFICATION
+========================================================= */
+
+export const addNotification = (notification) => {
+
+    const notifications = getNotifications();
+
+    const newNotification = {
+        id: Date.now(),
+        ...notification,
+        isRead: false,
+        createdAt: new Date().toISOString(),
+    };
+
+    notifications.unshift(newNotification);
+
+    saveNotifications(notifications);
 
     return newNotification;
 };
 
-export const markNotificationAsRead = (notificationId) => {
-    const notifications = getNotifications();
 
-    const updatedNotifications = notifications.map((notification) =>
-        notification.id === notificationId
-            ? { ...notification, isRead: true }
-            : notification
-    );
+/* =========================================================
+   NOTIFICATION: ADDED
+========================================================= */
 
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(updatedNotifications)
-    );
+export const notifyAdded = (
+    type,
+    name,
+    recordId = null
+) => {
 
-    window.dispatchEvent(new Event("notificationsUpdated"));
+    return addNotification({
+        type,
+        action: "added",
+        recordId,
+
+        title: `New ${type} Added`,
+
+        message:
+            `${type} "${name}" was added successfully.`,
+    });
+
 };
+
+
+/* =========================================================
+   NOTIFICATION: UPDATED
+========================================================= */
+
+export const notifyUpdated = (
+    type,
+    name,
+    recordId = null
+) => {
+
+    return addNotification({
+        type,
+        action: "updated",
+        recordId,
+
+        title: `${type} Updated`,
+
+        message:
+            `${type} "${name}" was updated successfully.`,
+    });
+
+};
+
+
+/* =========================================================
+   NOTIFICATION: DELETED
+========================================================= */
+
+export const notifyDeleted = (
+    type,
+    name,
+    recordId = null
+) => {
+
+    return addNotification({
+        type,
+        action: "deleted",
+        recordId,
+
+        title: `${type} Deleted`,
+
+        message:
+            `${type} "${name}" was deleted successfully.`,
+    });
+
+};
+
+
+/* =========================================================
+   REMINDER OVERDUE
+========================================================= */
+
+export const notifyReminderOverdue = (
+    reminderName,
+    recordId = null
+) => {
+
+    const notifications =
+        getNotifications();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Prevent duplicate overdue notifications
+    |--------------------------------------------------------------------------
+    */
+
+    const alreadyExists =
+        notifications.some(
+            (notification) =>
+                notification?.type === "Reminder" &&
+                notification?.action === "overdue" &&
+                notification?.recordId === recordId
+        );
+
+    if (alreadyExists) {
+        return null;
+    }
+
+    return addNotification({
+
+        type: "Reminder",
+
+        action: "overdue",
+
+        recordId,
+
+        title: "Reminder Overdue",
+
+        message:
+            `Reminder "${reminderName}" is overdue.`,
+
+    });
+
+};
+
+
+/* =========================================================
+   MARK AS READ
+========================================================= */
+
+export const markNotificationAsRead = (id) => {
+
+    const notifications =
+        getNotifications();
+
+    const updatedNotifications =
+        notifications.map(
+            (notification) =>
+                notification?.id === id
+                    ? {
+                        ...notification,
+                        isRead: true,
+                    }
+                    : notification
+        );
+
+    saveNotifications(
+        updatedNotifications
+    );
+};
+
+
+/* =========================================================
+   MARK ALL AS READ
+========================================================= */
 
 export const markAllNotificationsAsRead = () => {
-    const notifications = getNotifications();
 
-    const updatedNotifications = notifications.map((notification) => ({
-        ...notification,
-        isRead: true,
-    }));
+    const notifications =
+        getNotifications();
 
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(updatedNotifications)
+    const updatedNotifications =
+        notifications.map(
+            (notification) => ({
+                ...notification,
+                isRead: true,
+            })
+        );
+
+    saveNotifications(
+        updatedNotifications
     );
-
-    window.dispatchEvent(new Event("notificationsUpdated"));
 };
 
-export const deleteNotification = (notificationId) => {
-    const notifications = getNotifications();
 
-    const updatedNotifications = notifications.filter(
-        (notification) => notification.id !== notificationId
+/* =========================================================
+   DELETE NOTIFICATION
+========================================================= */
+
+export const deleteNotification = (id) => {
+
+    const notifications =
+        getNotifications();
+
+    const updatedNotifications =
+        notifications.filter(
+            (notification) =>
+                notification?.id !== id
+        );
+
+    saveNotifications(
+        updatedNotifications
     );
-
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(updatedNotifications)
-    );
-
-    window.dispatchEvent(new Event("notificationsUpdated"));
 };
 
-export const clearNotifications = () => {
-    localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify([])
-    );
 
-    window.dispatchEvent(new Event("notificationsUpdated"));
+/* =========================================================
+   CLEAR ALL NOTIFICATIONS
+========================================================= */
+
+export const clearAllNotifications = () => {
+
+    saveNotifications([]);
+
 };
+
+
+/* =========================================================
+   GET UNREAD COUNT
+========================================================= */
 
 export const getUnreadNotificationCount = () => {
-    const notifications = getNotifications();
 
-    return notifications.filter(
-        (notification) => !notification.isRead
+    return getNotifications().filter(
+        (notification) =>
+            !notification?.isRead
     ).length;
+
+};
+
+
+/* =========================================================
+   GET NOTIFICATION ROUTE
+========================================================= */
+
+export const getNotificationRoute = (
+    notification
+) => {
+
+    if (!notification?.recordId) {
+        return null;
+    }
+
+    switch (notification?.type) {
+
+        case "Lead":
+
+            return `/admin/leads/view/${notification?.recordId}`;
+
+
+        case "Quotation":
+
+            return `/admin/quotations/view/${notification?.recordId}`;
+
+
+        case "Company":
+
+            return `/admin/companies/view/${notification?.recordId}`;
+
+
+        case "Contact":
+
+            return `/admin/contacts/view/${notification?.recordId}`;
+
+
+        case "Opportunity":
+
+            return `/admin/opportunities/view/${notification?.recordId}`;
+
+
+        case "Activity":
+
+            return `/admin/activities/view/${notification?.recordId}`;
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Reminder
+        |--------------------------------------------------------------------------
+        |
+        | Reminders are generated from Activities.
+        | Therefore Reminder notifications should open
+        | the Activity Details page.
+        |
+        */
+
+        case "Reminder":
+
+            return `/admin/activities/view/${notification?.recordId}`;
+
+
+        default:
+
+            return null;
+
+    }
+
 };

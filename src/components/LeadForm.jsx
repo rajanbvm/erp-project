@@ -34,7 +34,7 @@ import Link from 'next/link';
 import {
     notifyAdded,
     notifyUpdated,
-} from "@/utils/notificationHelpers";
+} from "@/utils/notificationsStorage";
 
 const LeadForm = ({ mode, leadId }) => {
 

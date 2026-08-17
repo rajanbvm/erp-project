@@ -20,6 +20,10 @@ import {
     updateContact,
     getContactById,
 } from "@/utils/contactsStorage";
+import {
+    notifyAdded,
+    notifyUpdated,
+} from "@/utils/notificationsStorage";
 
 import {
     initializeCompanies,
@@ -37,6 +41,7 @@ const ContactsForm = ({ mode, contactId }) => {
     const [countryOptions, setCountryOptions] = useState([]);
     const [stateOptions, setStateOptions] = useState([]);
     const [cityOptions, setCityOptions] = useState([]);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         initializeCompanies();
@@ -72,6 +77,11 @@ const ContactsForm = ({ mode, contactId }) => {
 
             return updated;
         });
+
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
     };
 
     const [formData, setFormData] = useState({
@@ -126,31 +136,68 @@ const ContactsForm = ({ mode, contactId }) => {
         }
     }, [mode, contactId]);
 
-    const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-        if (!formData?.contact.trim()) {
-            alert("Contact Name is required.");
+    const newErrors = {};
+
+    if (!formData?.contact?.trim()) {
+        newErrors.contact = "Contact Name is required.";
+    }
+
+    if (!formData?.email?.trim()) {
+        newErrors.email = "Email is required.";
+    }
+
+    if (!formData?.companyId) {
+        newErrors.companyId = "Please select a company.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+
+            setTimeout(() => {
+                const firstErrorField = document.querySelector(".is-invalid");
+
+                if (firstErrorField) {
+                    firstErrorField.scrollIntoView({
+                        behavior: "smooth",
+                        // block: "center",
+                    });
+
+                    firstErrorField.focus?.();
+                }
+            }, 0);
+
             return;
         }
 
-        if (!formData?.email.trim()) {
-            alert("Email is required.");
-            return;
-        }
+    if (mode === "add") {
 
-        if (!formData?.companyId) {
-            alert("Please select a company.");
-            return;
-        }
+        const newContact = addContact(formData);
 
-        if (mode === "add") {
-            addContact(formData);
-        } else {
-            updateContact(contactId, formData);
-        }
+        notifyAdded(
+            "Contact",
+            formData?.contact,
+            newContact?.id
+        );
 
-        router.push("/admin/contacts");
-    };
+    } else {
+
+        updateContact(
+            contactId,
+            formData
+        );
+
+        notifyUpdated(
+            "Contact",
+            formData?.contact,
+            contactId
+        );
+    }
+
+    router.push("/admin/contacts");
+};
 
     return (
         <>
@@ -164,12 +211,7 @@ const ContactsForm = ({ mode, contactId }) => {
                     </div>
 
                 </div>
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        handleSubmit();
-                    }}
-                >
+                <form onSubmit={handleSubmit}>
 
                     <div className="form-outer mb-3">
                         <div className="row">
@@ -181,11 +223,17 @@ const ContactsForm = ({ mode, contactId }) => {
                                     <input
                                         type="text"
                                         name="contact"
-                                        className="form-control"
+                                        className={`form-control ${errors?.contact ? "is-invalid" : ""}`}
                                         value={formData?.contact}
                                         onChange={handleChange}
                                         placeholder="e.g. Rajesh Mehta"
                                     />
+
+                                    {errors?.contact && (
+                                        <div className="form-error">
+                                            {errors?.contact}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -237,11 +285,17 @@ const ContactsForm = ({ mode, contactId }) => {
                                     <input
                                         type="email"
                                         name="email"
-                                        className="form-control"
+                                        className={`form-control ${errors?.email ? "is-invalid" : ""}`}
                                         value={formData?.email}
                                         onChange={handleChange}
                                         placeholder="name@company.ae"
                                     />
+
+                                    {errors?.email && (
+                                        <div className="form-error">
+                                            {errors?.email}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -268,14 +322,20 @@ const ContactsForm = ({ mode, contactId }) => {
                             <div className="col-lg-6 col-md-6">
                                 <div className="form-group">
                                     <label>Company</label>
-
                                     <CustomDropdown
                                         name="companyId"
                                         value={formData?.companyId}
                                         placeholder="Select Company"
                                         options={companyOptions}
                                         onChange={handleChange}
+                                        className={errors?.companyId ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.companyId && (
+                                        <div className="form-error">
+                                            {errors?.companyId}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 

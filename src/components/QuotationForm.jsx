@@ -14,6 +14,10 @@ import {
     updateQuotation,
 } from "@/utils/quotationStorage";
 import {
+    notifyAdded,
+    notifyUpdated,
+} from "@/utils/notificationsStorage";
+import {
     industryOptions,
     sourceOptions,
     ownerOptions,
@@ -30,6 +34,7 @@ const QuotationForm = ({ mode, quotationId }) => {
 
     const [companyOptions, setCompanyOptions] = useState([]);
     const [companies, setCompanies] = useState([]);
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         initializeCompanies();
@@ -49,30 +54,37 @@ const QuotationForm = ({ mode, quotationId }) => {
         const { name, value } = e.target;
 
         if (name === "customer") {
-            // const selectedCompany = companies.find(
-            //     (company) => company.id === value
-            // );
             const selectedCompany = companies.find(
-                (company) => company.company === value
+                (company) => company?.company === value
             );
 
             if (selectedCompany) {
                 setFormData((prev) => ({
                     ...prev,
                     customer: value,
-                    contactPerson: selectedCompany.contactPerson || "",
-                    email: selectedCompany.email || "",
-                    phone: selectedCompany.phone || "",
-                    industry: selectedCompany.industryType || "",
+                    contactPerson: selectedCompany?.contactPerson || "",
+                    email: selectedCompany?.email || "",
+                    phone: selectedCompany?.phone || "",
+                    industry: selectedCompany?.industryType || "",
                 }));
-
-                return;
             }
+
+            setErrors((prev) => ({
+                ...prev,
+                customer: "",
+            }));
+
+            return;
         }
 
         setFormData((prev) => ({
             ...prev,
             [name]: value,
+        }));
+
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
         }));
     };
 
@@ -115,15 +127,71 @@ const QuotationForm = ({ mode, quotationId }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        if (!formData?.customer.trim()) {
-            alert("Customer Name is required.");
+        const newErrors = {};
+
+        if (!formData?.customer?.trim()) {
+            newErrors.customer = "Customer / Company is required.";
+        }
+
+        if (!formData?.quotationValue?.trim()) {
+            newErrors.quotationValue = "Quotation value is required.";
+        }
+
+        if (!formData?.vat) {
+            newErrors.vat = "VAT is required.";
+        }
+
+        if (!formData?.paymentTerms?.trim()) {
+            newErrors.paymentTerms = "Payment terms are required.";
+        }
+
+        if (!formData?.owner) {
+            newErrors.owner = "Owner is required.";
+        }
+
+        if (!formData?.priority) {
+            newErrors.priority = "Priority is required.";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+
+            setTimeout(() => {
+                const firstErrorField = document.querySelector(".is-invalid");
+
+                if (firstErrorField) {
+                    firstErrorField.scrollIntoView({
+                        behavior: "smooth",
+                        // block: "center",
+                    });
+                    firstErrorField.focus?.();
+                }
+            }, 0);
+
             return;
         }
 
         if (mode === "add") {
-            addQuotation(formData);
+            const newQuotation = addQuotation(formData);
+
+            // Add notification
+            notifyAdded(
+                "Quotation",
+                formData?.customer,
+                newQuotation?.id
+            );
         } else {
-            updateQuotation(quotationId, formData);
+            updateQuotation(
+                quotationId,
+                formData
+            );
+
+            // Update notification
+            notifyUpdated(
+                "Quotation",
+                formData?.customer,
+                quotationId
+            );
         }
 
         router.push("/admin/quotations");
@@ -150,13 +218,21 @@ const QuotationForm = ({ mode, quotationId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Customer / Company</label>
+
                                     <CustomDropdown
                                         name="customer"
                                         value={formData?.customer}
                                         placeholder="Select Customer"
                                         options={companyOptions}
                                         onChange={handleChange}
+                                        className={errors?.customer ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.customer && (
+                                        <div className="form-error">
+                                            {errors?.customer}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
@@ -234,11 +310,18 @@ const QuotationForm = ({ mode, quotationId }) => {
                                     <input
                                         type="text"
                                         name="quotationValue"
-                                        className="form-control"
+                                        className={`form-control ${errors?.quotationValue ? "is-invalid" : ""
+                                            }`}
                                         value={formData?.quotationValue}
                                         onChange={handleChange}
                                         placeholder="e.g. $250"
                                     />
+
+                                    {errors?.quotationValue && (
+                                        <div className="form-error">
+                                            {errors?.quotationValue}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -262,7 +345,14 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         placeholder="Select Vat %"
                                         options={vatOptions}
                                         onChange={handleChange}
+                                        className={errors?.customer ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.vat && (
+                                        <div className="form-error">
+                                            {errors?.vat}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -271,11 +361,18 @@ const QuotationForm = ({ mode, quotationId }) => {
                                     <input
                                         type="text"
                                         name="paymentTerms"
-                                        className="form-control"
+                                        className={`form-control ${errors?.paymentTerms ? "is-invalid" : ""
+                                            }`}
                                         value={formData?.paymentTerms}
                                         onChange={handleChange}
-                                        placeholder="e.g. $250"
+                                        placeholder="e.g. 30 Days"
                                     />
+
+                                    {errors?.paymentTerms && (
+                                        <div className="form-error">
+                                            {errors?.paymentTerms}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -287,7 +384,14 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         placeholder="Assign Owner"
                                         options={ownerOptions}
                                         onChange={handleChange}
+                                        className={`${errors?.owner ? "is-invalid" : ""}`}
                                     />
+
+                                    {errors?.owner && (
+                                        <div className="form-error">
+                                            {errors?.owner}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -299,7 +403,14 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         placeholder="Select Priority"
                                         options={priorityOptions}
                                         onChange={handleChange}
+                                        className={`${errors?.priority ? "is-invalid" : ""}`}
                                     />
+
+                                    {errors?.priority && (
+                                        <div className="form-error">
+                                            {errors?.priority}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-12">

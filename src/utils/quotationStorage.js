@@ -106,16 +106,20 @@ export const deleteQuotation = (id) => {
 /* Add */
 
 export const addQuotation = (quotation) => {
-  const data = getQuotations();
+    const data = getQuotations();
 
-  data.push({
-    ...quotation,
-    id: data.length
-      ? Math.max(...data.map((x) => x.id)) + 1
-      : 1,
-  });
+    const newQuotation = {
+        ...quotation,
+        id: data.length
+            ? Math.max(...data.map((x) => x.id)) + 1
+            : 1,
+    };
 
-  saveQuotations(data);
+    data.push(newQuotation);
+
+    saveQuotations(data);
+
+    return newQuotation;
 };
 
 /* Update */

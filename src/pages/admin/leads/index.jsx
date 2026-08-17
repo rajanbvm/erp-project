@@ -137,7 +137,7 @@ const ListPage = () => {
   };
 
   const dropdownItems = useMemo(() => {
-    const statuses = [...new Set(leadsData.map((lead) => lead.status))];
+    const statuses = [...new Set(leadsData?.map((lead) => lead.status))];
 
     return [
       {
@@ -156,7 +156,7 @@ const ListPage = () => {
       return leadsData;
     }
 
-    return leadsData.filter(
+    return leadsData?.filter(
       (lead) => lead.status === selectedStatus
     );
   }, [selectedStatus, leadsData]);

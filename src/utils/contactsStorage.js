@@ -195,14 +195,21 @@ export const getContactsByCompanyId = (companyId) => {
 };
 
 export const addContact = (contact) => {
-  const contacts = getContacts();
+    const contacts = getContacts();
 
-  contacts.unshift({
-    ...contact,
-    id: `CNT-${Date.now()}`,
-  });
+    const newContact = {
+        ...contact,
+        id: `CNT-${Date.now()}`,
+    };
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(contacts));
+    contacts.unshift(newContact);
+
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(contacts)
+    );
+
+    return newContact;
 };
 
 export const updateContact = (id, data) => {

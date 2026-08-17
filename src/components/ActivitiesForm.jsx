@@ -16,7 +16,10 @@ import {
     initializeCompanies,
     getCompanies,
 } from "@/utils/companiesStorage";
-
+import {
+    notifyAdded,
+    notifyUpdated,
+} from "@/utils/notificationsStorage";
 import {
     initializeActivities,
     getActivityById,
@@ -32,6 +35,7 @@ const ActivitiesForm = ({
     const router = useRouter();
 
     const [companies, setCompanies] = useState([]);
+    const [errors, setErrors] = useState({});
 
     const [formData, setFormData] = useState({
         taskTitle: "",
@@ -127,7 +131,6 @@ const ActivitiesForm = ({
     */
 
     const handleChange = (e) => {
-
         const {
             name,
             value,
@@ -138,6 +141,10 @@ const ActivitiesForm = ({
             [name]: value,
         }));
 
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
     };
 
     /*
@@ -147,31 +154,46 @@ const ActivitiesForm = ({
     */
 
     const handleSubmit = (e) => {
-
         e.preventDefault();
 
+        const newErrors = {};
+
         if (!formData?.taskTitle?.trim()) {
-            alert("Task Title is required.");
-            return;
+            newErrors.taskTitle = "Task Title is required.";
         }
 
         if (!formData?.assignee) {
-            alert("Please select an assignee.");
-            return;
+            newErrors.assignee = "Please select an assignee.";
         }
 
         if (!formData?.dueDate) {
-            alert("Due Date is required.");
-            return;
+            newErrors.dueDate = "Due Date is required.";
         }
 
         if (!formData?.dueTime) {
-            alert("Due Time is required.");
-            return;
+            newErrors.dueTime = "Due Time is required.";
         }
 
         if (!formData?.relatedTo) {
-            alert("Please select a company.");
+            newErrors.relatedTo = "Please select a company.";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+
+            setTimeout(() => {
+                const firstErrorField = document.querySelector(".is-invalid");
+
+                if (firstErrorField) {
+                    firstErrorField.scrollIntoView({
+                        behavior: "smooth",
+                        // block: "center",
+                    });
+
+                    firstErrorField.focus?.();
+                }
+            }, 0);
+
             return;
         }
 
@@ -181,7 +203,13 @@ const ActivitiesForm = ({
 
         if (mode === "add") {
 
-            addActivity(activityData);
+            const newActivity = addActivity(activityData);
+
+            notifyAdded(
+                "Activity",
+                formData?.taskTitle,
+                newActivity?.id
+            );
 
         } else {
 
@@ -190,10 +218,14 @@ const ActivitiesForm = ({
                 activityData
             );
 
+            notifyUpdated(
+                "Activity",
+                formData?.taskTitle,
+                activityId
+            );
         }
 
         router.push("/admin/activities");
-
     };
 
     return (
@@ -247,11 +279,17 @@ const ActivitiesForm = ({
                                     <input
                                         type="text"
                                         name="taskTitle"
-                                        className="form-control"
+                                        className={`form-control ${errors?.taskTitle ? "is-invalid" : ""}`}
                                         value={formData?.taskTitle}
                                         onChange={handleChange}
                                         placeholder="e.g. CRM Software Deployment"
                                     />
+
+                                    {errors?.taskTitle && (
+                                        <div className="form-error">
+                                            {errors?.taskTitle}
+                                        </div>
+                                    )}
 
                                 </div>
 
@@ -274,7 +312,14 @@ const ActivitiesForm = ({
                                         placeholder="Select Assignee"
                                         options={ownerOptions}
                                         onChange={handleChange}
+                                        className={errors?.assignee ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.assignee && (
+                                        <div className="form-error">
+                                            {errors?.assignee}
+                                        </div>
+                                    )}
 
                                 </div>
 
@@ -294,10 +339,16 @@ const ActivitiesForm = ({
                                     <input
                                         type="date"
                                         name="dueDate"
-                                        className="form-control"
+                                        className={`form-control ${errors?.dueDate ? "is-invalid" : ""}`}
                                         value={formData?.dueDate}
                                         onChange={handleChange}
                                     />
+
+                                    {errors?.dueDate && (
+                                        <div className="form-error">
+                                            {errors?.dueDate}
+                                        </div>
+                                    )}
 
                                 </div>
 
@@ -317,10 +368,16 @@ const ActivitiesForm = ({
                                     <input
                                         type="time"
                                         name="dueTime"
-                                        className="form-control"
+                                        className={`form-control ${errors?.dueTime ? "is-invalid" : ""}`}
                                         value={formData?.dueTime}
                                         onChange={handleChange}
                                     />
+
+                                    {errors?.dueTime && (
+                                        <div className="form-error">
+                                            {errors?.dueTime}
+                                        </div>
+                                    )}
 
                                 </div>
 
@@ -366,7 +423,14 @@ const ActivitiesForm = ({
                                         placeholder="Select Company"
                                         options={companyOptions}
                                         onChange={handleChange}
+                                        className={errors?.relatedTo ? "is-invalid" : ""}
                                     />
+
+                                    {errors?.relatedTo && (
+                                        <div className="form-error">
+                                            {errors?.relatedTo}
+                                        </div>
+                                    )}
 
                                 </div>
 

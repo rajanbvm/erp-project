@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 import DashboardLayout from "@/components/layouts/DashboardLayout";
@@ -30,6 +30,15 @@ import { FaRegEye } from "react-icons/fa6";
 
 function Dashboard() {
   const router = useRouter();
+  const [leads, setLeads] = useState([]);
+
+  useEffect(() => {
+    const storedLeads = localStorage.getItem("leadsData");
+
+    if (storedLeads) {
+      setLeads(JSON.parse(storedLeads));
+    }
+  }, []);
 
   useEffect(() => {
     const adminUser = localStorage.getItem("adminUser");
@@ -85,32 +94,79 @@ function Dashboard() {
     { key: "lead", label: "LEAD" },
     { key: "company", label: "COMPANY" },
     { key: "source", label: "SOURCE" },
-    { key: "score", label: "SCORE" },
-    { key: "priority", label: "PRIORITY" },
-    { key: "probability", label: "PROBABILITY" },
+    {
+      key: "score",
+      label: "SCORE",
+      render: (row) => (
+        <span
+          style={{
+            color: getScoreColor(row?.score),
+            fontWeight: 500,
+          }}
+        >
+          {row?.score}
+        </span>
+      ),
+    },
+    { key: "created", label: "CREATED" },
+    {
+      key: "status",
+      label: "Status",
+      render: (row) => (
+        <span
+          style={{
+            color: statusColors[row?.status] || "#222",
+            fontWeight: 500,
+          }}
+        >
+          {row?.status}
+        </span>
+      ),
+    },
     { key: "owner", label: "OWNER" },
     {
       key: "action",
       label: "ACTION",
-      render: () => (
+      render: (row) => (
         <div className="text-center">
-        <FaRegEye className="eyeBtn" />
+          <FaRegEye
+            className="eyeBtn"
+            onClick={() => router.push(`/admin/leads/view/${row?.id}`)}
+          />
         </div>
       ),
     },
   ];
 
-  const rows = [
-    {
-      lead: "Ahmed Hassan",
-      company: "Falcon Group LLC",
-      source: "Google Ads",
-      score: 95,
-      priority: "Critical",
-      probability: "92%",
-      owner: "John Doe",
-    },
-  ];
+  const statusColors = {
+    "Qualified": "#173404",
+    "Proposal sent": "#26215C",
+    "Contacted": "#412402",
+    "New": "#0C447C",
+    "Negotiation": "#4A1B0C",
+    "Won": "#04342C",
+  };
+
+  const LeadRows = leads.map((lead) => ({
+    id: lead?.id,
+    lead: lead?.lead,
+    company: lead?.company,
+    source: lead?.source,
+    score: lead?.score,
+    created: lead?.created || "-",
+    status: lead?.status,
+    owner: lead?.owner,
+  }));
+
+  const ViewAllLeads = () => {
+    router.push(`/admin/leads`);
+  };
+
+  const getScoreColor = (score) => {
+    if (score < 50) return "#E24B4A";
+    if (score <= 75) return "#EF9F27";
+    return "#1D9E75";
+  };
 
   return (
     <>
@@ -276,7 +332,8 @@ function Dashboard() {
           title="AI Lead Scoring — Top Priorities"
           description="Ranked by conversion probability"
           columns={columns}
-          data={rows}
+          data={LeadRows}
+          onViewAll={ViewAllLeads}
         />
       </div>
     </>

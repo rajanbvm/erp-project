@@ -4,7 +4,7 @@ import { initializeLeads } from "./leadsStorage";
 import { initializeQuotations } from "./quotationStorage";
 import { initializeActivities } from "./activitiesStorage";
 import { initializeOpportunities } from "./opportunitiesStorage";
-import { initializeNotifications } from "./notificationsStorage";
+// import { initializeNotifications } from "./notificationsStorage";
 
 export const resetERPStorage = () => {
     localStorage.removeItem("companiesData");
@@ -21,7 +21,7 @@ export const resetERPStorage = () => {
     initializeQuotations();
     initializeActivities();
     initializeOpportunities();
-    initializeNotifications();
+    // initializeNotifications();
 
     window.location.reload();
 };

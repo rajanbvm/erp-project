@@ -150,24 +150,24 @@ export const getCompanyById = (id) => {
 };
 
 export const addCompany = (company) => {
-  const companies = getCompanies();
+    const companies = getCompanies();
 
-  const newCompany = {
-    ...company,
-    id: generateCompanyId(companies),
-  };
+    const newCompany = {
+        ...company,
+        id: generateCompanyId(companies),
+    };
 
-  const updatedCompanies = [
-    ...companies,
-    newCompany,
-  ];
+    const updatedCompanies = [
+        ...companies,
+        newCompany,
+    ];
 
-  localStorage.setItem(
-    STORAGE_KEY,
-    JSON.stringify(updatedCompanies)
-  );
+    localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(updatedCompanies)
+    );
 
-  return newCompany;
+    return newCompany;
 };
 
 export const updateCompany = (id, data) => {

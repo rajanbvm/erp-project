@@ -10,6 +10,9 @@ import DashIcon2 from "@/images/DashIcon2.png";
 import DashIcon3 from "@/images/DashIcon3.png";
 import DashIcon4 from "@/images/DashIcon4.png";
 import { useRouter } from "next/router";
+import {
+    notifyReminderOverdue,
+} from "@/utils/notificationsStorage";
 
 import {
   initializeActivities,
@@ -52,15 +55,28 @@ const ListPage = () => {
   |--------------------------------------------------------------------------
   */
 
-  const loadActivities = () => {
+ const loadActivities = () => {
 
     initializeActivities();
 
-    const activityList = getActivities();
+    const activityList = getActivities() || [];
 
-    setActivities(activityList || []);
+    setActivities(activityList);
 
-  };
+    activityList.forEach((activity) => {
+
+        const status = getReminderStatus(activity);
+
+        if (status !== "Overdue") {
+            return;
+        }
+
+        notifyReminderOverdue(
+            activity?.taskTitle || "Untitled Activity",
+            activity?.id
+        );
+    });
+};
 
   /*
   |--------------------------------------------------------------------------
@@ -512,17 +528,17 @@ const ListPage = () => {
       enabled: false,
     },
 
-    {
-      id: 3,
-      title: "Push Notifications",
-      enabled: true,
-    },
+    // {
+    //   id: 3,
+    //   title: "Push Notifications",
+    //   enabled: true,
+    // },
 
-    {
-      id: 4,
-      title: "In-App Alerts",
-      enabled: false,
-    },
+    // {
+    //   id: 4,
+    //   title: "In-App Alerts",
+    //   enabled: false,
+    // },
 
   ];
 

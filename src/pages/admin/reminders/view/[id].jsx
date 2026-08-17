@@ -1,255 +1,681 @@
-import PageBanner from '@/components/common/PageBanner'
+import PageBanner from "@/components/common/PageBanner";
 import {
-    getLeads,
-    getLeadById,
-} from "@/utils/leadsStorage";
+    getActivityById,
+    initializeActivities,
+} from "@/utils/activitiesStorage";
+import {
+    initializeCompanies,
+    getCompanies,
+} from "@/utils/companiesStorage";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Image from 'next/image';
+import Image from "next/image";
 import Buildings from "@/images/Buildings.svg";
 import Phone from "@/images/Phone.svg";
-import { FaCheck, FaRegFileLines } from "react-icons/fa6";
 import Envelope from "@/images/Envelope.svg";
-import { RiEdit2Fill, RiNumber2, RiNumber3, RiNumber4 } from "react-icons/ri";
-import { BsFillSendFill } from 'react-icons/bs';
-import Link from 'next/link';
+import { RiEdit2Fill } from "react-icons/ri";
+import { BsFillSendFill } from "react-icons/bs";
+import Link from "next/link";
 
-const LeadsDetails = () => {
+const ReminderDetails = () => {
 
     const router = useRouter();
     const { id } = router.query;
 
-    const [lead, setLead] = useState(null);
+    const [activity, setActivity] = useState(null);
+    const [company, setCompany] = useState(null);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Load Reminder / Activity
+    |--------------------------------------------------------------------------
+    */
 
     useEffect(() => {
-        if (!router.isReady) return;
 
-        const leads = getLeads();
+        if (!router.isReady) {
+            return;
+        }
 
-        const foundLead = getLeadById(id);
+        initializeActivities();
+        initializeCompanies();
 
-        setLead(foundLead || null);
+        const foundActivity =
+            getActivityById(id);
+
+        setActivity(
+            foundActivity || null
+        );
+
+        /*
+        |--------------------------------------------------------------------------
+        | Get Related Company
+        |--------------------------------------------------------------------------
+        */
+
+        if (foundActivity?.relatedTo) {
+
+            const companies =
+                getCompanies();
+
+            const foundCompany =
+                companies.find(
+                    (item) =>
+                        item?.id ===
+                        foundActivity?.relatedTo
+                );
+
+            setCompany(
+                foundCompany || null
+            );
+
+        }
+
     }, [router.isReady, id]);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Loading
+    |--------------------------------------------------------------------------
+    */
 
     if (!router.isReady) {
         return null;
     }
 
 
-    if (!lead) {
+    if (!activity) {
+
         return (
             <>
-                <PageBanner title="Lead Details" />
+                <PageBanner title="Reminder Details" />
+
                 <div className="bg-box text-center p-5">
-                    <h4>Loading...</h4>
+
+                    <h4>
+                        Reminder not found
+                    </h4>
+
                 </div>
             </>
         );
+
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reminder Date / Time
+    |--------------------------------------------------------------------------
+    */
+
+    const reminderDate = activity?.dueDate
+        ? new Date(
+            `${activity?.dueDate}T${activity?.dueTime || "00:00"}`
+        )
+        : null;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Format Date
+    |--------------------------------------------------------------------------
+    */
+
+    const formattedDate =
+        reminderDate
+            ? reminderDate.toLocaleDateString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                }
+            )
+            : "-";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Format Time
+    |--------------------------------------------------------------------------
+    */
+
+    const formattedTime =
+        reminderDate
+            ? reminderDate.toLocaleTimeString(
+                "en-IN",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                }
+            )
+            : "-";
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reminder Status
+    |--------------------------------------------------------------------------
+    */
+
+    const getReminderStatus = () => {
+
+        if (
+            activity?.status ===
+            "Completed"
+        ) {
+            return "Completed";
+        }
+
+        if (
+            activity?.status ===
+            "Cancelled"
+        ) {
+            return "Cancelled";
+        }
+
+        if (!reminderDate) {
+            return "Pending";
+        }
+
+        const now = new Date();
+
+        if (reminderDate < now) {
+            return "Overdue";
+        }
+
+        return "Scheduled";
+    };
+
+
+    const reminderStatus =
+        getReminderStatus();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Render
+    |--------------------------------------------------------------------------
+    */
 
     return (
         <>
-            <PageBanner title="Leads" />
+            <PageBanner title="Reminders" />
 
             <div className="bg-box">
+
+                {/* =====================================================
+                    HEADER
+                ===================================================== */}
+
                 <div className="table-header">
+
                     <div>
-                        <h3>{lead?.lead}</h3>
+
+                        <h3>
+                            {activity?.taskTitle}
+                        </h3>
+
                     </div>
+
+
                     <div className="QuoteDetailsStatus">
+
                         <span className="level-btn">
-                            {lead?.status}
+                            {reminderStatus}
                         </span>
+
                         <span className="level-btn">
-                            {lead?.source}
+                            {activity?.type}
                         </span>
-                        <span className="level-btn">
-                            Score {lead?.score}
-                        </span>
-                    </div>
-                </div>
-                <div className="form-outer mb-3">
-                    <h3 className="form-title">Lead Info</h3>
-                    <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-4">
-                            <div className="quote-box">
-                                <Image src={Buildings} />
-                                <span>{lead?.company}</span>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                            <div className="quote-box">
-                                <Image src={Phone} />
-                                <span>{lead?.primaryPhone}</span>
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                            <div className="quote-box">
-                                <Image src={Envelope} />
-                                <span>{lead?.email}</span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Lead Name</label>
-                                <h6 className="formValue">{lead?.lead}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Lead source</label>
-                                <h6 className="formValue">{lead?.source}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Score</label>
-                                <h6 className="formValue">{lead?.score}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Owner</label>
-                                <h6 className="formValue">
-                                    {lead?.owner}
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row QuoteInfo RowBorderBottom">
-
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Priority</label>
-                                <h6 className="formValue">{lead?.priority}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Created</label>
-                                <h6 className="formValue">
-                                    {lead?.created}
-                                </h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Status</label>
-                                <h6 className="formValue">
-                                    {lead?.status}
-                                </h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Industry</label>
-                                <h6 className="formValue">{lead?.industry}</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Annual Revenue</label>
-                                <h6 className="formValue">{lead?.annualRevenue}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Website</label>
-                                <h6 className="formValue">{lead?.website}</h6>
-                            </div>
-                        </div>
-                        <div className="col-lg-3 col-md-6">
-                            <div className="form-group mb-0">
-                                <label>Budget</label>
-                                <h6 className="formValue">{lead?.budget}</h6>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div className="row">
-                        <div className="col-lg-12">
-                            <div className="form-group mb-0">
-                                <label>Notes</label>
-                                <h6 className="formValue">
-                                    {lead?.notes}
-                                </h6>
-                            </div>
-                        </div>
                     </div>
 
                 </div>
 
+
+                {/* =====================================================
+                    REMINDER INFORMATION
+                ===================================================== */}
+
                 <div className="form-outer mb-3">
-                    <h3 className="form-title mb-0">Version History</h3>
+
+                    <h3 className="form-title">
+                        Reminder Information
+                    </h3>
+
+
+                    {/* =================================================
+                        TOP INFORMATION
+                    ================================================= */}
+
+                    <div className="row QuoteInfo RowBorderBottom">
+
+                        {/* Company */}
+
+                        <div className="col-lg-4">
+
+                            <div className="quote-box">
+
+                                <Image
+                                    src={Buildings}
+                                    alt="Company"
+                                />
+
+                                <span>
+                                    {company?.company ||
+                                        activity?.relatedTo ||
+                                        "-"}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* Assignee */}
+
+                        <div className="col-lg-4">
+
+                            <div className="quote-box">
+
+                                <Image
+                                    src={Phone}
+                                    alt="Assignee"
+                                />
+
+                                <span>
+                                    {activity?.assignee ||
+                                        "-"}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* Type */}
+
+                        <div className="col-lg-4">
+
+                            <div className="quote-box">
+
+                                <Image
+                                    src={Envelope}
+                                    alt="Type"
+                                />
+
+                                <span>
+                                    {activity?.type ||
+                                        "-"}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* =================================================
+                        BASIC INFORMATION
+                    ================================================= */}
+
+                    <div className="row QuoteInfo RowBorderBottom">
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Reminder
+                                </label>
+
+                                <h6 className="formValue">
+                                    {activity?.taskTitle}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Type
+                                </label>
+
+                                <h6 className="formValue">
+                                    {activity?.type}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Assignee
+                                </label>
+
+                                <h6 className="formValue">
+                                    {activity?.assignee}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Status
+                                </label>
+
+                                <h6 className="formValue">
+                                    {reminderStatus}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* =================================================
+                        DATE / TIME
+                    ================================================= */}
+
+                    <div className="row QuoteInfo RowBorderBottom">
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Due Date
+                                </label>
+
+                                <h6 className="formValue">
+                                    {formattedDate}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Due Time
+                                </label>
+
+                                <h6 className="formValue">
+                                    {formattedTime}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Company
+                                </label>
+
+                                <h6 className="formValue">
+                                    {company?.company || "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Activity ID
+                                </label>
+
+                                <h6 className="formValue">
+                                    {activity?.id}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    {/* =================================================
+                        CREATED INFORMATION
+                    ================================================= */}
+
+                    <div className="row QuoteInfo RowBorderBottom">
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Created
+                                </label>
+
+                                <h6 className="formValue">
+
+                                    {activity?.createdAt
+                                        ? new Date(
+                                            activity?.createdAt
+                                        ).toLocaleDateString(
+                                            "en-IN",
+                                            {
+                                                day: "2-digit",
+                                                month: "short",
+                                                year: "numeric",
+                                            }
+                                        )
+                                        : "-"}
+
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+
+                        <div className="col-lg-3 col-md-6">
+
+                            <div className="form-group mb-0">
+
+                                <label>
+                                    Related To
+                                </label>
+
+                                <h6 className="formValue">
+                                    {company?.company ||
+                                        activity?.relatedTo ||
+                                        "-"}
+                                </h6>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {/* =====================================================
+                    REMINDER TIMELINE
+                ===================================================== */}
+
+                <div className="form-outer mb-3">
+
+                    <h3 className="form-title mb-0">
+                        Reminder Details
+                    </h3>
+
                     <div className="">
+
                         <div className="col-approval-box ms-0">
+
                             <div className="approval-box">
+
                                 <div className="text">
-                                    <p>Next Follow-Up</p>
-                                    <h6 className="mb-0">{lead?.nextFollowUp}</h6>
+
+                                    <p>
+                                        Scheduled Date
+                                    </p>
+
+                                    <h6 className="mb-0">
+                                        {formattedDate}
+                                    </h6>
+
                                 </div>
+
                             </div>
+
                         </div>
+
+
                         <div className="col-approval-box ms-0">
+
                             <div className="approval-box">
+
                                 <div className="text">
-                                    <p>Last Call</p>
-                                    <h6 className="mb-0">{lead?.lastCall}</h6>
+
+                                    <p>
+                                        Scheduled Time
+                                    </p>
+
+                                    <h6 className="mb-0">
+                                        {formattedTime}
+                                    </h6>
+
                                 </div>
+
                             </div>
+
                         </div>
+
+
                         <div className="col-approval-box ms-0">
+
                             <div className="approval-box">
+
                                 <div className="text">
-                                    <p>Open Tasks</p>
-                                    <h6 className="mb-0">{lead?.openTasks}</h6>
+
+                                    <p>
+                                        Reminder Status
+                                    </p>
+
+                                    <h6 className="mb-0">
+                                        {reminderStatus}
+                                    </h6>
+
                                 </div>
+
                             </div>
+
                         </div>
+
+
                         <div className="col-approval-box ms-0">
+
                             <div className="approval-box">
+
                                 <div className="text">
-                                    <p>Director Final Approval</p>
-                                    <h6 className="mb-0">{lead?.meetingsScheduled}</h6>
+
+                                    <p>
+                                        Activity Type
+                                    </p>
+
+                                    <h6 className="mb-0">
+                                        {activity?.type || "-"}
+                                    </h6>
+
                                 </div>
+
                             </div>
+
                         </div>
+
                     </div>
+
                 </div>
 
+
+                {/* =====================================================
+                    ACTION BUTTONS
+                ===================================================== */}
 
                 <div className="form-action">
+
                     <button
+                        type="button"
                         className="btn btn-primary ms-2"
+                        onClick={() => {
+
+                            router.push(
+                                `/admin/activities/edit/${activity?.id}`
+                            );
+
+                        }}
                     >
+
                         <BsFillSendFill />
-                        <span>Create & Submit for Approval</span>
+
+                        <span>
+                            Mark / Update Activity
+                        </span>
+
                     </button>
+
+
                     <Link
-                        href={`/admin/leads/edit/${lead?.id}`}
+                        href={`/admin/activities/edit/${activity?.id}`}
                         className="btn btn-outline-primary mx-2"
                     >
+
                         <RiEdit2Fill />
-                        <span>Edit</span>
+
+                        <span>
+                            Edit
+                        </span>
+
                     </Link>
-                    {/* <button
-                        className="btn btn-outline-primary mx-2"
-                    >
-                        <FaRegFileLines />
-                        <span>Download PDF</span>
-                    </button> */}
+
                 </div>
 
-            </div >
-
+            </div>
         </>
-    )
-}
+    );
+};
 
-export default LeadsDetails
+export default ReminderDetails;

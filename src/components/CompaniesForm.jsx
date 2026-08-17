@@ -22,6 +22,11 @@ import {
 } from "@/utils/companiesStorage";
 import Link from 'next/link';
 
+import {
+    notifyAdded,
+    notifyUpdated,
+} from "@/utils/notificationsStorage";
+
 
 const CompaniesForm = ({ mode, companyId }) => {
 
@@ -30,6 +35,8 @@ const CompaniesForm = ({ mode, companyId }) => {
     const [countryOptions, setCountryOptions] = useState([]);
     const [stateOptions, setStateOptions] = useState([]);
     const [cityOptions, setCityOptions] = useState([]);
+    const [errors, setErrors] = useState({});
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -37,6 +44,11 @@ const CompaniesForm = ({ mode, companyId }) => {
         setFormData((prev) => ({
             ...prev,
             [name]: value,
+        }));
+
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
         }));
     };
 
@@ -107,18 +119,59 @@ const CompaniesForm = ({ mode, companyId }) => {
 
     }, [mode, companyId]);
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-        if (!formData?.company.trim()) {
-            alert("Company Name is required.");
+        const newErrors = {};
+
+        if (!formData?.company?.trim()) {
+            newErrors.company = "Company Name is required.";
+        }
+
+        if (!formData?.email?.trim()) {
+            newErrors.email = "Email is required.";
+        }
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+
+            setTimeout(() => {
+                const firstErrorField = document.querySelector(".is-invalid");
+
+                if (firstErrorField) {
+                    firstErrorField.scrollIntoView({
+                        behavior: "smooth",
+                        // block: "center",
+                    });
+
+                    firstErrorField.focus?.();
+                }
+            }, 0);
+
             return;
         }
 
         if (mode === "add") {
-            addCompany(formData);
+            const newCompany = addCompany(formData);
+
+            notifyAdded(
+                "Company",
+                formData?.company,
+                newCompany?.id
+            );
         } else {
-            updateCompany(companyId, formData);
+            updateCompany(
+                companyId,
+                formData
+            );
+
+            notifyUpdated(
+                "Company",
+                formData?.company,
+                companyId
+            );
         }
+
         router.push("/admin/companies");
     };
 
@@ -134,12 +187,7 @@ const CompaniesForm = ({ mode, companyId }) => {
                     </div>
 
                 </div>
-                <form
-                    onSubmit={(e) => {
-                        e.preventDefault();
-                        handleSubmit();
-                    }}
-                >
+                <form onSubmit={handleSubmit}>
 
                     <div className="form-outer mb-3">
                         <div className="row">
@@ -147,12 +195,21 @@ const CompaniesForm = ({ mode, companyId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Company Name</label>
-                                    <input id="company"
+                                    <input
+                                        id="company"
                                         name="company"
-                                        className="form-control"
+                                        type="text"
+                                        className={`form-control ${errors?.company ? "is-invalid" : ""}`}
                                         value={formData?.company}
                                         onChange={handleChange}
-                                        placeholder="e.g. Nirvana Retail Pvt Ltd" />
+                                        placeholder="e.g. Nirvana Retail Pvt Ltd"
+                                    />
+
+                                    {errors?.company && (
+                                        <div className="form-error">
+                                            {errors?.company}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -220,11 +277,18 @@ const CompaniesForm = ({ mode, companyId }) => {
                                     <input
                                         type="email"
                                         name="email"
-                                        className="form-control"
+                                        className={`form-control ${errors?.email ? "is-invalid" : ""
+                                            }`}
                                         value={formData?.email}
                                         onChange={handleChange}
                                         placeholder="e.g. rohan@company.com"
                                     />
+
+                                    {errors?.email && (
+                                        <div className="form-error">
+                                            {errors?.email}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -391,15 +455,23 @@ const CompaniesForm = ({ mode, companyId }) => {
                             className="btn btn-primary ms-2"
                         >
                             <BsFillSendFill />
+
                             <span>
-                                {mode === "add" ? "Create Lead" : "Update Lead"}
+                                {mode === "add"
+                                    ? "Create Company"
+                                    : "Update Company"}
                             </span>
                         </button>
+
                         <Link
-                            href={"/admin/companies"}
-                            className="btn btn-outline-primary mx-2">
+                            href="/admin/companies"
+                            className="btn btn-outline-primary mx-2"
+                        >
                             <IoMdClose />
-                            <span>Cancel</span>
+
+                            <span>
+                                Cancel
+                            </span>
                         </Link>
                     </div>
                 </form>

@@ -27,7 +27,10 @@ import {
     addOpportunity,
     updateOpportunity,
 } from "@/utils/opportunitiesStorage";
-
+import {
+    notifyAdded,
+    notifyUpdated,
+} from "@/utils/notificationsStorage";
 
 const OpportunitiesForm = ({
     mode = "add",
@@ -40,15 +43,16 @@ const OpportunitiesForm = ({
     const [contacts, setContacts] = useState([]);
 
     const [formData, setFormData] = useState({
-        opportunity: "",
-        company: "",
-        contact: "",
-        value: "",
-        probability: "",
-        stage: "Qualification",
-        owner: "",
-        closeDate: "",
-    });
+    opportunity: "",
+    companyId: "",
+    company: "",
+    contact: "",
+    value: "",
+    probability: "",
+    stage: "Qualification",
+    owner: "",
+    closeDate: "",
+});
 
     const [errors, setErrors] = useState({});
     /*
@@ -108,10 +112,10 @@ const OpportunitiesForm = ({
     |--------------------------------------------------------------------------
     */
 
-    const companyOptions = companies.map((company) => ({
-        label: company?.company,
-        value: company?.company,
-    }));
+   const companyOptions = companies?.map((company) => ({
+    label: company?.company,
+    value: company?.id,
+}));
 
 
     /*
@@ -121,9 +125,9 @@ const OpportunitiesForm = ({
     */
 
     const selectedCompany = companies.find(
-        (company) =>
-            company?.company === formData?.company
-    );
+    (company) =>
+        company?.id === formData?.companyId
+);
 
 
     const contactOptions = contacts
@@ -151,29 +155,49 @@ const OpportunitiesForm = ({
     |--------------------------------------------------------------------------
     */
 
-    useEffect(() => {
+useEffect(() => {
+    if (mode !== "edit" || !opportunityId) return;
 
-        if (mode !== "edit" || !opportunityId) return;
+    const opportunity =
+        getOpportunityById(opportunityId);
 
-        const opportunity =
-            getOpportunityById(opportunityId);
+    if (opportunity) {
+        setFormData({
+            opportunity:
+                opportunity?.opportunity || "",
 
-        if (opportunity) {
-            setFormData({
-                opportunity: opportunity?.opportunity || "",
-                company: opportunity?.company || "",
-                contact: opportunity?.contact || "",
-                value: opportunity?.value || "",
-                probability: opportunity?.probability || "",
-                stage:
-                    opportunity?.stage ||
-                    "Qualification",
-                owner: opportunity?.owner || "",
-                closeDate: opportunity?.closeDate || "",
-            });
-        }
+            companyId:
+                opportunity?.companyId ||
+                companies.find(
+                    (company) =>
+                        company?.company === opportunity?.company
+                )?.id ||
+                "",
 
-    }, [mode, opportunityId]);
+            company:
+                opportunity?.company || "",
+
+            contact:
+                opportunity?.contact || "",
+
+            value:
+                opportunity?.value || "",
+
+            probability:
+                opportunity?.probability || "",
+
+            stage:
+                opportunity?.stage ||
+                "Qualification",
+
+            owner:
+                opportunity?.owner || "",
+
+            closeDate:
+                opportunity?.closeDate || "",
+        });
+    }
+}, [mode, opportunityId, companies]);
 
 
     /*
@@ -183,29 +207,36 @@ const OpportunitiesForm = ({
     */
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+    const { name, value } = e.target;
 
-        if (name === "value" && !/^\d*$/.test(value)) {
-            return;
-        }
+    if (name === "value" && !/^\d*$/.test(value)) {
+        return;
+    }
 
-        setFormData((prev) => ({
-            ...prev,
-            [name]: value,
+    setFormData((prev) => ({
+        ...prev,
+        [name]: value,
 
-            ...(name === "company"
-                ? { contact: "" }
-                : {}),
-        }));
+        ...(name === "companyId"
+            ? {
+                company:
+                    companies.find(
+                        (company) =>
+                            company?.id === value
+                    )?.company || "",
+                contact: "",
+            }
+            : {}),
+    }));
 
-        setErrors((prev) => ({
-            ...prev,
-            [name]: "",
-            ...(name === "company"
-                ? { contact: "" }
-                : {}),
-        }));
-    };
+    setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+        ...(name === "companyId"
+            ? { contact: "" }
+            : {}),
+    }));
+};
 
 
     const today = new Date();
@@ -231,10 +262,11 @@ const OpportunitiesForm = ({
                 "Opportunity Name is required.";
         }
 
-        if (!formData?.company) {
-            newErrors.company =
-                "Please select a company.";
-        }
+        
+        if (!formData?.companyId) {
+    newErrors.company =
+        "Please select a company.";
+}
 
         if (!formData?.contact) {
             newErrors.contact =
@@ -282,15 +314,31 @@ const OpportunitiesForm = ({
         }
 
         if (mode === "add") {
-            addOpportunity(formData);
-        } else {
-            updateOpportunity(
-                opportunityId,
-                formData
-            );
-        }
 
-        router.push("/admin/opportunities");
+    const newOpportunity =
+        addOpportunity(formData);
+
+    notifyAdded(
+        "Opportunity",
+        formData?.opportunity,
+        newOpportunity?.id
+    );
+
+} else {
+
+    updateOpportunity(
+        opportunityId,
+        formData
+    );
+
+    notifyUpdated(
+        "Opportunity",
+        formData?.opportunity,
+        opportunityId
+    );
+}
+
+router.push("/admin/opportunities");
     };
 
 
