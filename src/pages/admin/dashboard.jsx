@@ -32,6 +32,16 @@ function Dashboard() {
   const router = useRouter();
   const [leads, setLeads] = useState([]);
 
+
+useEffect(() => {
+
+    const currentUser =
+        JSON.parse(
+            localStorage.getItem("currentUser")
+        );
+
+}, []);
+
   useEffect(() => {
     const storedLeads = localStorage.getItem("leadsData");
 
@@ -39,21 +49,6 @@ function Dashboard() {
       setLeads(JSON.parse(storedLeads));
     }
   }, []);
-
-  useEffect(() => {
-    const adminUser = localStorage.getItem("adminUser");
-
-    if (!adminUser) {
-      router.replace("/");
-      return;
-    }
-
-    const user = JSON.parse(adminUser);
-
-    if (!user.isLoggedIn || user.role !== "admin") {
-      router.replace("/");
-    }
-  }, [router]);
 
   const overviewCards = [
     {

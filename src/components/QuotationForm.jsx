@@ -117,8 +117,6 @@ const QuotationForm = ({ mode, quotationId }) => {
 
         const quotation = getQuotationById(quotationId);
 
-        console.log("quotation", quotation);
-
         if (quotation) {
             setFormData(quotation);
         }

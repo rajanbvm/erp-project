@@ -30,14 +30,10 @@ useEffect(() => {
 
     const foundContact = getContactById(id);
 
-    console.log("Selected Contact:", foundContact);
-
     setContact(foundContact || null);
 
     if (foundContact?.companyId) {
         const foundCompany = getCompanyById(foundContact.companyId);
-
-        console.log("Linked Company:", foundCompany);
 
         setCompany(foundCompany || null);
     } else {

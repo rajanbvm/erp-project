@@ -133,10 +133,6 @@ const CompaniesDetails = () => {
 
     const quotationData = getQuotations();
 
-    console.log("Company ID:", id);
-    console.log("First Quotation:", quotationData[0]);
-    console.log("First Quotation companyId:", quotationData[0]?.companyId);
-
     return (
         <>
 
