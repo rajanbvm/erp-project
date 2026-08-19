@@ -4,7 +4,7 @@ import { initializeLeads } from "./leadsStorage";
 import { initializeQuotations } from "./quotationStorage";
 import { initializeActivities } from "./activitiesStorage";
 import { initializeOpportunities } from "./opportunitiesStorage";
-// import { initializeNotifications } from "./notificationsStorage";
+import { initializeRolesPermissions } from "./rolesPermissionsStorage";
 
 export const resetERPStorage = () => {
     localStorage.removeItem("companiesData");
@@ -14,6 +14,7 @@ export const resetERPStorage = () => {
     localStorage.removeItem("activitiesData");
     localStorage.removeItem("opportunitiesData");
     localStorage.removeItem("notificationsData");
+    localStorage.removeItem("rolesPermissionsData");
 
     initializeCompanies();
     initializeContacts();
@@ -21,7 +22,7 @@ export const resetERPStorage = () => {
     initializeQuotations();
     initializeActivities();
     initializeOpportunities();
-    // initializeNotifications();
+    initializeRolesPermissions();
 
     window.location.reload();
 };

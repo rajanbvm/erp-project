@@ -11,6 +11,7 @@ import {
 import { FaRegEye } from "react-icons/fa6";
 import { RiDeleteBin6Line, RiEdit2Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
+import Permission from "@/components/common/Permission";
 
 
 
@@ -114,11 +115,13 @@ const ListPage = () => {
             style={{ cursor: "pointer" }}
             onClick={() => router.push(`/admin/leads/edit/${row?.id}`)}
           />
+          <Permission module="leads" action="delete">
           <RiDeleteBin6Line
             className="eyeBtn text-danger mx-2"
             style={{ cursor: "pointer" }}
             onClick={() => handleDelete(row?.id)}
           />
+          </Permission>
         </div>
       ),
     },

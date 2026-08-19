@@ -13,6 +13,7 @@ import TrendUp from "@/images/TrendUp.svg";
 import Activities from "@/images/Activities.svg";
 import Logout from "@/images/logout.svg";
 import Reminders from "@/images/Reminders.svg";
+import Settings from "@/images/Settings.svg";
 
 import Permission from "@/components/common/Permission";
 
@@ -52,11 +53,10 @@ const AdminNavbar = () => {
                     <li>
                         <Link
                             href="/admin/dashboard"
-                            className={`dash-link ${
-                                pathname === "/admin/dashboard"
+                            className={`dash-link ${pathname === "/admin/dashboard"
                                     ? "active"
                                     : ""
-                            }`}
+                                }`}
                         >
                             <Image
                                 src={DashIcon}
@@ -77,13 +77,12 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href="/admin/leads"
-                                className={`dash-link ${
-                                    pathname?.startsWith(
-                                        "/admin/leads"
-                                    )
+                                className={`dash-link ${pathname?.startsWith(
+                                    "/admin/leads"
+                                )
                                         ? "active"
                                         : ""
-                                }`}
+                                    }`}
                             >
                                 <Image
                                     src={userIcon}
@@ -105,13 +104,12 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href="/admin/quotations"
-                                className={`dash-link ${
-                                    pathname?.startsWith(
-                                        "/admin/quotations"
-                                    )
+                                className={`dash-link ${pathname?.startsWith(
+                                    "/admin/quotations"
+                                )
                                         ? "active"
                                         : ""
-                                }`}
+                                    }`}
                             >
                                 <Image
                                     src={FileText}
@@ -133,13 +131,12 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href="/admin/contacts"
-                                className={`dash-link ${
-                                    pathname?.startsWith(
-                                        "/admin/contacts"
-                                    )
+                                className={`dash-link ${pathname?.startsWith(
+                                    "/admin/contacts"
+                                )
                                         ? "active"
                                         : ""
-                                }`}
+                                    }`}
                             >
                                 <Image
                                     src={UsersThree}
@@ -161,13 +158,12 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href="/admin/companies"
-                                className={`dash-link ${
-                                    pathname?.startsWith(
-                                        "/admin/companies"
-                                    )
+                                className={`dash-link ${pathname?.startsWith(
+                                    "/admin/companies"
+                                )
                                         ? "active"
                                         : ""
-                                }`}
+                                    }`}
                             >
                                 <Image
                                     src={BuildingOffice}
@@ -189,13 +185,12 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href="/admin/opportunities"
-                                className={`dash-link ${
-                                    pathname?.startsWith(
-                                        "/admin/opportunities"
-                                    )
+                                className={`dash-link ${pathname?.startsWith(
+                                    "/admin/opportunities"
+                                )
                                         ? "active"
                                         : ""
-                                }`}
+                                    }`}
                             >
                                 <Image
                                     src={TrendUp}
@@ -217,14 +212,7 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href="/admin/activities"
-                                className={`dash-link ${
-                                    pathname?.startsWith(
-                                        "/admin/activities"
-                                    )
-                                        ? "active"
-                                        : ""
-                                }`}
-                            >
+                                className={`dash-link ${pathname?.startsWith("/admin/activities") ? "active" : ""}`}>
                                 <Image
                                     src={Activities}
                                     alt="Activities icon"
@@ -245,14 +233,13 @@ const AdminNavbar = () => {
                         <li>
                             <Link
                                 href="/admin/reminders"
-                                className={`dash-link ${
-                                    pathname ===
+                                className={`dash-link ${pathname ===
                                         "/admin/reminders" ||
-                                    pathname ===
+                                        pathname ===
                                         "/admin/reminders/add"
                                         ? "active"
                                         : ""
-                                }`}
+                                    }`}
                             >
                                 <Image
                                     src={Reminders}
@@ -265,7 +252,27 @@ const AdminNavbar = () => {
                             </Link>
                         </li>
                     </Permission>
+                    
+                    {/* Settings */}
+                    <Permission
+                        module="settings"
+                        action="view"
+                    >
+                        <li>
+                            <Link
+                                href="/admin/settings"
+                                className={`dash-link ${pathname === "/admin/settings" || pathname === "/admin/settings/add" ? "active" : ""}`}>
+                                <Image
+                                    src={Settings}
+                                    alt="Settings icon"
+                                />
 
+                                <span className="tooltip">
+                                    Settings
+                                </span>
+                            </Link>
+                        </li>
+                    </Permission>
                     {/* Logout */}
                     <li>
                         <button

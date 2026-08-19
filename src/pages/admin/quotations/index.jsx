@@ -11,6 +11,7 @@ import {
     getQuotations,
     deleteQuotation,
 } from "@/utils/quotationStorage";
+import Permission from "@/components/common/Permission";
 
 const ListPage = () => {
 
@@ -84,16 +85,16 @@ const ListPage = () => {
                             router.push(`/admin/quotations/edit/${row?.id}`)
                         }
                     />
-
-                    <RiDeleteBin6Line
-                        className="eyeBtn text-danger mx-2"
-                        style={{ cursor: "pointer" }}
-                        onClick={() => {
-                            setSelectedQuotationId(row?.id);
-                            setShowDeleteModal(true);
-                        }}
-                    />
-
+                    <Permission module="quotations" action="delete">
+                        <RiDeleteBin6Line
+                            className="eyeBtn text-danger mx-2"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                                setSelectedQuotationId(row?.id);
+                                setShowDeleteModal(true);
+                            }}
+                        />
+                    </Permission>
                 </div>
             ),
         },

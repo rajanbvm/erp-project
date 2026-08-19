@@ -59,9 +59,9 @@ const defaultRolesPermissions = {
         reminders: ["view", "create", "edit", "delete"],
         notifications: ["view"],
 
-        teamUsers: ["view"],
-        rolesPermissions: ["view"],
-        settings: ["view"],
+        // teamUsers: ["view"],
+        // rolesPermissions: ["view"],
+        // settings: ["view"],
     },
 
     salesRep: {
@@ -69,16 +69,16 @@ const defaultRolesPermissions = {
 
         leads: ["view", "create", "edit"],
         companies: ["view", "create"],
-        contacts: ["view", "create", "edit"],
-        opportunities: ["view", "create", "edit"],
+        // contacts: ["view", "create", "edit"],
+        // opportunities: ["view", "create", "edit"],
         quotations: ["view", "create", "edit"],
-        activities: ["view", "create", "edit"],
-        reminders: ["view", "create", "edit"],
+        // activities: ["view", "create", "edit"],
+        // reminders: ["view", "create", "edit"],
         notifications: ["view"],
 
-        teamUsers: [],
-        rolesPermissions: [],
-        settings: [],
+        // teamUsers: [],
+        // rolesPermissions: [],
+        // settings: [],
     },
 };
 
