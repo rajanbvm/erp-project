@@ -39,6 +39,7 @@ const defaultRolesPermissions = {
         opportunities: ["view", "create", "edit", "delete", "export"],
         quotations: ["view", "create", "edit", "delete", "export"],
         activities: ["view", "create", "edit", "delete", "export"],
+        products: ["view", "create", "edit", "delete", "export"],
         reminders: ["view", "create", "edit", "delete"],
         notifications: ["view", "edit"],
 
@@ -49,7 +50,7 @@ const defaultRolesPermissions = {
 
     manager: {
         dashboard: ["view"],
-
+        products: ["view", "create", "edit", "delete", "export"],
         leads: ["view", "create", "edit", "delete", "export"],
         companies: ["view", "create", "edit", "export"],
         contacts: ["view", "create", "edit", "export"],
@@ -66,7 +67,7 @@ const defaultRolesPermissions = {
 
     salesRep: {
         dashboard: ["view"],
-
+        products: ["view", "create", "edit", "delete", "export"],
         leads: ["view", "create", "edit"],
         companies: ["view", "create"],
         // contacts: ["view", "create", "edit"],

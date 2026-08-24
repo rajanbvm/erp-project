@@ -14,6 +14,7 @@ import Activities from "@/images/Activities.svg";
 import Logout from "@/images/logout.svg";
 import Reminders from "@/images/Reminders.svg";
 import Settings from "@/images/Settings.svg";
+import Cube from "@/images/Cube.svg";
 
 import Permission from "@/components/common/Permission";
 
@@ -91,6 +92,33 @@ const AdminNavbar = () => {
 
                                 <span className="tooltip">
                                     Leads
+                                </span>
+                            </Link>
+                        </li>
+                    </Permission>
+
+                    {/* Products */}
+                    <Permission
+                        module="products"
+                        action="view"
+                    >
+                        <li>
+                            <Link
+                                href="/admin/products"
+                                className={`dash-link ${pathname?.startsWith(
+                                    "/admin/products"
+                                )
+                                        ? "active"
+                                        : ""
+                                    }`}
+                            >
+                                <Image
+                                    src={Cube}
+                                    alt="Quotations icon"
+                                />
+
+                                <span className="tooltip">
+                                    Products
                                 </span>
                             </Link>
                         </li>
