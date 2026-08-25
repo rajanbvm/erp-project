@@ -100,13 +100,14 @@ const ListPage = () => {
         },
     ];
 
-    const statusColors = {
-        "Pending Approval": "#E0A83C",
-        "Sent": "#26215C",
-        "Approved": "#04342C",
-        "Draft": "#0C447C",
-        "In review": "#4A1B0C",
-    };
+   const statusColors = {
+    "Pending Approval": "#E0A83C",
+    "Sent": "#26215C",
+    "Approved": "#04342C",
+    "Draft": "#0C447C",
+    "In review": "#4A1B0C",
+    "Rejected": "#C0392B",
+};
 
     const dropdownItems = useMemo(() => {
 

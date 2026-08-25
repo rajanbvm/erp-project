@@ -39,12 +39,12 @@ const AdminNavbar = () => {
             <div className="dash-navbar">
                 <ul className="navbar-list">
 
-                    <li className="nav-profile">
+                    {/* <li className="nav-profile">
                         <Image
                             src={DP}
                             alt="Profile Image"
                         />
-                    </li>
+                    </li> */}
 
                     <li className="nav-heading">
                         Main

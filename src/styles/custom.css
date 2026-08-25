@@ -7,7 +7,7 @@
     --primary-light: #2F6EFF;
     --danger-color: #6C202A;
     --danger-main: #E24B4A;
-    --sidebar-width: 90px;
+    --sidebar-width: 250px;
     --dark-mode-bg: #161A23;
     --bg-white: #fff;
     --card-border: #656565;
@@ -401,7 +401,19 @@ body:has(.header-wh) .navbar {
     padding: 11px 16px;
     font-size: 14px;
 }
-
+.input-text-box{
+    background-color: #e5e5f0 !important;
+    border:solid 1px #fff !important;
+    color: #202224;
+    min-height: 50px;
+    padding: 11px 16px;
+    font-size: 14px;
+    border-radius: .375rem;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    user-select: none;
+}
 .form-control,
 .form-select {
     border-color: #e0e2e7;
@@ -599,6 +611,12 @@ body.dark-mode .dashboard-main {
     margin: 0;
 }
 
+.dash-navbar .navbar-list {
+    max-height: 80vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
 .dash-navbar .navbar-list li {
     position: relative;
     margin-bottom: 20px;
@@ -613,17 +631,18 @@ body.dark-mode .dashboard-main {
     font-size: 12px;
     font-weight: 500;
     margin-bottom: 8px;
-    padding-top: 24px;
-    border-top: solid 2px #F6F6F6;
+    /* padding-top: 24px; */
+    /* border-top: solid 2px #F6F6F6; */
     /* margin-top: 24px; */
 }
 
-.dash-navbar .navbar-list li.nav-profile {
+li.nav-profile {
     margin-bottom: 24px;
     text-align: center;
+    list-style: none;
 }
 
-.dash-navbar .navbar-list li.nav-profile img {
+li.nav-profile img {
     height: 42px;
     width: 42px;
     border-radius: 50%;
@@ -631,14 +650,17 @@ body.dark-mode .dashboard-main {
 
 .dash-link {
     position: relative;
-    width: 45px;
+    /* width: 45px; */
     height: 45px;
     background: var(--bg-white);
     border-radius: 8px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+    column-gap: 10px;
     text-decoration: none;
+    padding: 0 12px;
+    width: 100%;
 }
 
 .dash-link.active,
@@ -653,24 +675,25 @@ body.dark-mode .dashboard-main {
 
 /* Tooltip */
 .dash-link .tooltip {
-    position: absolute;
-    left: 70px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: #000;
-    color: #fff;
-    padding: 10px 12px;
+    /* position: absolute; */
+    /* left: 70px; */
+    /* top: 50%; */
+    /* transform: translateY(-50%); */
+    /* background: #000; */
+    color: #757575;
+    font-weight: 600;
+    /* padding: 10px 12px; */
     border-radius: 4px;
     font-size: 14px;
     white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
+    opacity: 1;
+    visibility: visible;
     transition: all 0.25s ease;
     z-index: 100;
 }
 
 /* Tooltip Arrow */
-.dash-link .tooltip::before {
+/* .dash-link .tooltip::before {
     content: "";
     position: absolute;
     left: -10px;
@@ -679,7 +702,7 @@ body.dark-mode .dashboard-main {
     border-top: 10px solid transparent;
     border-bottom: 10px solid transparent;
     border-right: 10px solid #000;
-}
+} */
 
 /* Show on Hover */
 .dash-link:hover .tooltip {
@@ -1747,6 +1770,23 @@ table tbody tr td .eyeBtn {
     background: #276cf0;
     border-color: #276cf0;
     color: #fff;
+}
+
+.user-profile-change img {
+    border-radius: 12px;
+    width: 110px;
+    height: 110px;
+    background: #e5e5f0;
+    border: 1px solid #fff;
+    padding: 8px;
+}
+.user-profile-change {
+    position: relative;
+    width: auto;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
 }
 
 /* Mobile */

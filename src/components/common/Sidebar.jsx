@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import CloseModal from "@/images/CloseModal.svg";
 import { resetERPStorage } from "@/utils/resetStorage";
 import { Form, Modal } from "react-bootstrap";
 import AdminNavbar from "./navbars/admin-navbar";
+import DP from "@/images/Dp.png";
+
+import {
+  getCurrentUser,
+} from "@/utils/rolesPermissionsStorage";
 
 import {
   getNotifications,
@@ -21,42 +25,42 @@ import {
 } from "react-icons/bs";
 
 const Sidebar = () => {
-
   const router = useRouter();
 
-  const [notifications, setNotifications] =
-    useState([]);
-
-  const [showNotifications, setShowNotifications] =
-    useState(false);
-
-  const [notificationTab, setNotificationTab] =
-    useState("all");
-
-  const [showLogoutModal, setShowLogoutModal] =
-    useState(false);
-
-  const [darkMode, setDarkMode] =
-    useState(false);
-
-
-  /* =========================================================
-     DARK MODE
-  ========================================================= */
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notificationTab, setNotificationTab] = useState("all");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-
-    document.body.classList.toggle(
-      "dark-mode",
-      darkMode
-    );
-
+    document.body.classList.toggle("dark-mode", darkMode);
   }, [darkMode]);
 
+  useEffect(() => {
+  const loadUser = () => {
+    setCurrentUser(getCurrentUser());
+  };
 
-  /* =========================================================
-     NOTIFICATION BODY OVERFLOW
-  ========================================================= */
+  loadUser();
+
+  const handleProfileUpdated = () => {
+    loadUser();
+  };
+
+  window.addEventListener(
+    "profileUpdated",
+    handleProfileUpdated
+  );
+
+  return () => {
+    window.removeEventListener(
+      "profileUpdated",
+      handleProfileUpdated
+    );
+  };
+}, []);
 
   useEffect(() => {
     if (showNotifications) {
@@ -70,18 +74,9 @@ const Sidebar = () => {
     };
   }, [showNotifications]);
 
-  /* =========================================================
-     LOAD NOTIFICATIONS
-  ========================================================= */
-
   useEffect(() => {
-
     const loadNotifications = () => {
-
-      setNotifications(
-        getNotifications()
-      );
-
+      setNotifications(getNotifications());
     };
 
     loadNotifications();
@@ -92,132 +87,51 @@ const Sidebar = () => {
     );
 
     return () => {
-
       window.removeEventListener(
         "notificationsUpdated",
         loadNotifications
       );
-
     };
-
   }, []);
 
-
-  /* =========================================================
-     UNREAD COUNT
-  ========================================================= */
-
-  const unreadCount =
-    notifications?.filter(
-      (notification) =>
-        !notification?.isRead
-    ).length;
-
-
-  /* =========================================================
-     FILTER NOTIFICATIONS
-  ========================================================= */
+  const unreadCount = notifications?.filter(
+    (notification) => !notification?.isRead
+  ).length;
 
   const filteredNotifications =
     notificationTab === "unread"
       ? notifications?.filter(
-        (notification) =>
-          !notification?.isRead
+        (notification) => !notification?.isRead
       )
       : notifications;
 
-
-  /* =========================================================
-     HANDLE NOTIFICATION CLICK
-  ========================================================= */
-
-  const handleNotificationClick = (
-    notification
-  ) => {
-
-    /*
-    |--------------------------------------------------------------------------
-    | Mark notification as read
-    |--------------------------------------------------------------------------
-    */
-
-    markNotificationAsRead(
-      notification?.id
-    );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Close notification modal
-    |--------------------------------------------------------------------------
-    */
+  const handleNotificationClick = (notification) => {
+    markNotificationAsRead(notification?.id);
 
     setShowNotifications(false);
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Get destination route
-    |--------------------------------------------------------------------------
-    */
-
-    const route =
-      getNotificationRoute(
-        notification
-      );
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | Redirect
-    |--------------------------------------------------------------------------
-    */
+    const route = getNotificationRoute(notification);
 
     if (route) {
-
       router.push(route);
-
     }
-
   };
-  /* =========================================================
-     MARK ALL NOTIFICATIONS AS READ
-  ========================================================= */
 
   const handleMarkAllAsRead = () => {
-
     if (unreadCount === 0) {
       return;
     }
 
     markAllNotificationsAsRead();
-
   };
 
   return (
     <>
-      {/* =====================================================
-                SIDEBAR
-            ===================================================== */}
-
       <AdminNavbar />
 
-
-      {/* =====================================================
-                HEADER
-            ===================================================== */}
-
       <div className="dash-header">
-
         <div className="header-section">
-
-
-          {/* =================================================
-                        SEARCH
-                    ================================================= */}
-
           <div className="search-bar">
-
             <input
               type="text"
               placeholder="Search..."
@@ -227,94 +141,45 @@ const Sidebar = () => {
             <span className="search-icon">
               <BsSearch />
             </span>
-
           </div>
 
-
-          {/* =================================================
-                        HEADER ACTIONS
-                    ================================================= */}
-
           <div className="header-actions">
-
-
-            {/* =============================================
-                            SETTINGS
-                        ============================================= */}
-
             <span
               className="settings-icon"
-              onClick={
-                resetERPStorage
-              }
-              style={{
-                cursor: "pointer",
-              }}
+              onClick={resetERPStorage}
+              style={{ cursor: "pointer" }}
             >
               <BsSliders2 />
             </span>
 
-
-            {/* =============================================
-                            NOTIFICATIONS
-                        ============================================= */}
-
             <div className="notification-wrapper">
-
               <span
                 className="settings-icon"
                 onClick={() =>
-                  setShowNotifications(
-                    (prev) => !prev
-                  )
+                  setShowNotifications((prev) => !prev)
                 }
-                style={{
-                  cursor: "pointer",
-                }}
+                style={{ cursor: "pointer" }}
               >
                 <BsBell />
               </span>
-
-
-              {/* =========================================
-                                NOTIFICATION COUNT
-                            ========================================= */}
 
               <span className="notification-count">
                 {unreadCount}
               </span>
 
-              {/* =========================================
-                                NOTIFICATION MODAL
-                            ========================================= */}
-
               {showNotifications && (
-
                 <div
                   className="notification-modal-overlay"
                   onClick={() =>
-                    setShowNotifications(
-                      false
-                    )
+                    setShowNotifications(false)
                   }
                 >
-
                   <div
                     className="notificationModalcontent"
-                    onClick={(e) =>
-                      e.stopPropagation()
-                    }
+                    onClick={(e) => e.stopPropagation()}
                   >
-
                     <div className="modal-content">
-
-
-                      {/* =================================
-                                                MODAL HEADER
-                                            ================================= */}
-
                       <div className="modal-header">
-
                         <h5 className="modal-title">
                           All Notifications
                         </h5>
@@ -329,29 +194,17 @@ const Sidebar = () => {
                           }
                           aria-label="Close"
                         />
-
                       </div>
 
-
-                      {/* =================================
-                                                MODAL BODY
-                                            ================================= */}
-
                       <div className="modal-body">
-
-
-                        {/* =================================
-                                                    TABS
-                                                ================================= */}
                         <div className="d-flex align-items-center">
                           <div className="notification_tabs w-50">
-
                             <button
                               type="button"
                               className={`btn ${notificationTab ===
-                                "all"
-                                ? "active"
-                                : ""
+                                  "all"
+                                  ? "active"
+                                  : ""
                                 }`}
                               onClick={() =>
                                 setNotificationTab(
@@ -362,13 +215,12 @@ const Sidebar = () => {
                               All
                             </button>
 
-
                             <button
                               type="button"
                               className={`btn ${notificationTab ===
-                                "unread"
-                                ? "active"
-                                : ""
+                                  "unread"
+                                  ? "active"
+                                  : ""
                                 }`}
                               onClick={() =>
                                 setNotificationTab(
@@ -377,68 +229,50 @@ const Sidebar = () => {
                               }
                             >
                               Unread (
-                              {unreadCount}
-                              )
+                              {unreadCount})
                             </button>
-
                           </div>
+
                           <div className="notification_tabs w-50">
                             <button
                               type="button"
                               className="btn btn-outline-primary markAllRead ms-auto"
-                              onClick={handleMarkAllAsRead}
-                              disabled={unreadCount === 0}
+                              onClick={
+                                handleMarkAllAsRead
+                              }
+                              disabled={
+                                unreadCount ===
+                                0
+                              }
                             >
                               Mark all as read
                             </button>
                           </div>
                         </div>
 
-
-
-                        {/* =================================
-                                                    NOTIFICATION LIST
-                                                ================================= */}
-
                         <div className="notification_listing">
-
-
-                          {/* =================================
-                                                        EMPTY STATE
-                                                    ================================= */}
-
                           {filteredNotifications?.length ===
                             0 ? (
-
                             <div className="no-notifications">
-
                               <BsBell />
 
                               <p className="mb-0">
-
                                 {notificationTab ===
                                   "unread"
                                   ? "No unread notifications"
                                   : "No notifications yet"}
-
                               </p>
-
                             </div>
-
                           ) : (
-
                             filteredNotifications?.map(
-                              (
-                                notification
-                              ) => (
-
+                              (notification) => (
                                 <div
                                   key={
                                     notification?.id
                                   }
                                   className={`notification-list-item ${notification?.isRead
-                                    ? "read-notification"
-                                    : ""
+                                      ? "read-notification"
+                                      : ""
                                     }`}
                                   onClick={() =>
                                     handleNotificationClick(
@@ -449,7 +283,6 @@ const Sidebar = () => {
                                     cursor: "pointer",
                                   }}
                                 >
-
                                   <h5>
                                     {
                                       notification?.title
@@ -457,15 +290,12 @@ const Sidebar = () => {
                                   </h5>
 
                                   <p className="mb-0">
-
                                     {
                                       notification?.message
                                     }
-
                                   </p>
 
                                   <small>
-
                                     {notification?.createdAt
                                       ? new Date(
                                         notification?.createdAt
@@ -478,147 +308,90 @@ const Sidebar = () => {
                                         }
                                       )
                                       : ""}
-
                                   </small>
-
                                 </div>
-
                               )
                             )
-
                           )}
-
                         </div>
-
                       </div>
-
                     </div>
-
                   </div>
-
                 </div>
-
               )}
-
             </div>
 
-
-            {/* =================================================
-                            DARK MODE
-                        ================================================= */}
-
             <span className="theme-icon">
-
               <Form.Check
                 type="switch"
                 id="theme-switch"
-                checked={
-                  darkMode
-                }
+                checked={darkMode}
                 onChange={(e) =>
-                  setDarkMode(
-                    e.target.checked
-                  )
+                  setDarkMode(e.target.checked)
                 }
               />
-
             </span>
 
+            <span
+              className="settings-icon"
+              style={{ cursor: "pointer" }}
+              onClick={() => router?.push("/admin/profile")}
+            >
+              <li className="nav-profile mb-0">
+                <Image
+                  src={currentUser?.profileImage || DP}
+                  alt="Profile Image"
+                  width={40}
+                  height={40}
+                />
+              </li>
+            </span>
           </div>
-
         </div>
-
       </div>
-
-
-      {/* =====================================================
-                LOGOUT MODAL
-            ===================================================== */}
 
       <Modal
         show={showLogoutModal}
-        onHide={() =>
-          setShowLogoutModal(
-            false
-          )
-        }
+        onHide={() => setShowLogoutModal(false)}
         centered
       >
-
         <Modal.Body className="logout-modal">
-
-
-          {/* Close */}
-
           <button
             className="close-modal-btn"
-            onClick={() =>
-              setShowLogoutModal(
-                false
-              )
-            }
+            onClick={() => setShowLogoutModal(false)}
           >
-
             <Image
               src={CloseModal}
               alt="close"
             />
-
           </button>
 
-
-          <h5>
-            Logout
-          </h5>
-
+          <h5>Logout</h5>
 
           <p className="w-75 mx-auto">
             Are you sure you want to logout?
           </p>
 
-
           <div className="logout-footer">
-
-
-            {/* Cancel */}
-
             <button
               className="btn-primary br-30"
-              onClick={() =>
-                setShowLogoutModal(
-                  false
-                )
-              }
+              onClick={() => setShowLogoutModal(false)}
             >
               Cancel
             </button>
 
-
-            {/* Logout */}
-
             <button
               className="btn-outline-secondary"
               onClick={() => {
-
-                alert(
-                  "Logout Successfully"
-                );
-
-                setShowLogoutModal(
-                  false
-                );
-
+                alert("Logout Successfully");
+                setShowLogoutModal(false);
               }}
             >
               Logout
             </button>
-
           </div>
-
         </Modal.Body>
-
       </Modal>
-
     </>
   );
 };

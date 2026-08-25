@@ -2,10 +2,8 @@ import PageBanner from "@/components/common/PageBanner";
 import { getProductById } from "@/utils/productsStorage";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import { RiEdit2Fill } from "react-icons/ri";
 import Link from "next/link";
-import Buildings from "@/images/Buildings.svg";
 
 const ProductsDetails = () => {
     const router = useRouter();
@@ -51,14 +49,6 @@ const ProductsDetails = () => {
                         <span className="level-btn">
                             {product?.status}
                         </span>
-
-                        {/* <span className="level-btn">
-                            {product?.category}
-                        </span>
-
-                        <span className="level-btn">
-                            SKU {product?.sku}
-                        </span> */}
                     </div>
                 </div>
 
@@ -66,7 +56,6 @@ const ProductsDetails = () => {
                     <h3 className="form-title">
                         Product Information
                     </h3>
-
 
                     <div className="row QuoteInfo RowBorderBottom">
                         <div className="col-lg-3 col-md-6">
@@ -107,7 +96,7 @@ const ProductsDetails = () => {
                     </div>
 
                     <div className="row QuoteInfo RowBorderBottom">
-                        <div className="col-lg-4 col-md-6">
+                        <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Price</label>
                                 <h6 className="formValue">
@@ -116,16 +105,29 @@ const ProductsDetails = () => {
                             </div>
                         </div>
 
-                        {/* <div className="col-lg-4 col-md-6">
+                        <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
-                                <label>Stock</label>
+                                <label>VAT</label>
                                 <h6 className="formValue">
-                                    {product?.stock ?? "-"}
+                                    {product?.vat
+                                        ? `${product?.vat}%`
+                                        : "-"}
                                 </h6>
                             </div>
-                        </div> */}
+                        </div>
 
-                        <div className="col-lg-4 col-md-6">
+                        <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
+                                <label>Discount</label>
+                                <h6 className="formValue">
+                                    {product?.discount
+                                        ? `${product?.discount}%`
+                                        : "-"}
+                                </h6>
+                            </div>
+                        </div>
+
+                        <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Created</label>
                                 <h6 className="formValue">

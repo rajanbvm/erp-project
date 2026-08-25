@@ -14,6 +14,11 @@ import {
 } from "@/utils/productsStorage";
 
 import {
+    discountOptions,
+    vatOptions,
+} from "@/utils/menuDropdown";
+
+import {
     notifyAdded,
     notifyUpdated,
 } from "@/utils/notificationsStorage";
@@ -28,7 +33,8 @@ const ProductForm = ({ mode, productId }) => {
         sku: "",
         category: "",
         price: "",
-        // stock: "",
+        vat: "",
+        discount: "",
         status: "Active",
         description: "",
     });
@@ -81,7 +87,7 @@ const ProductForm = ({ mode, productId }) => {
             sku: product?.sku || "",
             category: product?.category || "",
             price: product?.price ?? "",
-            stock: product?.stock ?? "",
+            // stock: product?.stock ?? "",
             status: product?.status || "Active",
             description: product?.description || "",
         });
@@ -329,6 +335,48 @@ const ProductForm = ({ mode, productId }) => {
                                     )}
                                 </div>
                             </div>
+
+                            <div className="col-lg-4 col-md-6">
+    <div className="form-group">
+        <label>VAT (%)</label>
+
+        <CustomDropdown
+            name="vat"
+            value={formData?.vat}
+            placeholder="Select VAT"
+            options={vatOptions}
+            onChange={handleChange}
+            className={errors?.vat ? "is-invalid" : ""}
+        />
+
+        {errors?.vat && (
+            <div className="form-error">
+                {errors?.vat}
+            </div>
+        )}
+    </div>
+</div>
+
+                            <div className="col-lg-4 col-md-6">
+    <div className="form-group">
+        <label>Discount (%)</label>
+
+        <CustomDropdown
+            name="discount"
+            value={formData?.discount}
+            placeholder="Select Discount"
+            options={discountOptions}
+            onChange={handleChange}
+            className={errors?.discount ? "is-invalid" : ""}
+        />
+
+        {errors?.discount && (
+            <div className="form-error">
+                {errors?.discount}
+            </div>
+        )}
+    </div>
+</div>
 
                             {/* Stock */}
                             {/* <div className="col-lg-4 col-md-6">

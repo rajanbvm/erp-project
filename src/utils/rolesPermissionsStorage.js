@@ -7,6 +7,7 @@ export const defaultUsers = [
         email: "admin@gmail.com",
         password: "123456",
         role: "admin",
+        profileImage: "",
         isActive: true,
     },
     {
@@ -15,6 +16,7 @@ export const defaultUsers = [
         email: "manager@gmail.com",
         password: "123456",
         role: "manager",
+        profileImage: "",
         isActive: true,
     },
     {
@@ -23,6 +25,7 @@ export const defaultUsers = [
         email: "sales@gmail.com",
         password: "123456",
         role: "salesRep",
+        profileImage: "",
         isActive: true,
     },
 ];
@@ -283,6 +286,7 @@ export const loginUser = (email, password) => {
         name: user.name,
         email: user.email,
         role: user.role,
+        profileImage: user?.profileImage || "",
         isLoggedIn: true,
     };
 
@@ -317,4 +321,94 @@ export const logoutUser = () => {
     if (typeof window === "undefined") return;
 
     localStorage.removeItem("currentUser");
+};
+
+export const updateUserProfile = (userId, updatedData) => {
+    if (typeof window === "undefined") {
+        return false;
+    }
+
+    const users = getUsers();
+
+    const userIndex = users.findIndex(
+        (user) => user?.id === userId
+    );
+
+    if (userIndex === -1) {
+        return false;
+    }
+
+    users[userIndex] = {
+        ...users[userIndex],
+        ...updatedData,
+    };
+
+    localStorage.setItem(
+        USERS_STORAGE_KEY,
+        JSON.stringify(users)
+    );
+
+    const currentUser = getCurrentUser();
+
+    if (currentUser?.id === userId) {
+        localStorage.setItem(
+            "currentUser",
+            JSON.stringify({
+                ...currentUser,
+                ...updatedData,
+            })
+        );
+    }
+
+    return true;
+};
+
+export const changeUserPassword = (
+    userId,
+    currentPassword,
+    newPassword
+) => {
+    if (typeof window === "undefined") {
+        return {
+            success: false,
+            message: "Something went wrong.",
+        };
+    }
+
+    const users = getUsers();
+
+    const userIndex = users.findIndex(
+        (user) => user?.id === userId
+    );
+
+    if (userIndex === -1) {
+        return {
+            success: false,
+            message: "User not found.",
+        };
+    }
+
+    const user = users[userIndex];
+
+    if (user?.password !== currentPassword) {
+        return {
+            success: false,
+            message: "Current password is incorrect.",
+        };
+    }
+
+    users[userIndex] = {
+        ...user,
+        password: newPassword,
+    };
+
+    localStorage.setItem(
+        USERS_STORAGE_KEY,
+        JSON.stringify(users)
+    );
+
+    return {
+        success: true,
+        message: "Password changed successfully.",
+    };
 };
