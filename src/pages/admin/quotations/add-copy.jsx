@@ -18,7 +18,7 @@ const add = () => {
             <div className="bg-box">
                 <div className="table-header">
                     <div>
-                        <h3>New Quotation</h3>
+                        <h3>New Quotation 123</h3>
                         <p>Create a quotation and submit it for approval</p>
                     </div>
                 </div>

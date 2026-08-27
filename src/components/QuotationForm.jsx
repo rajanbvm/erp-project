@@ -248,17 +248,20 @@ const QuotationForm = ({ mode, quotationId }) => {
             formData?.vat || 0
         );
 
-        const discountAmount =
-            subtotal * (discountPercent / 100);
+        const discountAmount = Math.round(
+            subtotal * (discountPercent / 100)
+        );
 
         const afterDiscount =
             subtotal - discountAmount;
 
-        const vatAmount =
-            afterDiscount * (vatPercent / 100);
+        const vatAmount = Math.round(
+            afterDiscount * (vatPercent / 100)
+        );
 
-        const grandTotal =
-            afterDiscount + vatAmount;
+        const grandTotal = Math.round(
+            afterDiscount + vatAmount
+        );
 
         return {
             subtotal,
@@ -454,6 +457,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         value={formData?.phone}
                                         onChange={handleChange}
                                         placeholder="+971 4 000 0000"
+                                        readOnly
                                     />
                                 </div>
                             </div>
@@ -600,7 +604,7 @@ const QuotationForm = ({ mode, quotationId }) => {
                                         type="number"
                                         name="quantity"
                                         min="1"
-                                        className={`form-control ${errors?.quantity ? "is-invalid" : "" }`}
+                                        className={`form-control ${errors?.quantity ? "is-invalid" : ""}`}
                                         value={formData?.quantity}
                                         onChange={handleChange}
                                         placeholder="e.g. 1"

@@ -11,6 +11,9 @@ import { BsFillSendFill } from 'react-icons/bs';
 import {
     getQuotationById,
 } from "@/utils/quotationStorage";
+import {
+    downloadQuotationPDF,
+} from "@/utils/quotationPdf";
 
 const QuotationDetails = () => {
 
@@ -33,7 +36,7 @@ const QuotationDetails = () => {
     const getStatusClass = (status) => {
         switch (status?.toLowerCase()) {
             case "draft":
-                return "draft";
+                return "pending";
 
             case "sent":
                 return "sent";
@@ -155,7 +158,7 @@ const QuotationDetails = () => {
                             <div className="form-group mb-0">
                                 <label>Notes</label>
                                 <h6 className="formValue">
-                                   {quotation?.notes}
+                                    {quotation?.notes}
                                 </h6>
                             </div>
                         </div>
@@ -287,8 +290,17 @@ const QuotationDetails = () => {
                         <RiEdit2Fill />
                         <span>Edit</span>
                     </button>
-                    <button
+                    {/* <button
                         className="btn btn-outline-primary mx-2"
+                    >
+                        <FaRegFileLines />
+                        <span>Download PDF</span>
+                    </button> */}
+                    <button
+                        type="button"
+                        className="btn btn-outline-primary mx-2"
+                        onClick={() => downloadQuotationPDF(quotation)}
+                        disabled={!quotation}
                     >
                         <FaRegFileLines />
                         <span>Download PDF</span>
