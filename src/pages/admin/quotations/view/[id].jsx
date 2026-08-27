@@ -102,6 +102,12 @@ const QuotationDetails = () => {
                     <div className="row QuoteInfo RowBorderBottom">
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
+                                <label>Product</label>
+                                <h6 className="formValue">{quotation?.productName}</h6>
+                            </div>
+                        </div>
+                        <div className="col-lg-3 col-md-6">
+                            <div className="form-group mb-0">
                                 <label>Quotation Value</label>
                                 <h6 className="formValue">AED {quotation?.quotationValue}</h6>
                             </div>
@@ -118,15 +124,15 @@ const QuotationDetails = () => {
                                 <h6 className="formValue">{quotation?.vat} %</h6>
                             </div>
                         </div>
+
+                    </div>
+                    <div className="row QuoteInfo RowBorderBottom">
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Prepared By</label>
                                 <h6 className="formValue">{quotation?.owner}</h6>
                             </div>
                         </div>
-                    </div>
-                    <div className="row QuoteInfo RowBorderBottom">
-
                         <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Current Version</label>
@@ -145,12 +151,12 @@ const QuotationDetails = () => {
                                 <h6 className="formValue">{quotation?.status}</h6>
                             </div>
                         </div>
-                        <div className="col-lg-3 col-md-6">
+                        {/* <div className="col-lg-3 col-md-6">
                             <div className="form-group mb-0">
                                 <label>Lead Source</label>
                                 <h6 className="formValue">{quotation?.source}</h6>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="row">
@@ -278,14 +284,17 @@ const QuotationDetails = () => {
                 </div>
 
                 <div className="form-action">
-                    <button
+                    {/* <button
                         className="btn btn-primary ms-2"
                     >
                         <BsFillSendFill />
                         <span>Create & Submit for Approval</span>
-                    </button>
+                    </button> */}
                     <button
                         className="btn btn-outline-primary mx-2"
+                        onClick={() =>
+                            router.push(`/admin/quotations/edit/${quotation?.id}`)
+                        }
                     >
                         <RiEdit2Fill />
                         <span>Edit</span>
@@ -298,7 +307,7 @@ const QuotationDetails = () => {
                     </button> */}
                     <button
                         type="button"
-                        className="btn btn-outline-primary mx-2"
+                        className="btn btn-primary mx-2"
                         onClick={() => downloadQuotationPDF(quotation)}
                         disabled={!quotation}
                     >

@@ -5,80 +5,132 @@ const defaultQuotations = [
         id: 1,
         quotationNo: "QT-2026-0001",
 
+        // Customer Info
         customer: "Falcon Group LLC",
         contactPerson: "Ahmed Hassan",
         email: "ahmed@falcon.ae",
         phone: "+971 52 234 5678",
-
         industry: "Construction",
-        source: "Google Ads",
+        source: "",
 
-        productId: "PROD-001",
-        productName: "ERP & CRM Implementation",
-        unitPrice: "25000",
+        // Product
+        productId: "PRD-001",
+        productName: "CRM Software",
+        unitPrice: "500",
         quantity: "1",
 
-        quotationValue: "25000",
+        // Pricing
+        quotationValue: "500",
         discount: "5",
         vat: "5",
 
-        discountAmount: "1250",
-        vatAmount: "1187.5",
-        grandTotal: "24937.5",
+        discountAmount: "25",
+        vatAmount: "23.75",
+        grandTotal: "498.75",
 
+        // Other Details
         paymentTerms: "50% Advance, 50% On Delivery",
-
         owner: "John Doe",
         priority: "High",
 
-        notes: "ERP & CRM implementation quotation.",
+        notes: "CRM Software quotation.",
 
-        approvalPath: "Sales Manager → Finance → CEO",
-        firstApprover: "Priya Sharma",
+        // Approval
+        approvalPath: "",
+        firstApprover: "",
 
+        // System
         status: "Pending Approval",
-        created: "10 Jun 2026",
+        created: "24 Aug 2026",
     },
 
     {
         id: 2,
         quotationNo: "QT-2026-0002",
 
+        // Customer Info
         customer: "ABC Techno",
         contactPerson: "Sara Mehta",
         email: "sara@abcretail.com",
         phone: "+91 98765 43210",
-
         industry: "Retail",
-        source: "Website",
+        source: "",
 
-        productId: "PROD-002",
-        productName: "CRM Solution",
-        unitPrice: "48000",
+        // Product
+        productId: "PRD-002",
+        productName: "ERP Software",
+        unitPrice: "800",
         quantity: "1",
 
-        quotationValue: "48000",
+        // Pricing
+        quotationValue: "800",
         discount: "10",
         vat: "5",
 
-        discountAmount: "4800",
-        vatAmount: "2160",
-        grandTotal: "45360",
+        discountAmount: "80",
+        vatAmount: "36",
+        grandTotal: "756",
 
+        // Other Details
         paymentTerms: "100% Advance",
-
         owner: "Sarah Wilson",
         priority: "Medium",
 
-        notes: "Quotation sent for approval.",
+        notes: "ERP Software quotation.",
 
-        approvalPath: "Sales Manager",
-        firstApprover: "Rahul Sharma",
+        // Approval
+        approvalPath: "",
+        firstApprover: "",
 
+        // System
         status: "Approved",
-        created: "11 Jun 2026",
+        created: "23 Aug 2026",
+    },
+
+    {
+        id: 3,
+        quotationNo: "QT-2026-0003",
+
+        // Customer Info
+        customer: "Tech Solutions LLC",
+        contactPerson: "Mohammed Ali",
+        email: "mohammed@techsolutions.ae",
+        phone: "+971 50 123 4567",
+        industry: "Technology",
+        source: "",
+
+        // Product
+        productId: "PRD-003",
+        productName: "Business Analytics",
+        unitPrice: "300",
+        quantity: "2",
+
+        // Pricing
+        quotationValue: "600",
+        discount: "15",
+        vat: "5",
+
+        discountAmount: "90",
+        vatAmount: "25.5",
+        grandTotal: "535.5",
+
+        // Other Details
+        paymentTerms: "50% Advance, 50% On Delivery",
+        owner: "John Doe",
+        priority: "Low",
+
+        notes: "Business Analytics and reporting solution.",
+
+        // Approval
+        approvalPath: "",
+        firstApprover: "",
+
+        // System
+        status: "Draft",
+        created: "24 Aug 2026",
     },
 ];
+
 
 /* Initialize */
 

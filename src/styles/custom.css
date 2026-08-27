@@ -67,6 +67,13 @@ body.dark-mode .btn span {
     border-color: #E0E2E7;
 }
 
+/* .form-outer .form-control[readonly],
+.form-outer .form-control:disabled {
+    border-color: #e5e5f0 !important;
+    cursor: not-allowed;
+    user-select: none;
+} */
+
 .form-check-input {
     box-shadow: none !important;
     border-color: #0C447C;
@@ -401,9 +408,11 @@ body:has(.header-wh) .navbar {
     padding: 11px 16px;
     font-size: 14px;
 }
-.input-text-box{
+
+.input-text-box {
     background-color: #e5e5f0 !important;
-    border:solid 1px #fff !important;
+    /* border: solid 1px #fff !important; */
+    border: solid 1px #e5e5f0 !important;
     color: #202224;
     min-height: 50px;
     padding: 11px 16px;
@@ -414,6 +423,12 @@ body:has(.header-wh) .navbar {
     width: 100%;
     user-select: none;
 }
+
+.input-text-box .placeholder-text,
+.form-control::placeholder {
+    color: #666;
+}
+
 .form-control,
 .form-select {
     border-color: #e0e2e7;
@@ -1780,6 +1795,7 @@ table tbody tr td .eyeBtn {
     border: 1px solid #fff;
     padding: 8px;
 }
+
 .user-profile-change {
     position: relative;
     width: auto;

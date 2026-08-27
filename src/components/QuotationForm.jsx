@@ -7,6 +7,7 @@ import {
     initializeCompanies,
     getCompanies,
 } from "@/utils/companiesStorage";
+import ReadOnlyValue from "@/components/ReadOnlyValue";
 
 import {
     initializeProducts,
@@ -436,46 +437,75 @@ const QuotationForm = ({ mode, quotationId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        className="form-control"
+
+                                    {/* Old readonly input */}
+                                    {/*
+                                        <input
+                                            type="email"
+                                            name="email"
+                                            className="form-control"
+                                            value={formData?.email}
+                                            onChange={handleChange}
+                                            placeholder="e.g. name@company.ae"
+                                            readOnly
+                                        />
+                                    */}
+
+                                    <ReadOnlyValue
                                         value={formData?.email}
-                                        onChange={handleChange}
                                         placeholder="e.g. name@company.ae"
-                                        readOnly
                                     />
                                 </div>
                             </div>
+
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Phone</label>
-                                    <input
-                                        type="text"
-                                        name="phone"
-                                        className="form-control"
+
+                                    {/* Old readonly input */}
+                                    {/*
+                                        <input
+                                            type="text"
+                                            name="phone"
+                                            className="form-control"
+                                            value={formData?.phone}
+                                            onChange={handleChange}
+                                            placeholder="+971 4 000 0000"
+                                            readOnly
+                                        />
+                                    */}
+
+                                    <ReadOnlyValue
                                         value={formData?.phone}
-                                        onChange={handleChange}
                                         placeholder="+971 4 000 0000"
-                                        readOnly
                                     />
                                 </div>
                             </div>
+
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Industry Type</label>
-                                    <input
-                                        type="text"
-                                        name="industry"
-                                        className="form-control"
+
+                                    {/* Old readonly input */}
+                                    {/*
+                                        <input
+                                            type="text"
+                                            name="industry"
+                                            className="form-control"
+                                            value={formData?.industry}
+                                            placeholder="Select Industry"
+                                            onChange={handleChange}
+                                            readOnly
+                                        />
+                                    */}
+
+                                    <ReadOnlyValue
                                         value={formData?.industry}
                                         placeholder="Select Industry"
-                                        options={industryOptions}
-                                        onChange={handleChange}
-                                        readOnly
                                     />
                                 </div>
                             </div>
+
                             {/* <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Lead Source</label>
@@ -583,16 +613,25 @@ const QuotationForm = ({ mode, quotationId }) => {
                                 <div className="form-group">
                                     <label>Unit Price (AED)</label>
 
-                                    <input
-                                        type="text"
-                                        name="unitPrice"
-                                        className="form-control"
+                                    {/* Old readonly input */}
+                                    {/*
+                                        <input
+                                            type="text"
+                                            name="unitPrice"
+                                            className="form-control"
+                                            value={formData?.unitPrice}
+                                            readOnly
+                                            placeholder="0"
+                                        />
+                                    */}
+
+                                    <ReadOnlyValue
                                         value={formData?.unitPrice}
-                                        readOnly
                                         placeholder="0"
                                     />
                                 </div>
                             </div>
+
 
                             {/* Quantity */}
 
@@ -625,50 +664,89 @@ const QuotationForm = ({ mode, quotationId }) => {
                                 <div className="form-group">
                                     <label>Subtotal (AED)</label>
 
-                                    <input
-                                        type="text"
-                                        className="form-control"
+                                    {/* Old readonly input */}
+                                    {/*
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={formData?.quotationValue}
+                                            readOnly
+                                        />
+                                    */}
+
+                                    <ReadOnlyValue
                                         value={formData?.quotationValue}
-                                        readOnly
+                                        placeholder="0"
                                     />
                                 </div>
                             </div>
+
 
                             {/* Discount */}
 
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
-                                    <label>Discount {formData?.discount ? `(${formData?.discount}%)` : "%"}</label>
+                                    <label>
+                                        Discount{" "}
+                                        {formData?.discount
+                                            ? `(${formData.discount}%)`
+                                            : "%"}
+                                    </label>
 
-                                    <input
-                                        type="text"
-                                        className="form-control"
+                                    {/* Old readonly input */}
+                                    {/*
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={calculateTotals()?.discountAmount}
+                                            readOnly
+                                        />
+                                    */}
+
+                                    <ReadOnlyValue
                                         value={calculateTotals()?.discountAmount}
-                                        readOnly
+                                        placeholder="0"
                                     />
                                 </div>
                             </div>
+
 
                             {/* VAT */}
 
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
-                                    <label>VAT {formData?.vat ? `(${formData?.vat}%)` : "%"}</label>
+                                    <label>
+                                        VAT{" "}
+                                        {formData?.vat
+                                            ? `(${formData.vat}%)`
+                                            : "%"}
+                                    </label>
 
-                                    <input
-                                        type="text"
-                                        className={`form-control ${errors?.vat ? "is-invalid" : ""}`}
+                                    {/* Old readonly input */}
+                                    {/*
+                                        <input
+                                            type="text"
+                                            className={`form-control ${
+                                                errors?.vat ? "is-invalid" : ""
+                                            }`}
+                                            value={calculateTotals()?.vatAmount}
+                                            readOnly
+                                        />
+                                    */}
+
+                                    <ReadOnlyValue
                                         value={calculateTotals()?.vatAmount}
-                                        readOnly
+                                        placeholder="0"
                                     />
 
                                     {errors?.vat && (
                                         <div className="form-error">
-                                            {errors?.vat}
+                                            {errors.vat}
                                         </div>
                                     )}
                                 </div>
                             </div>
+
 
                             {/* Grand Total */}
 
@@ -676,14 +754,23 @@ const QuotationForm = ({ mode, quotationId }) => {
                                 <div className="form-group">
                                     <label>Grand Total (AED)</label>
 
-                                    <input
-                                        type="text"
-                                        className="form-control"
+                                    {/* Old readonly input */}
+                                    {/*
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={calculateTotals()?.grandTotal}
+                                            readOnly
+                                        />
+                                    */}
+
+                                    <ReadOnlyValue
                                         value={calculateTotals()?.grandTotal}
-                                        readOnly
+                                        placeholder="0"
                                     />
                                 </div>
                             </div>
+
 
                             <div className="col-lg-8 col-md-6">
                                 <div className="form-group">
