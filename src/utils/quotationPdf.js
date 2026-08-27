@@ -12,16 +12,20 @@ export const downloadQuotationPDF = (quotation) => {
     const pageHeight =
         doc.internal.pageSize.getHeight();
 
+    // =====================================================
+    // PAGE MARGINS
+    // =====================================================
+
     const marginLeft = 14;
     const marginRight = 14;
 
     const contentWidth =
-        pageWidth - marginLeft - marginRight;
+        pageWidth -
+        marginLeft -
+        marginRight;
 
     // =====================================================
     // COMPANY INFORMATION
-    // =====================================================
-    // Change these values according to your company.
     // =====================================================
 
     const companyName = "YOUR COMPANY";
@@ -39,9 +43,9 @@ export const downloadQuotationPDF = (quotation) => {
 
     const black = [0, 0, 0];
 
-    const lightGray = [245, 245, 245];
-
     const borderGray = [210, 210, 210];
+
+    const grayText = [80, 80, 80];
 
     // =====================================================
     // HELPER
@@ -71,29 +75,43 @@ export const downloadQuotationPDF = (quotation) => {
         quotation?.vat || 0
     );
 
+    // Always round discount amount
+    const calculatedDiscountAmount =
+        subtotal *
+        (discountPercent / 100);
+
     const discountAmount = Math.round(
         Number(
-            quotation?.discountAmount ||
-            subtotal *
-            (discountPercent / 100)
+            quotation?.discountAmount ??
+            calculatedDiscountAmount
         )
     );
 
-    const taxableAmount =
-        subtotal - discountAmount;
+    // Taxable amount after discount
+    const taxableAmount = Math.round(
+        subtotal - discountAmount
+    );
+
+    // Always round VAT amount
+    const calculatedVatAmount =
+        taxableAmount *
+        (vatPercent / 100);
 
     const vatAmount = Math.round(
         Number(
-            quotation?.vatAmount ||
-            taxableAmount *
-            (vatPercent / 100)
+            quotation?.vatAmount ??
+            calculatedVatAmount
         )
     );
 
+    // Always round grand total
+    const calculatedGrandTotal =
+        taxableAmount + vatAmount;
+
     const grandTotal = Math.round(
         Number(
-            quotation?.grandTotal ||
-            taxableAmount + vatAmount
+            quotation?.grandTotal ??
+            calculatedGrandTotal
         )
     );
 
@@ -101,9 +119,9 @@ export const downloadQuotationPDF = (quotation) => {
     // PAGE 1
     // =====================================================
 
-    // -----------------------------------------------------
-    // Company Information - Left
-    // -----------------------------------------------------
+    // =====================================================
+    // COMPANY INFORMATION - LEFT
+    // =====================================================
 
     doc.setFont(
         "helvetica",
@@ -118,7 +136,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         companyName,
-        14,
+        marginLeft,
         20
     );
 
@@ -130,44 +148,42 @@ export const downloadQuotationPDF = (quotation) => {
     doc.setFontSize(9);
 
     doc.setTextColor(
-        80,
-        80,
-        80
+        ...grayText
     );
 
     doc.text(
         companyAddress,
-        14,
+        marginLeft,
         27
     );
 
     doc.text(
         companyTRN,
-        14,
+        marginLeft,
         33
     );
 
     doc.text(
         companyEmail,
-        14,
+        marginLeft,
         39
     );
 
     doc.text(
         companyWebsite,
-        14,
+        marginLeft,
         45
     );
 
     doc.text(
         companyPhone,
-        14,
+        marginLeft,
         51
     );
 
-    // -----------------------------------------------------
-    // QUOTATION - Right
-    // -----------------------------------------------------
+    // =====================================================
+    // QUOTATION - RIGHT
+    // =====================================================
 
     doc.setFont(
         "helvetica",
@@ -182,7 +198,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         "QUOTATION",
-        pageWidth - 14,
+        pageWidth - marginRight,
         22,
         {
             align: "right",
@@ -202,7 +218,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         `# ${quotation?.quotationNo || quotation?.id || "-"}`,
-        pageWidth - 14,
+        pageWidth - marginRight,
         31,
         {
             align: "right",
@@ -211,25 +227,25 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         `Quote Date: ${quotation?.created || "-"}`,
-        pageWidth - 14,
+        pageWidth - marginRight,
         38,
         {
             align: "right",
         }
     );
 
-    // -----------------------------------------------------
-    // Horizontal Line
-    // -----------------------------------------------------
+    // =====================================================
+    // HORIZONTAL LINE
+    // =====================================================
 
     doc.setDrawColor(
         ...borderGray
     );
 
     doc.line(
-        14,
+        marginLeft,
         58,
-        pageWidth - 14,
+        pageWidth - marginRight,
         58
     );
 
@@ -239,9 +255,9 @@ export const downloadQuotationPDF = (quotation) => {
 
     const billToY = 70;
 
-    // -----------------------------------------------------
-    // Bill To
-    // -----------------------------------------------------
+    // =====================================================
+    // BILL TO
+    // =====================================================
 
     doc.setFont(
         "helvetica",
@@ -256,7 +272,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         "Bill To",
-        14,
+        marginLeft,
         billToY
     );
 
@@ -273,7 +289,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         quotation?.customer || "-",
-        14,
+        marginLeft,
         billToY + 8
     );
 
@@ -285,26 +301,26 @@ export const downloadQuotationPDF = (quotation) => {
     doc.setFontSize(9);
 
     doc.setTextColor(
-        80,
-        80,
-        80
+        ...grayText
     );
 
     doc.text(
         quotation?.phone || "-",
-        14,
+        marginLeft,
         billToY + 15
     );
 
     doc.text(
         quotation?.email || "-",
-        14,
+        marginLeft,
         billToY + 22
     );
 
-    // -----------------------------------------------------
-    // Subject
-    // -----------------------------------------------------
+    // =====================================================
+    // SUBJECT
+    // =====================================================
+
+    const subjectX = 115;
 
     doc.setFont(
         "helvetica",
@@ -319,7 +335,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         "Subject",
-        115,
+        subjectX,
         billToY
     );
 
@@ -346,7 +362,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         subjectLines,
-        115,
+        subjectX,
         billToY + 8
     );
 
@@ -359,6 +375,13 @@ export const downloadQuotationPDF = (quotation) => {
 
     autoTable(doc, {
         startY: productTableY,
+
+        tableWidth: contentWidth,
+
+        margin: {
+            left: marginLeft,
+            right: marginRight,
+        },
 
         head: [
             [
@@ -404,13 +427,12 @@ export const downloadQuotationPDF = (quotation) => {
         theme: "grid",
 
         // =================================================
-        // REDUCED ROW HEIGHT / SPACING
+        // GENERAL TABLE STYLE
         // =================================================
 
         styles: {
             fontSize: 8.5,
 
-            // Reduced from 5
             cellPadding: {
                 top: 2.5,
                 bottom: 2.5,
@@ -428,7 +450,7 @@ export const downloadQuotationPDF = (quotation) => {
         },
 
         // =================================================
-        // HEADER
+        // HEADER STYLE
         // =================================================
 
         headStyles: {
@@ -444,7 +466,6 @@ export const downloadQuotationPDF = (quotation) => {
 
             fontSize: 8.5,
 
-            // Smaller header padding
             cellPadding: {
                 top: 2.5,
                 bottom: 2.5,
@@ -458,7 +479,7 @@ export const downloadQuotationPDF = (quotation) => {
         },
 
         // =================================================
-        // BODY
+        // BODY STYLE
         // =================================================
 
         bodyStyles: {
@@ -476,6 +497,7 @@ export const downloadQuotationPDF = (quotation) => {
 
         // =================================================
         // COLUMN WIDTHS
+        // TOTAL = 182mm
         // =================================================
 
         columnStyles: {
@@ -500,7 +522,7 @@ export const downloadQuotationPDF = (quotation) => {
             // Rate
             3: {
                 cellWidth: 25,
-                halign: "center",
+                halign: "right",
             },
 
             // Discount
@@ -518,7 +540,7 @@ export const downloadQuotationPDF = (quotation) => {
             // Amount
             6: {
                 cellWidth: 38,
-                halign: "center",
+                halign: "right",
             },
         },
     });
@@ -530,9 +552,9 @@ export const downloadQuotationPDF = (quotation) => {
     const summaryY =
         doc.lastAutoTable.finalY + 12;
 
-    // -----------------------------------------------------
-    // Payment Terms
-    // -----------------------------------------------------
+    // =====================================================
+    // PAYMENT TERMS - LEFT
+    // =====================================================
 
     doc.setFont(
         "helvetica",
@@ -547,7 +569,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         "Payment Terms",
-        14,
+        marginLeft,
         summaryY
     );
 
@@ -571,13 +593,13 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         paymentTerms,
-        14,
+        marginLeft,
         summaryY + 8
     );
 
-    // -----------------------------------------------------
-    // Notes
-    // -----------------------------------------------------
+    // =====================================================
+    // NOTES - LEFT
+    // =====================================================
 
     const notesY =
         summaryY +
@@ -598,7 +620,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         "Notes",
-        14,
+        marginLeft,
         notesY
     );
 
@@ -621,23 +643,35 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         notes,
-        14,
+        marginLeft,
         notesY + 8
     );
 
     // =====================================================
-    // FINANCIAL SUMMARY
+    // FINANCIAL SUMMARY - RIGHT
     // =====================================================
 
     const totalsStartY =
-        summaryY - 6;
+        summaryY - 0;
+
+    // Width of totals table
+    const totalsWidth = 92;
+
+    // X position so it stays inside right margin
+    const totalsX =
+        pageWidth -
+        marginRight -
+        totalsWidth;
+        
 
     autoTable(doc, {
         startY: totalsStartY,
 
+        tableWidth: totalsWidth,
+
         margin: {
-            left: 105,
-            right: 14,
+            left: totalsX,
+            right: marginRight,
         },
 
         body: [
@@ -666,9 +700,21 @@ export const downloadQuotationPDF = (quotation) => {
 
         styles: {
             fontSize: 9,
-            cellPadding: 4,
+
+            cellPadding: {
+                top: 4,
+                bottom: 4,
+                left: 2,
+                right: 2,
+            },
+
             textColor: black,
         },
+
+        // =================================================
+        // TOTALS COLUMN WIDTHS
+        // TOTAL = 92mm
+        // =================================================
 
         columnStyles: {
             0: {
@@ -679,15 +725,15 @@ export const downloadQuotationPDF = (quotation) => {
 
             1: {
                 halign: "right",
-                cellWidth: 45,
+                cellWidth: 37,
             },
         },
 
         didParseCell: (data) => {
 
-            // -------------------------------
-            // Discount
-            // -------------------------------
+            // =================================================
+            // DISCOUNT
+            // =================================================
 
             if (
                 data.row.index === 1 &&
@@ -696,7 +742,7 @@ export const downloadQuotationPDF = (quotation) => {
                 data.cell.styles.fontStyle =
                     "bold";
 
-                // Normal dark color
+                // Normal color
                 data.cell.styles.textColor = [
                     60,
                     60,
@@ -704,9 +750,9 @@ export const downloadQuotationPDF = (quotation) => {
                 ];
             }
 
-            // -------------------------------
-            // Grand Total
-            // -------------------------------
+            // =================================================
+            // GRAND TOTAL
+            // =================================================
 
             if (
                 data.row.index === 3
@@ -730,7 +776,8 @@ export const downloadQuotationPDF = (quotation) => {
     const taxSummaryY =
         Math.max(
             doc.lastAutoTable.finalY,
-            notesY + notes.length * 5
+            notesY +
+            notes.length * 5
         ) + 14;
 
     doc.setFont(
@@ -746,12 +793,23 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         "Tax Summary",
-        14,
+        marginLeft,
         taxSummaryY
     );
 
+    // =====================================================
+    // TAX SUMMARY TABLE
+    // =====================================================
+
     autoTable(doc, {
         startY: taxSummaryY + 5,
+
+        tableWidth: contentWidth,
+
+        margin: {
+            left: marginLeft,
+            right: marginRight,
+        },
 
         head: [
             [
@@ -779,35 +837,59 @@ export const downloadQuotationPDF = (quotation) => {
 
         styles: {
             fontSize: 9,
-            cellPadding: 4,
+
+            cellPadding: {
+                top: 4,
+                bottom: 4,
+                left: 4,
+                right: 4,
+            },
+
             textColor: black,
+
             lineColor: borderGray,
+
             lineWidth: 0.2,
         },
 
         headStyles: {
             fillColor: darkGray,
+
             textColor: [
                 255,
                 255,
                 255,
             ],
+
             fontStyle: "bold",
+
+            cellPadding: {
+                top: 4,
+                bottom: 4,
+                left: 4,
+                right: 4,
+            },
         },
+
+        // =================================================
+        // TAX TABLE WIDTHS
+        // TOTAL = 182mm
+        // =================================================
 
         columnStyles: {
             0: {
                 cellWidth: 75,
+                halign: "left",
             },
 
             1: {
                 cellWidth: 55,
-                // halign: "center",
+                halign: "right",
             },
 
             2: {
-                cellWidth: 55,
-                // halign: "center",
+                cellWidth: 52,
+                halign: "right",
             },
         },
     });
@@ -839,14 +921,15 @@ export const downloadQuotationPDF = (quotation) => {
     );
 
     // =====================================================
-    // PAGE 2 - TERMS & CONDITIONS
+    // PAGE 2
+    // TERMS & CONDITIONS
     // =====================================================
 
     doc.addPage();
 
-    // -----------------------------------------------------
-    // Page 2 Header
-    // -----------------------------------------------------
+    // =====================================================
+    // PAGE 2 HEADER
+    // =====================================================
 
     doc.setFont(
         "helvetica",
@@ -861,7 +944,7 @@ export const downloadQuotationPDF = (quotation) => {
 
     doc.text(
         "TERMS & CONDITIONS",
-        14,
+        marginLeft,
         25
     );
 
@@ -870,15 +953,15 @@ export const downloadQuotationPDF = (quotation) => {
     );
 
     doc.line(
-        14,
+        marginLeft,
         32,
-        pageWidth - 14,
+        pageWidth - marginRight,
         32
     );
 
-    // -----------------------------------------------------
-    // Quotation Reference
-    // -----------------------------------------------------
+    // =====================================================
+    // QUOTATION REFERENCE
+    // =====================================================
 
     doc.setFont(
         "helvetica",
@@ -892,18 +975,21 @@ export const downloadQuotationPDF = (quotation) => {
     );
 
     doc.text(
-        `Quotation No: ${quotation?.quotationNo ||
-        quotation?.id ||
-        "-"
+        `Quotation No: ${
+            quotation?.quotationNo ||
+            quotation?.id ||
+            "-"
         }`,
-        14,
+        marginLeft,
         42
     );
 
     doc.text(
-        `Customer: ${quotation?.customer || "-"
+        `Customer: ${
+            quotation?.customer ||
+            "-"
         }`,
-        pageWidth - 14,
+        pageWidth - marginRight,
         42,
         {
             align: "right",
@@ -921,6 +1007,7 @@ export const downloadQuotationPDF = (quotation) => {
         title,
         description
     ) => {
+
         doc.setFont(
             "helvetica",
             "bold"
@@ -934,7 +1021,7 @@ export const downloadQuotationPDF = (quotation) => {
 
         doc.text(
             `${number}. ${title}`,
-            14,
+            marginLeft,
             currentY
         );
 
@@ -950,22 +1037,24 @@ export const downloadQuotationPDF = (quotation) => {
         const lines =
             doc.splitTextToSize(
                 description,
-                pageWidth - 28
+                contentWidth
             );
 
         doc.text(
             lines,
-            14,
+            marginLeft,
             currentY
         );
 
         currentY +=
-            lines.length * 5 + 10;
+            lines.length *
+            5 +
+            10;
     };
 
-    // -----------------------------------------------------
-    // Payment Terms
-    // -----------------------------------------------------
+    // =====================================================
+    // PAYMENT TERMS
+    // =====================================================
 
     addTerm(
         1,
@@ -974,9 +1063,9 @@ export const downloadQuotationPDF = (quotation) => {
         "Payment terms as agreed between the customer and the company."
     );
 
-    // -----------------------------------------------------
-    // Cost and Bill of Quantities
-    // -----------------------------------------------------
+    // =====================================================
+    // COST AND BILL OF QUANTITIES
+    // =====================================================
 
     addTerm(
         2,
@@ -984,9 +1073,9 @@ export const downloadQuotationPDF = (quotation) => {
         "The quotation value is based on the products, quantities and pricing specified in this quotation."
     );
 
-    // -----------------------------------------------------
-    // Validity
-    // -----------------------------------------------------
+    // =====================================================
+    // VALIDITY
+    // =====================================================
 
     addTerm(
         3,
@@ -994,9 +1083,9 @@ export const downloadQuotationPDF = (quotation) => {
         "This quotation is subject to the validity period and conditions agreed with the customer."
     );
 
-    // -----------------------------------------------------
-    // Taxes
-    // -----------------------------------------------------
+    // =====================================================
+    // TAXES
+    // =====================================================
 
     addTerm(
         4,
@@ -1004,9 +1093,9 @@ export const downloadQuotationPDF = (quotation) => {
         `VAT has been calculated at ${vatPercent}% based on the taxable amount after applicable discount.`
     );
 
-    // -----------------------------------------------------
-    // Delivery
-    // -----------------------------------------------------
+    // =====================================================
+    // DELIVERY
+    // =====================================================
 
     addTerm(
         5,
@@ -1014,9 +1103,9 @@ export const downloadQuotationPDF = (quotation) => {
         "Delivery timelines and arrangements will be confirmed separately based on product availability and the agreed requirements."
     );
 
-    // -----------------------------------------------------
-    // General
-    // -----------------------------------------------------
+    // =====================================================
+    // GENERAL
+    // =====================================================
 
     addTerm(
         6,
@@ -1031,6 +1120,7 @@ export const downloadQuotationPDF = (quotation) => {
     if (
         quotation?.notes
     ) {
+
         currentY += 5;
 
         doc.setFont(
@@ -1040,9 +1130,13 @@ export const downloadQuotationPDF = (quotation) => {
 
         doc.setFontSize(11);
 
+        doc.setTextColor(
+            ...black
+        );
+
         doc.text(
             "Additional Notes",
-            14,
+            marginLeft,
             currentY
         );
 
@@ -1058,12 +1152,12 @@ export const downloadQuotationPDF = (quotation) => {
         const additionalNotes =
             doc.splitTextToSize(
                 quotation.notes,
-                pageWidth - 28
+                contentWidth
             );
 
         doc.text(
             additionalNotes,
-            14,
+            marginLeft,
             currentY
         );
     }
@@ -1099,9 +1193,10 @@ export const downloadQuotationPDF = (quotation) => {
     // =====================================================
 
     doc.save(
-        `Quotation-${quotation?.quotationNo ||
-        quotation?.id ||
-        "quotation"
+        `Quotation-${
+            quotation?.quotationNo ||
+            quotation?.id ||
+            "quotation"
         }.pdf`
     );
 };
