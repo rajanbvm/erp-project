@@ -30,6 +30,19 @@ const ListPage = () => {
     Completed: "#0F5A45",
   };
 
+  const statusClasses = {
+    "Qualified": "badge-qualified",
+    "Proposal sent": "badge-proposal",
+    "Contacted": "badge-contacted",
+    "New": "badge-new",
+    "Negotiation": "badge-negotiation",
+    "Won": "badge-won",
+  };
+
+    const getStatusClass = (status) => {
+    return statusClasses[status] || "badge-default";
+  };
+
   const TaskColumns = [
     {
       key: "checkbox",
@@ -115,6 +128,15 @@ const ListPage = () => {
             fontWeight: 600,
           }}
         >
+          {row?.status}
+        </span>
+      ),
+    },
+    {
+      key: "status",
+      label: "Status",
+      render: (row) => (
+        <span className={`table-status ${getStatusClass(row?.status)}`}>
           {row?.status}
         </span>
       ),

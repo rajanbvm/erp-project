@@ -28,8 +28,13 @@ body.dark-mode {
     --bg-white: var(--dark-mode-bg);
     --card-border: var(--dark-card-border);
     --border-color: var(--dark-card-border);
+   
 }
-
+body.dark-mode .accordion,
+body.dark-mode .accordion-button:not(.collapsed):after{
+ --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+ --bs-accordion-btn-active-icon:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+}
 body.dark-mode .form-outer,
 body.dark-mode .dash-link.active,
 body.dark-mode .dash-link:hover {
@@ -69,9 +74,10 @@ body.dark-mode .reminder-switch span.text-muted {
     color: #fff;
 }
 
-body.dark-mode .form-group label{
+body.dark-mode .form-group label {
     color: #898989;
 }
+
 .toggle-icon {
     font-size: 24px;
 }
@@ -1028,12 +1034,14 @@ body.dark-mode .notification_tabs {
     background-color: #FAFAFA !important;
     color: #161A23 !important;
 }
+
 body.dark-mode .dropdown-item.active,
 body.dark-mode .dropdown-item:active,
 body.dark-mode .dropdown-item:hover {
     background-color: var(--dark-table-bg) !important;
     color: #fff !important;
 }
+
 .overview-dropdown {
     align-items: center;
     column-gap: 8px;
@@ -1257,25 +1265,35 @@ body.dark-mode .table-status.badge-contacted {
 .table-status.badge-new {
     color: #0C447C;
 }
+
 body.dark-mode .table-status.badge-new {
     color: #1b6ec1;
 }
+
 .table-status.badge-negotiation {
     color: #4A1B0C;
+}
+
+body.dark-mode .table-status.badge-negotiation {
+    color: #c14a24;
 }
 
 .table-status.badge-won {
     color: #04342C;
 }
-body.dark-mode .table-status.badge-won{
+
+body.dark-mode .table-status.badge-won {
     color: #24a892;
 }
+
 .table-status.badge-overdue {
     color: #791F1F;
 }
-body.dark-mode .table-status.badge-overdue{
+
+body.dark-mode .table-status.badge-overdue {
     color: #ee201c;
 }
+
 .table-status.badge-pending {
     color: #E0A83C;
 }
@@ -1433,10 +1451,16 @@ table tbody tr td .eyeBtn {
     border-radius: 10px;
     border: solid 1px #fff;
 }
-body.dark-mode .reminder-setting{
+
+body.dark-mode .reminder-setting,
+body.dark-mode .accordion-button:not(.collapsed),
+body.dark-mode .accordion-body,
+body.dark-mode .accordion-button,
+body.dark-mode .accordion-item {
     background-color: var(--dark-mode-bg);
     border-color: var(--dark-card-border);
 }
+
 .reminder-switch .form-switch .form-check-input {
     --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23FFF'/%3e%3c/svg%3e");
     background-color: #CBD5E1;
@@ -1861,7 +1885,7 @@ body.dark-mode .reminder-setting{
 .permission-chip {
     border: 1px solid #dfe3eb;
     background: #fff;
-    color: #687084;
+    color: #687084 !important;
     border-radius: 7px;
     min-height: 36px;
     padding: 7px 13px;
@@ -1872,7 +1896,9 @@ body.dark-mode .reminder-setting{
     cursor: pointer;
     transition: all 0.2s ease;
 }
-
+.permission-chip span{
+    color: #687084 !important;
+}
 .permission-chip:hover {
     border-color: #276cf0;
     color: #276cf0;
@@ -1899,7 +1925,7 @@ body.dark-mode .reminder-setting{
 .permission-chip.active .permission-chip-icon {
     background: #276cf0;
     border-color: #276cf0;
-    color: #fff;
+    color: #fff !important;
 }
 
 .user-profile-change img {

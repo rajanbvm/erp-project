@@ -63,6 +63,15 @@ const ListPage = () => {
 
   const router = useRouter();
 
+  const statusClasses = {
+    "Primary": "badge-qualified",
+    "Secondary": "badge-new",
+  };
+
+  const getStatusClass = (status) => {
+    return statusClasses[status] || "badge-default";
+  };
+
   const ContactsColumns = [
     { key: "contact", label: "Contact" },
     { key: "email", label: "Email" },
@@ -73,12 +82,7 @@ const ListPage = () => {
       key: "type",
       label: "Type",
       render: (row) => (
-        <span
-          style={{
-            color: typeColors[row?.type] || "#222",
-            fontWeight: 500,
-          }}
-        >
+        <span className={`table-status ${getStatusClass(row?.type)}`}>
           {row?.type}
         </span>
       ),
