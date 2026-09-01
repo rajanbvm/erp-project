@@ -33,14 +33,14 @@ function Dashboard() {
   const [leads, setLeads] = useState([]);
 
 
-useEffect(() => {
+  useEffect(() => {
 
     const currentUser =
-        JSON.parse(
-            localStorage.getItem("currentUser")
-        );
+      JSON.parse(
+        localStorage.getItem("currentUser")
+      );
 
-}, []);
+  }, []);
 
   useEffect(() => {
     const storedLeads = localStorage.getItem("leadsData");
@@ -104,16 +104,12 @@ useEffect(() => {
       ),
     },
     { key: "created", label: "CREATED" },
+
     {
       key: "status",
       label: "Status",
       render: (row) => (
-        <span
-          style={{
-            color: statusColors[row?.status] || "#222",
-            fontWeight: 500,
-          }}
-        >
+        <span className={`table-status ${getStatusClass(row?.status)}`}>
           {row?.status}
         </span>
       ),
@@ -133,13 +129,13 @@ useEffect(() => {
     },
   ];
 
-  const statusColors = {
-    "Qualified": "#173404",
-    "Proposal sent": "#26215C",
-    "Contacted": "#412402",
-    "New": "#0C447C",
-    "Negotiation": "#4A1B0C",
-    "Won": "#04342C",
+  const statusClasses = {
+    "Qualified": "badge-qualified",
+    "Proposal sent": "badge-proposal",
+    "Contacted": "badge-contacted",
+    "New": "badge-new",
+    "Negotiation": "badge-negotiation",
+    "Won": "badge-won",
   };
 
   const LeadRows = leads.map((lead) => ({
@@ -163,6 +159,10 @@ useEffect(() => {
     return "#1D9E75";
   };
 
+  const getStatusClass = (status) => {
+    return statusClasses[status] || "badge-default";
+  };
+  
   return (
     <>
       <div

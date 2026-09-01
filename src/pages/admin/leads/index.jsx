@@ -90,12 +90,7 @@ const ListPage = () => {
       key: "status",
       label: "Status",
       render: (row) => (
-        <span
-          style={{
-            color: statusColors[row?.status] || "#222",
-            fontWeight: 500,
-          }}
-        >
+        <span className={`table-status ${getStatusClass(row?.status)}`}>
           {row?.status}
         </span>
       ),
@@ -116,27 +111,28 @@ const ListPage = () => {
             onClick={() => router.push(`/admin/leads/edit/${row?.id}`)}
           />
           <Permission module="leads" action="delete">
-          <RiDeleteBin6Line
-            className="eyeBtn text-danger mx-2"
-            style={{ cursor: "pointer" }}
-            onClick={() => handleDelete(row?.id)}
-          />
+            <RiDeleteBin6Line
+              className="eyeBtn text-danger mx-2"
+              style={{ cursor: "pointer" }}
+              onClick={() => handleDelete(row?.id)}
+            />
           </Permission>
         </div>
       ),
     },
   ];
 
+  const statusClasses = {
+    "Qualified": "badge-qualified",
+    "Proposal sent": "badge-proposal",
+    "Contacted": "badge-contacted",
+    "New": "badge-new",
+    "Negotiation": "badge-negotiation",
+    "Won": "badge-won",
+  };
 
-
-
-  const statusColors = {
-    "Qualified": "#173404",
-    "Proposal sent": "#26215C",
-    "Contacted": "#412402",
-    "New": "#0C447C",
-    "Negotiation": "#4A1B0C",
-    "Won": "#04342C",
+  const getStatusClass = (status) => {
+    return statusClasses[status] || "badge-default";
   };
 
   const dropdownItems = useMemo(() => {

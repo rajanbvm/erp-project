@@ -8,6 +8,8 @@ export default function DashboardLayout({ children }) {
 
     const [authChecking, setAuthChecking] = useState(true);
 
+    const [showSidebar, setShowSidebar] = useState(false);
+
     useEffect(() => {
         const currentUser = getCurrentUser();
 
@@ -29,9 +31,12 @@ export default function DashboardLayout({ children }) {
     }
 
     return (
-        <div className="dashboard-main">
+        <div className={`dashboard-main ${showSidebar ? "dash-navbar-show" : ""}`}>
 
-            <Sidebar />
+            <Sidebar
+                showSidebar={showSidebar}
+                setShowSidebar={setShowSidebar}
+            />
 
             <main className="dashboard-right">
                 <div className="dashboard-data-wrapper">

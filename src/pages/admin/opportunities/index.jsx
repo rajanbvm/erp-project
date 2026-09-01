@@ -59,14 +59,17 @@ const ListPage = () => {
     |--------------------------------------------------------------------------
     */
 
-    const statusColors = {
-        Qualification: "#0C447C",
-        "Proposal sent": "#26215C",
-        Negotiation: "#4A1B0C",
-        Won: "#04342C",
-        Lost: "#501313",
+    const statusClasses = {
+        "Qualification": "badge-new",
+        "Proposal sent": "badge-proposal",
+        "Negotiation": "badge-negotiation",
+        "Won": "badge-won",
+        "Lost": "badge-overdue",
     };
 
+    const getStatusClass = (status) => {
+        return statusClasses[status] || "badge-default";
+    };
 
     /*
     |--------------------------------------------------------------------------
@@ -167,18 +170,8 @@ const ListPage = () => {
         {
             key: "stage",
             label: "Stage",
-
             render: (row) => (
-                <span
-                    style={{
-                        color:
-                            statusColors[
-                            row?.stage
-                            ] || "#222",
-
-                        fontWeight: 500,
-                    }}
-                >
+                <span className={`table-status ${getStatusClass(row?.stage)}`}>
                     {row?.stage}
                 </span>
             ),
@@ -242,7 +235,7 @@ const ListPage = () => {
             label: "ACTION",
 
             render: (row) => (
-                <div className="text-center">
+                <div className="table-actions">
 
                     <FaRegEye
                         className="eyeBtn mx-2"

@@ -42,13 +42,16 @@ const ListPage = () => {
   |--------------------------------------------------------------------------
   */
 
-  const statusColors = {
-    Scheduled: "#0C447C",
-    Pending: "#412402",
-    Overdue: "#791F1F",
-    Completed: "#1D9E75",
+   const statusClasses = {
+    "Scheduled": "badge-new",
+    "Overdue": "badge-overdue",
+    "Pending": "badge-contacted",
+    "Completed": "badge-won",
   };
 
+    const getStatusClass = (status) => {
+        return statusClasses[status] || "badge-default";
+    };
   /*
   |--------------------------------------------------------------------------
   | Load Activities
@@ -303,25 +306,14 @@ const ListPage = () => {
     },
 
     {
-      key: "status",
-      label: "STATUS",
-
-      render: (row) => (
-
-        <span
-          style={{
-            color:
-              statusColors?.[row?.status] ||
-              "#0C447C",
-
-            fontWeight: 600,
-          }}
-        >
-          {row?.status}
-        </span>
-
-      ),
-    },
+            key: "status",
+            label: "Status",
+            render: (row) => (
+                <span className={`table-status ${getStatusClass(row?.status)}`}>
+                    {row?.status}
+                </span>
+            ),
+        },
 
     // {
     //   key: "action",

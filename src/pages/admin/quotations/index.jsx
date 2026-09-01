@@ -29,6 +29,19 @@ const ListPage = () => {
 
     const router = useRouter();
 
+    const statusClasses = {
+        "Pending Approval": "badge-pending",
+        "Sent": "badge-proposal",
+        "Approved": "badge-won",
+        "Draft": "badge-new",
+        "In review": "badge-negotiation",
+        "Rejected": "badge-overdue",
+    };
+
+    const getStatusClass = (status) => {
+        return statusClasses[status] || "badge-default";
+    };
+
     const QuotationColumns = [
         {
             key: "quotationNo",
@@ -54,12 +67,7 @@ const ListPage = () => {
             key: "status",
             label: "Status",
             render: (row) => (
-                <span
-                    style={{
-                        color: statusColors[row?.status] || "#222",
-                        fontWeight: 500,
-                    }}
-                >
+                <span className={`table-status ${getStatusClass(row?.status)}`}>
                     {row?.status}
                 </span>
             ),
@@ -68,7 +76,7 @@ const ListPage = () => {
             key: "action",
             label: "Action",
             render: (row) => (
-                <div className="text-center">
+                <div className="table-actions">
 
                     <FaRegEye
                         className="eyeBtn mx-2"
@@ -100,14 +108,7 @@ const ListPage = () => {
         },
     ];
 
-   const statusColors = {
-    "Pending Approval": "#E0A83C",
-    "Sent": "#26215C",
-    "Approved": "#04342C",
-    "Draft": "#0C447C",
-    "In review": "#4A1B0C",
-    "Rejected": "#C0392B",
-};
+
 
     const dropdownItems = useMemo(() => {
 

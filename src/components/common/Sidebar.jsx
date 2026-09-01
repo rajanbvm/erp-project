@@ -1,8 +1,8 @@
+
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import CloseModal from "@/images/CloseModal.svg";
-import { resetERPStorage } from "@/utils/resetStorage";
 import { Form, Modal } from "react-bootstrap";
 import AdminNavbar from "./navbars/admin-navbar";
 import DP from "@/images/Dp.png";
@@ -20,11 +20,17 @@ import {
 
 import {
   BsBell,
+  BsList,
   BsSearch,
-  BsSliders2,
 } from "react-icons/bs";
 
-const Sidebar = () => {
+import Link from "next/link";
+import { MdClose } from "react-icons/md";
+
+const Sidebar = ({
+  showSidebar,
+  setShowSidebar,
+}) => {
   const router = useRouter();
 
   const [notifications, setNotifications] = useState([]);
@@ -34,34 +40,47 @@ const Sidebar = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
+  /* =========================
+     DARK MODE
+  ========================= */
   useEffect(() => {
     document.body.classList.toggle("dark-mode", darkMode);
+
+    return () => {
+      document.body.classList.remove("dark-mode");
+    };
   }, [darkMode]);
 
+  /* =========================
+     LOAD CURRENT USER
+  ========================= */
   useEffect(() => {
-  const loadUser = () => {
-    setCurrentUser(getCurrentUser());
-  };
+    const loadUser = () => {
+      setCurrentUser(getCurrentUser());
+    };
 
-  loadUser();
-
-  const handleProfileUpdated = () => {
     loadUser();
-  };
 
-  window.addEventListener(
-    "profileUpdated",
-    handleProfileUpdated
-  );
+    const handleProfileUpdated = () => {
+      loadUser();
+    };
 
-  return () => {
-    window.removeEventListener(
+    window.addEventListener(
       "profileUpdated",
       handleProfileUpdated
     );
-  };
-}, []);
 
+    return () => {
+      window.removeEventListener(
+        "profileUpdated",
+        handleProfileUpdated
+      );
+    };
+  }, []);
+
+  /* =========================
+     NOTIFICATION BODY LOCK
+  ========================= */
   useEffect(() => {
     if (showNotifications) {
       document.body.classList.add("overflow-hidden");
@@ -74,6 +93,9 @@ const Sidebar = () => {
     };
   }, [showNotifications]);
 
+  /* =========================
+     LOAD NOTIFICATIONS
+  ========================= */
   useEffect(() => {
     const loadNotifications = () => {
       setNotifications(getNotifications());
@@ -94,6 +116,30 @@ const Sidebar = () => {
     };
   }, []);
 
+  /* =========================
+     CLOSE SIDEBAR ON ROUTE CHANGE
+  ========================= */
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setShowSidebar(false);
+    };
+
+    router.events.on(
+      "routeChangeStart",
+      handleRouteChange
+    );
+
+    return () => {
+      router.events.off(
+        "routeChangeStart",
+        handleRouteChange
+      );
+    };
+  }, [router, setShowSidebar]);
+
+  /* =========================
+     NOTIFICATIONS
+  ========================= */
   const unreadCount = notifications?.filter(
     (notification) => !notification?.isRead
   ).length;
@@ -101,8 +147,8 @@ const Sidebar = () => {
   const filteredNotifications =
     notificationTab === "unread"
       ? notifications?.filter(
-        (notification) => !notification?.isRead
-      )
+          (notification) => !notification?.isRead
+        )
       : notifications;
 
   const handleNotificationClick = (notification) => {
@@ -127,10 +173,45 @@ const Sidebar = () => {
 
   return (
     <>
-      <AdminNavbar />
+      {/* =========================
+          ADMIN SIDEBAR / NAVBAR
+      ========================= */}
+      <AdminNavbar
+        showSidebar={showSidebar}
+        setShowSidebar={setShowSidebar}
+      />
 
+      {/* =========================
+          DASH HEADER
+      ========================= */}
       <div className="dash-header">
         <div className="header-section">
+
+          {/* MOBILE SIDEBAR TOGGLE */}
+          <span
+            className="toggle-icon mobile-only"
+            style={{ cursor: "pointer" }}
+            onClick={() =>
+              setShowSidebar((prev) => !prev)
+            }
+          >
+            <BsList />
+          </span>
+
+          {/* LOGO */}
+          <div className="dash-logo">
+            <Link href="/">
+              <span className="text-one">
+                BVM
+              </span>
+
+              <span className="text-two">
+                ONE
+              </span>
+            </Link>
+          </div>
+
+          {/* SEARCH */}
           <div className="search-bar">
             <input
               type="text"
@@ -143,20 +224,18 @@ const Sidebar = () => {
             </span>
           </div>
 
+          {/* HEADER ACTIONS */}
           <div className="header-actions">
-            <span
-              className="settings-icon"
-              onClick={resetERPStorage}
-              style={{ cursor: "pointer" }}
-            >
-              <BsSliders2 />
-            </span>
 
+            {/* NOTIFICATIONS */}
             <div className="notification-wrapper">
+
               <span
                 className="settings-icon"
                 onClick={() =>
-                  setShowNotifications((prev) => !prev)
+                  setShowNotifications(
+                    (prev) => !prev
+                  )
                 }
                 style={{ cursor: "pointer" }}
               >
@@ -176,17 +255,20 @@ const Sidebar = () => {
                 >
                   <div
                     className="notificationModalcontent"
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={(e) =>
+                      e.stopPropagation()
+                    }
                   >
                     <div className="modal-content">
+
                       <div className="modal-header">
                         <h5 className="modal-title">
                           All Notifications
                         </h5>
 
-                        <button
+                        <MdClose
                           type="button"
-                          className="btn-close"
+                          className="close-btn"
                           onClick={() =>
                             setShowNotifications(
                               false
@@ -197,15 +279,18 @@ const Sidebar = () => {
                       </div>
 
                       <div className="modal-body">
+
                         <div className="d-flex align-items-center">
+
                           <div className="notification_tabs w-50">
+
                             <button
                               type="button"
-                              className={`btn ${notificationTab ===
-                                  "all"
+                              className={`btn ${
+                                notificationTab === "all"
                                   ? "active"
                                   : ""
-                                }`}
+                              }`}
                               onClick={() =>
                                 setNotificationTab(
                                   "all"
@@ -217,23 +302,25 @@ const Sidebar = () => {
 
                             <button
                               type="button"
-                              className={`btn ${notificationTab ===
-                                  "unread"
+                              className={`btn ${
+                                notificationTab ===
+                                "unread"
                                   ? "active"
                                   : ""
-                                }`}
+                              }`}
                               onClick={() =>
                                 setNotificationTab(
                                   "unread"
                                 )
                               }
                             >
-                              Unread (
-                              {unreadCount})
+                              Unread ({unreadCount})
                             </button>
+
                           </div>
 
                           <div className="notification_tabs w-50">
+
                             <button
                               type="button"
                               className="btn btn-outline-primary markAllRead ms-auto"
@@ -241,27 +328,31 @@ const Sidebar = () => {
                                 handleMarkAllAsRead
                               }
                               disabled={
-                                unreadCount ===
-                                0
+                                unreadCount === 0
                               }
                             >
                               Mark all as read
                             </button>
+
                           </div>
+
                         </div>
 
                         <div className="notification_listing">
+
                           {filteredNotifications?.length ===
-                            0 ? (
+                          0 ? (
                             <div className="no-notifications">
+
                               <BsBell />
 
                               <p className="mb-0">
                                 {notificationTab ===
-                                  "unread"
+                                "unread"
                                   ? "No unread notifications"
                                   : "No notifications yet"}
                               </p>
+
                             </div>
                           ) : (
                             filteredNotifications?.map(
@@ -270,10 +361,11 @@ const Sidebar = () => {
                                   key={
                                     notification?.id
                                   }
-                                  className={`notification-list-item ${notification?.isRead
+                                  className={`notification-list-item ${
+                                    notification?.isRead
                                       ? "read-notification"
                                       : ""
-                                    }`}
+                                  }`}
                                   onClick={() =>
                                     handleNotificationClick(
                                       notification
@@ -283,6 +375,7 @@ const Sidebar = () => {
                                     cursor: "pointer",
                                   }}
                                 >
+
                                   <h5>
                                     {
                                       notification?.title
@@ -298,67 +391,88 @@ const Sidebar = () => {
                                   <small>
                                     {notification?.createdAt
                                       ? new Date(
-                                        notification?.createdAt
-                                      ).toLocaleTimeString(
-                                        [],
-                                        {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                          hour12: true,
-                                        }
-                                      )
+                                          notification.createdAt
+                                        ).toLocaleTimeString(
+                                          [],
+                                          {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: true,
+                                          }
+                                        )
                                       : ""}
                                   </small>
+
                                 </div>
                               )
                             )
                           )}
+
                         </div>
+
                       </div>
                     </div>
                   </div>
                 </div>
               )}
+
             </div>
 
+            {/* DARK MODE */}
             <span className="theme-icon">
               <Form.Check
                 type="switch"
                 id="theme-switch"
                 checked={darkMode}
                 onChange={(e) =>
-                  setDarkMode(e.target.checked)
+                  setDarkMode(
+                    e.target.checked
+                  )
                 }
               />
             </span>
 
+            {/* PROFILE */}
             <span
               className="settings-icon"
               style={{ cursor: "pointer" }}
-              onClick={() => router?.push("/admin/profile")}
+              onClick={() =>
+                router?.push("/admin/profile")
+              }
             >
               <li className="nav-profile mb-0">
                 <Image
-                  src={currentUser?.profileImage || DP}
+                  src={
+                    currentUser?.profileImage || DP
+                  }
                   alt="Profile Image"
                   width={40}
                   height={40}
                 />
               </li>
             </span>
+
           </div>
         </div>
       </div>
 
+      {/* =========================
+          LOGOUT MODAL
+      ========================= */}
       <Modal
         show={showLogoutModal}
-        onHide={() => setShowLogoutModal(false)}
+        onHide={() =>
+          setShowLogoutModal(false)
+        }
         centered
       >
         <Modal.Body className="logout-modal">
+
           <button
             className="close-modal-btn"
-            onClick={() => setShowLogoutModal(false)}
+            onClick={() =>
+              setShowLogoutModal(false)
+            }
           >
             <Image
               src={CloseModal}
@@ -373,9 +487,12 @@ const Sidebar = () => {
           </p>
 
           <div className="logout-footer">
+
             <button
               className="btn-primary br-30"
-              onClick={() => setShowLogoutModal(false)}
+              onClick={() =>
+                setShowLogoutModal(false)
+              }
             >
               Cancel
             </button>
@@ -389,7 +506,9 @@ const Sidebar = () => {
             >
               Logout
             </button>
+
           </div>
+
         </Modal.Body>
       </Modal>
     </>
@@ -397,3 +516,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+

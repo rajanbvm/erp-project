@@ -17,8 +17,10 @@ import Settings from "@/images/Settings.svg";
 import Cube from "@/images/Cube.svg";
 
 import Permission from "@/components/common/Permission";
+import { CloseButton } from "react-bootstrap";
+import { MdClose } from "react-icons/md";
 
-const AdminNavbar = () => {
+const AdminNavbar = ({ showSidebar, setShowSidebar }) => {
     const pathname = usePathname();
     const router = useRouter();
 
@@ -29,14 +31,16 @@ const AdminNavbar = () => {
 
     return (
         <div className="dashboard-left">
-            <div className="dash-logo">
+            {/* <div className="dash-logo">
                 <Link href="/">
                     <span className="text-one">BVM</span>
                     <span className="text-two">ONE</span>
                 </Link>
-            </div>
+            </div> */}
 
             <div className="dash-navbar">
+                <MdClose className="close-btn mobile-only" onClick={() => setShowSidebar(false)} />
+
                 <ul className="navbar-list">
 
                     {/* <li className="nav-profile">
@@ -55,8 +59,8 @@ const AdminNavbar = () => {
                         <Link
                             href="/admin/dashboard"
                             className={`dash-link ${pathname === "/admin/dashboard"
-                                    ? "active"
-                                    : ""
+                                ? "active"
+                                : ""
                                 }`}
                         >
                             <Image
@@ -81,8 +85,8 @@ const AdminNavbar = () => {
                                 className={`dash-link ${pathname?.startsWith(
                                     "/admin/leads"
                                 )
-                                        ? "active"
-                                        : ""
+                                    ? "active"
+                                    : ""
                                     }`}
                             >
                                 <Image
@@ -108,8 +112,8 @@ const AdminNavbar = () => {
                                 className={`dash-link ${pathname?.startsWith(
                                     "/admin/products"
                                 )
-                                        ? "active"
-                                        : ""
+                                    ? "active"
+                                    : ""
                                     }`}
                             >
                                 <Image
@@ -135,8 +139,8 @@ const AdminNavbar = () => {
                                 className={`dash-link ${pathname?.startsWith(
                                     "/admin/quotations"
                                 )
-                                        ? "active"
-                                        : ""
+                                    ? "active"
+                                    : ""
                                     }`}
                             >
                                 <Image
@@ -162,8 +166,8 @@ const AdminNavbar = () => {
                                 className={`dash-link ${pathname?.startsWith(
                                     "/admin/contacts"
                                 )
-                                        ? "active"
-                                        : ""
+                                    ? "active"
+                                    : ""
                                     }`}
                             >
                                 <Image
@@ -189,8 +193,8 @@ const AdminNavbar = () => {
                                 className={`dash-link ${pathname?.startsWith(
                                     "/admin/companies"
                                 )
-                                        ? "active"
-                                        : ""
+                                    ? "active"
+                                    : ""
                                     }`}
                             >
                                 <Image
@@ -216,8 +220,8 @@ const AdminNavbar = () => {
                                 className={`dash-link ${pathname?.startsWith(
                                     "/admin/opportunities"
                                 )
-                                        ? "active"
-                                        : ""
+                                    ? "active"
+                                    : ""
                                     }`}
                             >
                                 <Image
@@ -262,11 +266,11 @@ const AdminNavbar = () => {
                             <Link
                                 href="/admin/reminders"
                                 className={`dash-link ${pathname ===
-                                        "/admin/reminders" ||
-                                        pathname ===
-                                        "/admin/reminders/add"
-                                        ? "active"
-                                        : ""
+                                    "/admin/reminders" ||
+                                    pathname ===
+                                    "/admin/reminders/add"
+                                    ? "active"
+                                    : ""
                                     }`}
                             >
                                 <Image
@@ -280,7 +284,7 @@ const AdminNavbar = () => {
                             </Link>
                         </li>
                     </Permission>
-                    
+
                     {/* Settings */}
                     <Permission
                         module="settings"

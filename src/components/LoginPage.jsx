@@ -68,7 +68,7 @@ const handleSubmit = (e) => {
           <div className="col-lg-6 col-login-form">
             <div className="signup-form">
 
-              <Link
+              {/* <Link
                 href="/"
                 className="navbar-brand"
               >
@@ -78,7 +78,13 @@ const handleSubmit = (e) => {
                   className="main-logo"
                   priority
                 />
-              </Link>
+              </Link> */}
+              <div className="dash-logo">
+                <Link href="/">
+                    <span className="text-one">BVM</span>
+                    <span className="text-two ms-1">ONE</span>
+                </Link>
+            </div>
 
               <h2>Welcome Back</h2>
 

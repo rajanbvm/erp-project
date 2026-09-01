@@ -105,14 +105,9 @@ const ListPage = () => {
     },
     {
       key: "status",
-      label: "STATUS",
+      label: "Status",
       render: (row) => (
-        <span
-          style={{
-            color: statusColors[row?.status],
-            fontWeight: 600,
-          }}
-        >
+        <span className={`table-status ${getStatusClass(row?.status)}`}>
           {row?.status}
         </span>
       ),
@@ -160,10 +155,15 @@ const ListPage = () => {
   ];
 
 
-  const statusColors = {
-    "Scheduled": "#0C447C",
-    "Overdue": "#791F1F",
-    "Pending": "#412402",
+  const statusClasses = {
+    "Scheduled": "badge-new",
+    "Overdue": "badge-overdue",
+    "Pending": "badge-contacted",
+    "Completed": "badge-won",
+  };
+
+  const getStatusClass = (status) => {
+    return statusClasses[status] || "badge-default";
   };
 
   const dropdownItems = useMemo(() => {

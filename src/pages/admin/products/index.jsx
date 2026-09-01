@@ -52,9 +52,13 @@ const ListPage = () => {
         setSelectedProductId(null);
     };
 
-    const statusColors = {
-        Active: "#1D9E75",
-        Inactive: "#E24B4A",
+      const statusClasses = {
+        "Active": "badge-won",
+        "Inactive": "badge-overdue",
+    };
+
+    const getStatusClass = (status) => {
+        return statusClasses[status] || "badge-default";
     };
 
     const ProductsColumns = [
@@ -99,15 +103,9 @@ const ListPage = () => {
         },
         {
             key: "status",
-            label: "STATUS",
+            label: "Status",
             render: (row) => (
-                <span
-                    style={{
-                        color:
-                            statusColors[row?.status] || "#222",
-                        fontWeight: 500,
-                    }}
-                >
+                <span className={`table-status ${getStatusClass(row?.status)}`}>
                     {row?.status}
                 </span>
             ),
