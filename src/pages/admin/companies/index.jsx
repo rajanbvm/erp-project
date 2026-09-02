@@ -76,6 +76,7 @@ const ListPage = () => {
 
   const [companies, setCompanies] = useState([]);
   const [contacts, setContacts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
@@ -124,6 +125,30 @@ const ListPage = () => {
     });
   }, [companies, contacts]);
 
+  const filteredCompanyTableData = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    if (!query) {
+      return companyTableData;
+    }
+
+    return companyTableData.filter((company) => {
+      return [
+        company?.company,
+        company?.industry,
+        company?.location,
+        company?.owner,
+        // company?.revenue,
+      ]
+        .filter(Boolean)
+        .some((value) =>
+          String(value)
+            .toLowerCase()
+            .includes(query)
+        );
+    });
+  }, [companyTableData, searchQuery]);
+
   return (
     <>
       <PageBanner title="Companies" />
@@ -131,6 +156,8 @@ const ListPage = () => {
         showExport={false}
         showAddButton={true}
         addButtonText="Add New Companies"
+        searchValue={searchQuery}
+        onSearchChange={setSearchQuery}
 
         onImportClick={() => {
           console.log("Import clicked");
@@ -149,7 +176,7 @@ const ListPage = () => {
         <DataTable
           title="All Companies"
           columns={CompaniesColumns}
-          data={companyTableData}
+          data={filteredCompanyTableData}
           showViewAll={false}
         />
 

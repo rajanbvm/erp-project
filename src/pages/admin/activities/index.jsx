@@ -116,9 +116,9 @@ const ListPage = () => {
       key: "action",
       label: "ACTION",
       render: (row) => (
-        <div className="d-flex align-items-center justify-content-center gap-3">
+        <div className="table-actions">
           <FaRegEye
-            className="eyeBtn"
+            className="eyeBtn mx-2"
             style={{ cursor: "pointer" }}
             onClick={() => {
               router.push(`/admin/activities/view/${row?.id}`);
@@ -126,7 +126,7 @@ const ListPage = () => {
           />
 
           <RiEdit2Fill
-            className="eyeBtn"
+            className="eyeBtn mx-2"
             style={{ cursor: "pointer" }}
             onClick={() => {
               router.push(`/admin/activities/edit/${row?.id}`);
@@ -134,7 +134,7 @@ const ListPage = () => {
           />
 
           <RiDeleteBin6Line
-            className="eyeBtn text-danger"
+            className="eyeBtn mx-2 text-danger"
             style={{ cursor: "pointer" }}
             onClick={() => handleDelete(row?.id)}
           />

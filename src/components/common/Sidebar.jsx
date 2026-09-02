@@ -7,6 +7,9 @@ import { Form, Modal } from "react-bootstrap";
 import AdminNavbar from "./navbars/admin-navbar";
 import DP from "@/images/Dp.png";
 
+import { resetERPStorage } from "@/utils/resetStorage";
+import GlobalSearch from "@/components/common/GlobalSearch";
+
 import {
   getCurrentUser,
 } from "@/utils/rolesPermissionsStorage";
@@ -22,6 +25,7 @@ import {
   BsBell,
   BsList,
   BsSearch,
+  BsSliders2,
 } from "react-icons/bs";
 
 import Link from "next/link";
@@ -147,8 +151,8 @@ const Sidebar = ({
   const filteredNotifications =
     notificationTab === "unread"
       ? notifications?.filter(
-          (notification) => !notification?.isRead
-        )
+        (notification) => !notification?.isRead
+      )
       : notifications;
 
   const handleNotificationClick = (notification) => {
@@ -213,7 +217,8 @@ const Sidebar = ({
 
           {/* SEARCH */}
           <div className="search-bar">
-            <input
+            <GlobalSearch />
+            {/* <input
               type="text"
               placeholder="Search..."
               className="form-control"
@@ -221,11 +226,15 @@ const Sidebar = ({
 
             <span className="search-icon">
               <BsSearch />
-            </span>
+            </span> */}
           </div>
 
           {/* HEADER ACTIONS */}
           <div className="header-actions">
+
+            <span className="reset-settings d-none" onClick={resetERPStorage} style={{ cursor: "pointer" }}>
+              <BsSliders2 />
+            </span>
 
             {/* NOTIFICATIONS */}
             <div className="notification-wrapper">
@@ -286,11 +295,10 @@ const Sidebar = ({
 
                             <button
                               type="button"
-                              className={`btn ${
-                                notificationTab === "all"
+                              className={`btn ${notificationTab === "all"
                                   ? "active"
                                   : ""
-                              }`}
+                                }`}
                               onClick={() =>
                                 setNotificationTab(
                                   "all"
@@ -302,12 +310,11 @@ const Sidebar = ({
 
                             <button
                               type="button"
-                              className={`btn ${
-                                notificationTab ===
-                                "unread"
+                              className={`btn ${notificationTab ===
+                                  "unread"
                                   ? "active"
                                   : ""
-                              }`}
+                                }`}
                               onClick={() =>
                                 setNotificationTab(
                                   "unread"
@@ -341,14 +348,14 @@ const Sidebar = ({
                         <div className="notification_listing">
 
                           {filteredNotifications?.length ===
-                          0 ? (
+                            0 ? (
                             <div className="no-notifications">
 
                               <BsBell />
 
                               <p className="mb-0">
                                 {notificationTab ===
-                                "unread"
+                                  "unread"
                                   ? "No unread notifications"
                                   : "No notifications yet"}
                               </p>
@@ -361,11 +368,10 @@ const Sidebar = ({
                                   key={
                                     notification?.id
                                   }
-                                  className={`notification-list-item ${
-                                    notification?.isRead
+                                  className={`notification-list-item ${notification?.isRead
                                       ? "read-notification"
                                       : ""
-                                  }`}
+                                    }`}
                                   onClick={() =>
                                     handleNotificationClick(
                                       notification
@@ -391,15 +397,15 @@ const Sidebar = ({
                                   <small>
                                     {notification?.createdAt
                                       ? new Date(
-                                          notification.createdAt
-                                        ).toLocaleTimeString(
-                                          [],
-                                          {
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                            hour12: true,
-                                          }
-                                        )
+                                        notification.createdAt
+                                      ).toLocaleTimeString(
+                                        [],
+                                        {
+                                          hour: "2-digit",
+                                          minute: "2-digit",
+                                          hour12: true,
+                                        }
+                                      )
                                       : ""}
                                   </small>
 

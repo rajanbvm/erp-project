@@ -157,7 +157,7 @@ const ListPage = () => {
       <PageBanner title="Contacts" />
       <PageSearch
         // showImport={true}
-        showExport={true}
+        // showExport={true}
         showAddButton={true}
         addButtonText="Add New Contact"
 

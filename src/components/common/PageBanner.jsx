@@ -11,12 +11,12 @@ const PageBanner = ({
     return (
         <section className={`page-banner-sec mb-32 ${className}`}>
             <div className="row">
-                <div className="col-md-6">
+                <div className="col-md-6 col-5">
                     <div className="banner-text">
                         <h1>{title}</h1>
                     </div>
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-6 col-7">
                     <div className="banner-text">
                         <ul>
                             <li><Link href="/admin/dashboard">Dashboard</Link></li>

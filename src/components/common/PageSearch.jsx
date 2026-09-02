@@ -6,6 +6,7 @@ const PageSearch = ({
   className = "",
 
   searchPlaceholder = "Search...",
+  searchValue = "",
   onSearchChange,
 
   showImport = false,
@@ -29,14 +30,17 @@ const PageSearch = ({
     <section className={`page-search-sec mb-32 ${className}`}>
       <div className="row align-items-center">
         {/* Search */}
-        <div className="col-md-4">
+        <div className="col-md-6">
           <div className="banner-text">
             <div className="search-bar w-100">
-              <input
+             <input
                 type="text"
                 placeholder={searchPlaceholder}
                 className="form-control"
-                onChange={onSearchChange}
+                value={searchValue}
+                onChange={(e) =>
+                  onSearchChange?.(e.target.value)
+                }
               />
 
               <span className="search-icon">
@@ -47,7 +51,7 @@ const PageSearch = ({
         </div>
 
         {/* Buttons */}
-        <div className="col-md-8">
+        <div className="col-md-6">
           <div className="banner-text text-end">
 
             {showImport && (
