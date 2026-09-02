@@ -518,11 +518,13 @@ body.dark-mode .dropdown-menu {
     background-color: var(--dark-mode-bg) !important;
     color: #fff !important;
 }
-body.dark-mode .input-text-box{
-background-color: var(--dark-mode-bg) !important;
+
+body.dark-mode .input-text-box {
+    background-color: var(--dark-mode-bg) !important;
     color: #fff !important;
     border-color: var(--dark-mode-bg) !important;
 }
+
 body.dark-mode .form-control::placeholder {
     color: #686B7B !important;
 }
@@ -897,9 +899,11 @@ body.dark-mode .dash-header .header-section::after {
     padding: 15px 20px;
     /* border-bottom: 1px solid #eeeeee; */
 }
-.notification-list-item:nth-child(1){
+
+.notification-list-item:nth-child(1) {
     border-top: 1px solid #eeeeee;
 }
+
 .notification_tabs .btn {
     border: 1px solid #dddddd;
     border-radius: 20px;
@@ -1964,6 +1968,7 @@ body.dark-mode .accordion-item {
 .mobile-only {
     display: none;
 }
+
 /* =================================
    GLOBAL SEARCH
 ================================= */
@@ -2050,7 +2055,7 @@ body.dark-mode .accordion-item {
     background: #fff;
 }
 
-.search-results-header > div {
+.search-results-header>div {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -2339,26 +2344,32 @@ body.dark-mode .accordion-item {
         flex-wrap: wrap;
         row-gap: 12px;
     }
+
     .welcome-banner-content,
-    .welcome-banner-image{
+    .welcome-banner-image {
         padding: 20px;
         text-align: center;
     }
-    .table-header .view-all-btn{
+
+    .table-header .view-all-btn {
         min-width: max-content;
     }
-    .global-search-dropdown{
+
+    .global-search-dropdown {
         min-width: auto;
     }
-    .table-header{
+
+    .table-header {
         flex-wrap: wrap;
         row-gap: 16px;
         background-color: var(--dark-table-bg);
     }
-    .notification_tabs{
+
+    .notification_tabs {
         width: auto !important;
     }
-    .QuoteDetailsStatus{
+
+    .QuoteDetailsStatus {
         display: flex;
         flex-wrap: wrap;
         row-gap: 12px;
