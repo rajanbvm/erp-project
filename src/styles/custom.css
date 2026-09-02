@@ -70,6 +70,7 @@ body.dark-mode table tbody tr td .eyeBtn,
 body.dark-mode .banner-text ul li a,
 body.dark-mode .banner-text ul li span,
 body.dark-mode .dash-navbar .close-btn,
+body.dark-mode .close-btn,
 body.dark-mode .dash-navbar .navbar-list li.nav-heading,
 body.dark-mode .form-group .formValue,
 body.dark-mode .reminder-switch span.text-muted {
@@ -78,6 +79,9 @@ body.dark-mode .reminder-switch span.text-muted {
 
 body.dark-mode .form-group label {
     color: #898989;
+}
+.close-btn{
+    margin-left: auto;
 }
 
 .toggle-icon {
