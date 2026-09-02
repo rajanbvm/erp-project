@@ -895,9 +895,11 @@ body.dark-mode .dash-header .header-section::after {
     display: flex;
     gap: 8px;
     padding: 15px 20px;
-    border-bottom: 1px solid #eeeeee;
+    /* border-bottom: 1px solid #eeeeee; */
 }
-
+.notification-list-item:nth-child(1){
+    border-top: 1px solid #eeeeee;
+}
 .notification_tabs .btn {
     border: 1px solid #dddddd;
     border-radius: 20px;
@@ -1340,7 +1342,7 @@ body.dark-mode table tbody tr td {
 }
 
 .table-header {
-    background-color: var(--bg-white);
+    background-color: #fff;
     border-radius: 10px;
     margin-bottom: 16px;
     padding: 15px 20px;
@@ -2347,6 +2349,19 @@ body.dark-mode .accordion-item {
     }
     .global-search-dropdown{
         min-width: auto;
+    }
+    .table-header{
+        flex-wrap: wrap;
+        row-gap: 16px;
+        background-color: var(--dark-table-bg);
+    }
+    .notification_tabs{
+        width: auto !important;
+    }
+    .QuoteDetailsStatus{
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 12px;
     }
 }
 
