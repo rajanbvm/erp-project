@@ -173,7 +173,7 @@ const GlobalSearch = () => {
                     company?.website ||
                     "",
 
-                route: `/admin/companies/view?id=${company?.id}`,
+                route: `/admin/companies/view/${company?.id}`,
             });
         });
 
@@ -210,7 +210,7 @@ const GlobalSearch = () => {
                     contact?.phone ||
                     "",
 
-                route: `/admin/contacts/view?id=${contact?.id}`,
+                route: `/admin/contacts/view/${contact?.id}`,
             });
         });
 
@@ -247,7 +247,7 @@ const GlobalSearch = () => {
                     lead?.status ||
                     "",
 
-                route: `/admin/leads/view?id=${lead?.id}`,
+                route: `/admin/leads/view/${lead?.id}`,
             });
         });
 
@@ -284,7 +284,7 @@ const GlobalSearch = () => {
                     opportunity?.status ||
                     "",
 
-                route: `/admin/opportunities/view?id=${opportunity?.id}`,
+                route: `/admin/opportunities/view/${opportunity?.id}`,
             });
         });
 
@@ -322,7 +322,7 @@ const GlobalSearch = () => {
                     quotation?.status ||
                     "",
 
-                route: `/admin/quotations/view?id=${quotation?.id}`,
+                route: `/admin/quotations/view/${quotation?.id}`,
             });
         });
 
@@ -432,8 +432,6 @@ const GlobalSearch = () => {
             {showResults && (
                 <div className="global-search-dropdown">
 
-                    {/* HEADER */}
-
                     <div className="search-results-header">
 
                         <div>
@@ -442,8 +440,8 @@ const GlobalSearch = () => {
                             </strong>
 
                             <span>
-                                {searchResults.length} result
-                                {searchResults.length !== 1
+                                {searchResults?.length} result
+                                {searchResults?.length !== 1
                                     ? "s"
                                     : ""}
                             </span>
@@ -451,75 +449,61 @@ const GlobalSearch = () => {
 
                     </div>
 
-                    {/* RESULTS */}
-
-                    {searchResults.length > 0 ? (
+                    {searchResults?.length > 0 ? (
 
                         <div className="search-results-list">
 
-                            {searchResults.map(
-                                (result) => (
+                            {searchResults?.map((result) => (
 
-                                    <button
-                                        type="button"
-                                        key={`${result.type}-${result.id}`}
-                                        className="search-result-item"
-                                        onClick={() =>
-                                            handleResultClick(
-                                                result
-                                            )
-                                        }
-                                    >
+                                <button
+                                    type="button"
+                                    key={`${result.type}-${result.id}`}
+                                    className="search-result-item"
+                                    onClick={() =>
+                                        handleResultClick(result)
+                                    }
+                                >
 
-                                        {/* ICON */}
+                                    <div className="search-result-icon">
+                                        <Image
+                                            src={result?.icon}
+                                            alt=""
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </div>
 
-                                        <div className="search-result-icon">
-                                            <Image
-                                                src={result?.icon}
-                                                alt=""
-                                                width={20}
-                                                height={20}
-                                            />
+                                    <div className="search-result-content">
+
+                                        <div className="search-result-title">
+                                            {result?.title}
                                         </div>
 
-                                        {/* CONTENT */}
-
-                                        <div className="search-result-content">
-
-                                            <div className="search-result-title">
-                                                {result.title}
+                                        {result?.subtitle && (
+                                            <div className="search-result-subtitle">
+                                                {result?.subtitle}
                                             </div>
+                                        )}
 
-                                            {result.subtitle && (
-                                                <div className="search-result-subtitle">
-                                                    {result.subtitle}
-                                                </div>
-                                            )}
+                                    </div>
 
-                                        </div>
+                                    <div className="search-result-meta">
 
-                                        {/* TYPE */}
+                                        <span className="search-result-type">
+                                            {result?.type}
+                                        </span>
 
-                                        <div className="search-result-meta">
+                                        <BsArrowRight />
 
-                                            <span className="search-result-type">
-                                                {result.type}
-                                            </span>
+                                    </div>
 
-                                            <BsArrowRight />
+                                </button>
 
-                                        </div>
-
-                                    </button>
-
-                                )
-                            )}
+                            ))}
 
                         </div>
 
                     ) : (
-
-                        /* NO RESULTS */
 
                         <div className="search-no-results">
 

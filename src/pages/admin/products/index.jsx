@@ -18,6 +18,7 @@ import Permission from "@/components/common/Permission";
 const ListPage = () => {
     const [productsData, setProductsData] = useState([]);
     const [selectedStatus, setSelectedStatus] = useState("All Status");
+    const [searchQuery, setSearchQuery] = useState("");
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState(null);
@@ -52,7 +53,7 @@ const ListPage = () => {
         setSelectedProductId(null);
     };
 
-      const statusClasses = {
+    const statusClasses = {
         "Active": "badge-won",
         "Inactive": "badge-overdue",
     };
@@ -189,21 +190,43 @@ const ListPage = () => {
     }, [productsData]);
 
     const filteredData = useMemo(() => {
-        if (selectedStatus === "All Status") {
-            return productsData;
-        }
+        const query = searchQuery.trim().toLowerCase();
 
-        return productsData?.filter(
-            (product) =>
-                product?.status === selectedStatus
-        );
-    }, [selectedStatus, productsData]);
+        return productsData?.filter((product) => {
+            const matchesSearch =
+                !query ||
+                [
+                    product?.productName,
+                    product?.sku,
+                    product?.category,
+                ]
+                    .filter(Boolean)
+                    .some((value) =>
+                        String(value)
+                            .toLowerCase()
+                            .includes(query)
+                    );
+
+            const matchesStatus =
+                selectedStatus === "All Status" ||
+                product?.status === selectedStatus;
+
+            return matchesSearch && matchesStatus;
+        });
+    }, [
+        productsData,
+        searchQuery,
+        selectedStatus,
+    ]);
 
     return (
         <>
             <PageBanner title="Products" />
 
             <PageSearch
+                searchPlaceholder="Search product, SKU or category..."
+                searchValue={searchQuery}
+                onSearchChange={setSearchQuery}
                 showAddButton={true}
                 addButtonText="Add New Product"
                 onAddClick={() => {

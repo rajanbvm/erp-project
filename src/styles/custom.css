@@ -518,7 +518,11 @@ body.dark-mode .dropdown-menu {
     background-color: var(--dark-mode-bg) !important;
     color: #fff !important;
 }
-
+body.dark-mode .input-text-box{
+background-color: var(--dark-mode-bg) !important;
+    color: #fff !important;
+    border-color: var(--dark-mode-bg) !important;
+}
 body.dark-mode .form-control::placeholder {
     color: #686B7B !important;
 }
@@ -2332,6 +2336,17 @@ body.dark-mode .accordion-item {
     .dash-header .header-section {
         flex-wrap: wrap;
         row-gap: 12px;
+    }
+    .welcome-banner-content,
+    .welcome-banner-image{
+        padding: 20px;
+        text-align: center;
+    }
+    .table-header .view-all-btn{
+        min-width: max-content;
+    }
+    .global-search-dropdown{
+        min-width: auto;
     }
 }
 
