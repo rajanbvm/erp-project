@@ -19,7 +19,7 @@ const ListPage = () => {
 
   const [leadsData, setLeadsData] = useState([]);
   const [selectedStatus, setSelectedStatus] = useState("All Status");
-
+  const [searchQuery, setSearchQuery] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedLeadId, setSelectedLeadId] = useState(null);
 
@@ -151,14 +151,35 @@ const ListPage = () => {
   }, [leadsData]);
 
   const filteredData = useMemo(() => {
-    if (selectedStatus === "All Status") {
-      return leadsData;
-    }
+    const query = searchQuery.trim().toLowerCase();
 
-    return leadsData?.filter(
-      (lead) => lead.status === selectedStatus
-    );
-  }, [selectedStatus, leadsData]);
+    return leadsData?.filter((lead) => {
+
+      // Search only in:
+      // LEAD, Email, COMPANY, OWNER
+      const matchesSearch =
+        !query ||
+        [
+          lead?.lead,
+          lead?.email,
+          lead?.company,
+          lead?.owner,
+        ]
+          .filter(Boolean)
+          .some((value) =>
+            String(value)
+              .toLowerCase()
+              .includes(query)
+          );
+
+      // Status filter
+      const matchesStatus =
+        selectedStatus === "All Status" ||
+        lead?.status === selectedStatus;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [leadsData,searchQuery,selectedStatus,]);
 
 
 
@@ -178,6 +199,9 @@ const ListPage = () => {
         // showExport={true}
         showAddButton={true}
         addButtonText="Add New Lead"
+
+        searchValue={searchQuery}
+        onSearchChange={setSearchQuery}
 
         onImportClick={() => {
           console.log("Import clicked");

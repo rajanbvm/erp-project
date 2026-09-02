@@ -17,6 +17,7 @@ const ListPage = () => {
 
     const [selectedStatus, setSelectedStatus] = useState("All Status");
     const [quotations, setQuotations] = useState([]);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedQuotationId, setSelectedQuotationId] = useState(null);
@@ -132,16 +133,31 @@ const ListPage = () => {
     }, [quotations]);
 
     const filteredData = useMemo(() => {
+        const query = searchQuery.trim().toLowerCase();
 
-        if (selectedStatus === "All Status") {
-            return quotations;
-        }
+        return quotations.filter((quotation) => {
+            const matchesSearch =
+                !query ||
+                [
+                    quotation?.quotationNo,
+                    quotation?.customer,
+                ]
+                    .filter(Boolean)
+                    .some((value) =>
+                        String(value).toLowerCase().includes(query)
+                    );
 
-        return quotations.filter(
-            item => item.status === selectedStatus
-        );
+            const matchesStatus =
+                selectedStatus === "All Status" ||
+                quotation?.status === selectedStatus;
 
-    }, [quotations, selectedStatus]);
+            return matchesSearch && matchesStatus;
+        });
+    }, [
+        quotations,
+        searchQuery,
+        selectedStatus,
+    ]);
 
     const handleDelete = () => {
         if (!selectedQuotationId) return;
@@ -160,6 +176,9 @@ const ListPage = () => {
             <PageSearch
                 showAddButton={true}
                 addButtonText="Create quotation"
+                searchPlaceholder="Search quotation no or customer..."
+                searchValue={searchQuery}
+                onSearchChange={setSearchQuery}
 
                 onImportClick={() => {
                     console.log("Import clicked");

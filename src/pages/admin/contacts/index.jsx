@@ -18,7 +18,7 @@ const ListPage = () => {
 
   const [selectedStatus, setSelectedStatus] = useState("All Status");
   const [contactsData, setContactsData] = useState([]);
-
+    const [searchQuery, setSearchQuery] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedContactId, setSelectedContactId] = useState(null);
   const selectedContact = getContactById(selectedContactId);
@@ -132,15 +132,45 @@ const ListPage = () => {
     ];
   }, [contactsData]);
 
-  const filteredData = useMemo(() => {
-    if (selectedStatus === "All Status") {
-      return contactsData;
-    }
+  // const filteredData = useMemo(() => {
+  //   if (selectedStatus === "All Status") {
+  //     return contactsData;
+  //   }
 
-    return contactsData.filter(
-      (contact) => contact.type === selectedStatus
-    );
-  }, [selectedStatus, contactsData]);
+  //   return contactsData.filter(
+  //     (contact) => contact.type === selectedStatus
+  //   );
+  // }, [selectedStatus, contactsData]);
+
+  const filteredData = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    return contactsData?.filter((contact) => {
+
+      // Search only in:
+      // LEAD, Email, COMPANY, OWNER
+      const matchesSearch =
+        !query ||
+        [
+          contact?.contact,
+          contact?.email,
+          contact?.company,
+        ]
+          .filter(Boolean)
+          .some((value) =>
+            String(value)
+              .toLowerCase()
+              .includes(query)
+          );
+
+      // Status filter
+      const matchesStatus =
+        selectedStatus === "All Status" ||
+        contact?.type === selectedStatus;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [selectedStatus,searchQuery,contactsData,]);
 
   useEffect(() => {
   }, [contactsData]);
@@ -160,6 +190,8 @@ const ListPage = () => {
         // showExport={true}
         showAddButton={true}
         addButtonText="Add New Contact"
+        searchValue={searchQuery}
+                onSearchChange={setSearchQuery}
 
         onImportClick={() => {
           console.log("Import clicked");
