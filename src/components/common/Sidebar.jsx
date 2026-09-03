@@ -204,7 +204,7 @@ const Sidebar = ({
 
             {/* LOGO */}
             <div className="dash-logo">
-              <Link href="/">
+              <Link href="/admin/dashboard">
                 <span className="text-one">
                   BVM
                 </span>
