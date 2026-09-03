@@ -190,275 +190,275 @@ const Sidebar = ({
       ========================= */}
       <div className="dash-header">
         <div className="header-section">
-
-          {/* MOBILE SIDEBAR TOGGLE */}
-          <span
-            className="toggle-icon mobile-only"
-            style={{ cursor: "pointer" }}
-            onClick={() =>
-              setShowSidebar((prev) => !prev)
-            }
-          >
-            <BsList />
-          </span>
-
-          {/* LOGO */}
-          <div className="dash-logo">
-            <Link href="/">
-              <span className="text-one">
-                BVM
-              </span>
-
-              <span className="text-two">
-                ONE
-              </span>
-            </Link>
-          </div>
-
-          {/* SEARCH */}
-          <div className="search-bar">
-            <GlobalSearch />
-            {/* <input
-              type="text"
-              placeholder="Search..."
-              className="form-control"
-            />
-
-            <span className="search-icon">
-              <BsSearch />
-            </span> */}
-          </div>
-
-          {/* HEADER ACTIONS */}
-          <div className="header-actions">
-
-            <span className="reset-settings d-none" onClick={resetERPStorage} style={{ cursor: "pointer" }}>
-              <BsSliders2 />
+          <div className="header-inner">
+            {/* MOBILE SIDEBAR TOGGLE */}
+            <span
+              className="toggle-icon mobile-only"
+              style={{ cursor: "pointer" }}
+              onClick={() =>
+                setShowSidebar((prev) => !prev)
+              }
+            >
+              <BsList />
             </span>
 
-            {/* NOTIFICATIONS */}
-            <div className="notification-wrapper">
+            {/* LOGO */}
+            <div className="dash-logo">
+              <Link href="/">
+                <span className="text-one">
+                  BVM
+                </span>
 
-              <span
-                className="settings-icon"
-                onClick={() =>
-                  setShowNotifications(
-                    (prev) => !prev
-                  )
-                }
-                style={{ cursor: "pointer" }}
-              >
-                <BsBell />
+                <span className="text-two">
+                  ONE
+                </span>
+              </Link>
+            </div>
+
+
+            {/* SEARCH */}
+            <div className="search-bar d-none d-sm-block">
+              <GlobalSearch />
+            </div>
+
+            {/* HEADER ACTIONS */}
+            <div className="header-actions">
+
+              <span className="reset-settings d-none" onClick={resetERPStorage} style={{ cursor: "pointer" }}>
+                <BsSliders2 />
               </span>
 
-              <span className="notification-count">
-                {unreadCount}
-              </span>
+              {/* NOTIFICATIONS */}
+              <div className="notification-wrapper">
 
-              {showNotifications && (
-                <div
-                  className="notification-modal-overlay"
+                <span
+                  className="settings-icon"
                   onClick={() =>
-                    setShowNotifications(false)
+                    setShowNotifications(
+                      (prev) => !prev
+                    )
                   }
+                  style={{ cursor: "pointer" }}
                 >
+                  <BsBell />
+                </span>
+
+                <span className="notification-count">
+                  {unreadCount}
+                </span>
+
+                {showNotifications && (
                   <div
-                    className="notificationModalcontent"
-                    onClick={(e) =>
-                      e.stopPropagation()
+                    className="notification-modal-overlay"
+                    onClick={() =>
+                      setShowNotifications(false)
                     }
                   >
-                    <div className="modal-content">
+                    <div
+                      className="notificationModalcontent"
+                      onClick={(e) =>
+                        e.stopPropagation()
+                      }
+                    >
+                      <div className="modal-content">
 
-                      <div className="modal-header">
-                        <h5 className="modal-title">
-                          All Notifications
-                        </h5>
+                        <div className="modal-header">
+                          <h5 className="modal-title">
+                            All Notifications
+                          </h5>
 
-                        <MdClose
-                          type="button"
-                          className="close-btn"
-                          onClick={() =>
-                            setShowNotifications(
-                              false
-                            )
-                          }
-                          aria-label="Close"
-                        />
-                      </div>
-
-                      <div className="modal-body">
-
-                        <div className="d-flex align-items-center">
-
-                          <div className="notification_tabs w-50">
-
-                            <button
-                              type="button"
-                              className={`btn ${notificationTab === "all"
-                                  ? "active"
-                                  : ""
-                                }`}
-                              onClick={() =>
-                                setNotificationTab(
-                                  "all"
-                                )
-                              }
-                            >
-                              All
-                            </button>
-
-                            <button
-                              type="button"
-                              className={`btn ${notificationTab ===
-                                  "unread"
-                                  ? "active"
-                                  : ""
-                                }`}
-                              onClick={() =>
-                                setNotificationTab(
-                                  "unread"
-                                )
-                              }
-                            >
-                              Unread ({unreadCount})
-                            </button>
-
-                          </div>
-
-                          <div className="notification_tabs w-50">
-
-                            <button
-                              type="button"
-                              className="btn btn-outline-primary markAllRead ms-auto"
-                              onClick={
-                                handleMarkAllAsRead
-                              }
-                              disabled={
-                                unreadCount === 0
-                              }
-                            >
-                              Mark all as read
-                            </button>
-
-                          </div>
-
+                          <MdClose
+                            type="button"
+                            className="close-btn"
+                            onClick={() =>
+                              setShowNotifications(
+                                false
+                              )
+                            }
+                            aria-label="Close"
+                          />
                         </div>
 
-                        <div className="notification_listing">
+                        <div className="modal-body">
 
-                          {filteredNotifications?.length ===
-                            0 ? (
-                            <div className="no-notifications">
+                          <div className="d-flex align-items-center">
 
-                              <BsBell />
+                            <div className="notification_tabs w-50">
 
-                              <p className="mb-0">
-                                {notificationTab ===
+                              <button
+                                type="button"
+                                className={`btn ${notificationTab === "all"
+                                  ? "active"
+                                  : ""
+                                  }`}
+                                onClick={() =>
+                                  setNotificationTab(
+                                    "all"
+                                  )
+                                }
+                              >
+                                All
+                              </button>
+
+                              <button
+                                type="button"
+                                className={`btn ${notificationTab ===
                                   "unread"
-                                  ? "No unread notifications"
-                                  : "No notifications yet"}
-                              </p>
+                                  ? "active"
+                                  : ""
+                                  }`}
+                                onClick={() =>
+                                  setNotificationTab(
+                                    "unread"
+                                  )
+                                }
+                              >
+                                Unread ({unreadCount})
+                              </button>
 
                             </div>
-                          ) : (
-                            filteredNotifications?.map(
-                              (notification) => (
-                                <div
-                                  key={
-                                    notification?.id
-                                  }
-                                  className={`notification-list-item ${notification?.isRead
+
+                            <div className="notification_tabs w-50">
+
+                              <button
+                                type="button"
+                                className="btn btn-outline-primary markAllRead ms-auto"
+                                onClick={
+                                  handleMarkAllAsRead
+                                }
+                                disabled={
+                                  unreadCount === 0
+                                }
+                              >
+                                Mark all as read
+                              </button>
+
+                            </div>
+
+                          </div>
+
+                          <div className="notification_listing">
+
+                            {filteredNotifications?.length ===
+                              0 ? (
+                              <div className="no-notifications">
+
+                                <BsBell />
+
+                                <p className="mb-0">
+                                  {notificationTab ===
+                                    "unread"
+                                    ? "No unread notifications"
+                                    : "No notifications yet"}
+                                </p>
+
+                              </div>
+                            ) : (
+                              filteredNotifications?.map(
+                                (notification) => (
+                                  <div
+                                    key={
+                                      notification?.id
+                                    }
+                                    className={`notification-list-item ${notification?.isRead
                                       ? "read-notification"
                                       : ""
-                                    }`}
-                                  onClick={() =>
-                                    handleNotificationClick(
-                                      notification
-                                    )
-                                  }
-                                  style={{
-                                    cursor: "pointer",
-                                  }}
-                                >
-
-                                  <h5>
-                                    {
-                                      notification?.title
-                                    }
-                                  </h5>
-
-                                  <p className="mb-0">
-                                    {
-                                      notification?.message
-                                    }
-                                  </p>
-
-                                  <small>
-                                    {notification?.createdAt
-                                      ? new Date(
-                                        notification.createdAt
-                                      ).toLocaleTimeString(
-                                        [],
-                                        {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                          hour12: true,
-                                        }
+                                      }`}
+                                    onClick={() =>
+                                      handleNotificationClick(
+                                        notification
                                       )
-                                      : ""}
-                                  </small>
+                                    }
+                                    style={{
+                                      cursor: "pointer",
+                                    }}
+                                  >
 
-                                </div>
+                                    <h5>
+                                      {
+                                        notification?.title
+                                      }
+                                    </h5>
+
+                                    <p className="mb-0">
+                                      {
+                                        notification?.message
+                                      }
+                                    </p>
+
+                                    <small>
+                                      {notification?.createdAt
+                                        ? new Date(
+                                          notification.createdAt
+                                        ).toLocaleTimeString(
+                                          [],
+                                          {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            hour12: true,
+                                          }
+                                        )
+                                        : ""}
+                                    </small>
+
+                                  </div>
+                                )
                               )
-                            )
-                          )}
+                            )}
+
+                          </div>
 
                         </div>
-
                       </div>
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+
+              </div>
+
+              {/* DARK MODE */}
+              <span className="theme-icon">
+                <Form.Check
+                  type="switch"
+                  id="theme-switch"
+                  checked={darkMode}
+                  onChange={(e) =>
+                    setDarkMode(
+                      e.target.checked
+                    )
+                  }
+                />
+              </span>
+
+              {/* PROFILE */}
+              <span
+                className="settings-icon"
+                style={{ cursor: "pointer" }}
+                onClick={() =>
+                  router?.push("/admin/profile")
+                }
+              >
+                <li className="nav-profile mb-0">
+                  <Image
+                    src={
+                      currentUser?.profileImage || DP
+                    }
+                    alt="Profile Image"
+                    width={40}
+                    height={40}
+                  />
+                </li>
+              </span>
 
             </div>
 
-            {/* DARK MODE */}
-            <span className="theme-icon">
-              <Form.Check
-                type="switch"
-                id="theme-switch"
-                checked={darkMode}
-                onChange={(e) =>
-                  setDarkMode(
-                    e.target.checked
-                  )
-                }
-              />
-            </span>
-
-            {/* PROFILE */}
-            <span
-              className="settings-icon"
-              style={{ cursor: "pointer" }}
-              onClick={() =>
-                router?.push("/admin/profile")
-              }
-            >
-              <li className="nav-profile mb-0">
-                <Image
-                  src={
-                    currentUser?.profileImage || DP
-                  }
-                  alt="Profile Image"
-                  width={40}
-                  height={40}
-                />
-              </li>
-            </span>
-
           </div>
+
+           {/* SEARCH */}
+            <div className="search-bar d-block d-sm-none mt-3">
+              <GlobalSearch />
+            </div>
+
         </div>
       </div>
 

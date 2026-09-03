@@ -20,7 +20,7 @@ const QuotationDetails = () => {
     const [quotation, setQuotation] = useState(null);
 
     const router = useRouter();
-    const { id } = router.query;
+    const { id } = router?.query;
 
 
     useEffect(() => {
