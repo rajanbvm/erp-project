@@ -2357,6 +2357,10 @@ body.dark-mode .accordion-item {
         width: 32px;
         height: 32px;
     }
+    .btn-primary svg,
+    .btn-outline-primary svg{
+        display: none;
+    }
 }
 
 @media (max-width: 767px) {
