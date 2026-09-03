@@ -2442,6 +2442,9 @@ body.dark-mode .accordion-item {
     .page-search-sec {
         padding: 12px;
     }
+    .page-banner-sec .row{
+        row-gap: 12px;
+    }
 
 }
 
