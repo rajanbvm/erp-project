@@ -554,6 +554,7 @@ body.dark-mode .form-control::placeholder {
     display: inline-flex;
     align-items: center;
     color: transparent !important;
+    text-decoration: none !important;
 }
 
 .dash-logo .text-one {
