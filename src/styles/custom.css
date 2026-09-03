@@ -343,6 +343,7 @@ img {
     background-color: #5176B21A !important;
     border-color: #2F6EFF !important;
 }
+
 body.dark-mode .btn-check:checked+.btn,
 body.dark-mode .btn.active,
 body.dark-mode .btn.show,
@@ -352,6 +353,7 @@ body.dark-mode :not(.btn-check)+.btn:active {
     background-color: #5176B21A !important;
     border-color: #2F6EFF !important;
 }
+
 .btn-primary:hover {
     background-color: #fff !important;
     border-color: var(--primary-light) !important;
@@ -2450,10 +2452,22 @@ body.dark-mode .accordion-item {
     .page-search-sec {
         padding: 12px;
     }
-    .page-banner-sec .row{
+
+    .page-banner-sec .row {
         row-gap: 12px;
     }
 
+    .approval-status,
+    .version-status {
+        width: 100%;
+        text-align: left;
+    }
+    .col-approval-box,
+    .col-version-box{
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+    }
 }
 
 @media (max-width: 991px) {
