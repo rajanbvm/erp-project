@@ -8,6 +8,7 @@ import CustomDropdown from '@/components/common/CustomDropdown';
 import {
     companySizeOptions,
     industryOptions,
+    ownerOptions,
 } from "@/utils/menuDropdown";
 import {
     getCountryOptions,
@@ -250,7 +251,37 @@ const CompaniesForm = ({ mode, companyId }) => {
                                     />
                                 </div>
                             </div>
-                            <div className="col-lg-8 col-md-6">
+
+                            <div className="col-lg-4 col-md-6">
+                                <div className="form-group">
+                                    <label>Company Owner</label>
+
+                                    <CustomDropdown
+                                        name="owner"
+                                        value={formData?.owner}
+                                        placeholder="Select Owner"
+                                        options={ownerOptions}
+                                        onChange={handleChange}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="col-lg-4 col-md-6">
+                                <div className="form-group">
+                                    <label>Annual Revenue</label>
+
+                                    <input
+                                        type="text"
+                                        name="revenue"
+                                        className="form-control"
+                                        value={formData?.revenue}
+                                        onChange={handleChange}
+                                        placeholder="e.g. $120K"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="col-lg-12 col-md-12">
                                 <div className="form-group">
                                     <label>About Company</label>
                                     <input

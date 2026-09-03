@@ -135,10 +135,10 @@ export const timeOptions = Array.from({ length: 21 }, (_, i) => {
 });
 
 export const contactTypeOptions = [
-  "Primary",
-  "Secondary",
-  "Decision Maker",
-  "Assistant",
+    "Primary",
+    "Secondary",
+    "Decision Maker",
+    "Assistant",
 ];
 
 export const activityStatusOptions = [
