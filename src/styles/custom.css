@@ -343,7 +343,15 @@ img {
     background-color: #5176B21A !important;
     border-color: #2F6EFF !important;
 }
-
+body.dark-mode .btn-check:checked+.btn,
+body.dark-mode .btn.active,
+body.dark-mode .btn.show,
+body.dark-mode .btn:first-child:active,
+body.dark-mode :not(.btn-check)+.btn:active {
+    color: #fff !important;
+    background-color: #5176B21A !important;
+    border-color: #2F6EFF !important;
+}
 .btn-primary:hover {
     background-color: #fff !important;
     border-color: var(--primary-light) !important;

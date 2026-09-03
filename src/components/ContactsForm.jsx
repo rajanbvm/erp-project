@@ -136,24 +136,24 @@ const ContactsForm = ({ mode, contactId }) => {
         }
     }, [mode, contactId]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+    const handleSubmit = (e) => {
+        e.preventDefault();
 
-    const newErrors = {};
+        const newErrors = {};
 
-    if (!formData?.contact?.trim()) {
-        newErrors.contact = "Contact Name is required.";
-    }
+        if (!formData?.contact?.trim()) {
+            newErrors.contact = "Contact Name is required.";
+        }
 
-    if (!formData?.email?.trim()) {
-        newErrors.email = "Email is required.";
-    }
+        if (!formData?.email?.trim()) {
+            newErrors.email = "Email is required.";
+        }
 
-    if (!formData?.companyId) {
-        newErrors.companyId = "Please select a company.";
-    }
+        if (!formData?.companyId) {
+            newErrors.companyId = "Please select a company.";
+        }
 
-    if (Object.keys(newErrors).length > 0) {
+        if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
 
             setTimeout(() => {
@@ -172,32 +172,32 @@ const ContactsForm = ({ mode, contactId }) => {
             return;
         }
 
-    if (mode === "add") {
+        if (mode === "add") {
 
-        const newContact = addContact(formData);
+            const newContact = addContact(formData);
 
-        notifyAdded(
-            "Contact",
-            formData?.contact,
-            newContact?.id
-        );
+            notifyAdded(
+                "Contact",
+                formData?.contact,
+                newContact?.id
+            );
 
-    } else {
+        } else {
 
-        updateContact(
-            contactId,
-            formData
-        );
+            updateContact(
+                contactId,
+                formData
+            );
 
-        notifyUpdated(
-            "Contact",
-            formData?.contact,
-            contactId
-        );
-    }
+            notifyUpdated(
+                "Contact",
+                formData?.contact,
+                contactId
+            );
+        }
 
-    router.push("/admin/contacts");
-};
+        router.push("/admin/contacts");
+    };
 
     return (
         <>
@@ -379,36 +379,39 @@ const ContactsForm = ({ mode, contactId }) => {
                                 </div>
                             </div>
 
-                            <div className="col-lg-12">
-                                <div className="form-group">
-                                    <label>Contact Type</label>
-                                    <div className="d-flex gap-2 flex-wrap">
-                                        {roles.map((role, index) => (
-                                            <div key={index}>
-                                                <input
-                                                    type="radio"
-                                                    className="btn-check"
-                                                    id={`btn-check-${index}`}
-                                                    name="type"
-                                                    checked={formData?.type === role}
-                                                    onChange={() =>
-                                                        setFormData((prev) => ({
-                                                            ...prev,
-                                                            type: role,
-                                                        }))
-                                                    }
-                                                />
-                                                <label
-                                                    className="btn"
-                                                    htmlFor={`btn-check-${index}`}
-                                                >
-                                                    {role}
-                                                </label>
-                                            </div>
-                                        ))}
+                            {/* Hide Contact Type when Primary Contact is checked */}
+                            {!formData?.isPrimary && (
+                                <div className="col-lg-12">
+                                    <div className="form-group">
+                                        <label>Contact Type</label>
+                                        <div className="d-flex gap-2 flex-wrap">
+                                            {roles.map((role, index) => (
+                                                <div key={index}>
+                                                    <input
+                                                        type="radio"
+                                                        className="btn-check"
+                                                        id={`btn-check-${index}`}
+                                                        name="type"
+                                                        checked={formData?.type === role}
+                                                        onChange={() =>
+                                                            setFormData((prev) => ({
+                                                                ...prev,
+                                                                type: role,
+                                                            }))
+                                                        }
+                                                    />
+                                                    <label
+                                                        className="btn"
+                                                        htmlFor={`btn-check-${index}`}
+                                                    >
+                                                        {role}
+                                                    </label>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            )}
                         </div>
                     </div>
 
