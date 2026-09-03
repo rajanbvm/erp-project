@@ -185,7 +185,7 @@ const LeadsDetails = () => {
                             <div className="form-group mb-0">
                                 <label>Notes</label>
                                 <h6 className="formValue">
-                                    {lead?.notes}
+                                    {lead?.notes || "N/A"}
                                 </h6>
                             </div>
                         </div>
@@ -208,30 +208,38 @@ const LeadsDetails = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Last Call</p>
-                                    <h6 className="mb-0">{lead?.lastCall}</h6>
+
+                        {/* Show only if Last Call has a value */}
+                        {lead?.lastCall && (
+                            <div className="col-approval-box ms-0">
+                                <div className="approval-box">
+                                    <div className="text">
+                                        <p>Last Call</p>
+                                        <h6 className="mb-0">{lead.lastCall}</h6>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Open Tasks</p>
-                                    <h6 className="mb-0">{lead?.openTasks}</h6>
+                        )}
+                        {lead?.openTasks && (
+                            <div className="col-approval-box ms-0">
+                                <div className="approval-box">
+                                    <div className="text">
+                                        <p>Open Tasks</p>
+                                        <h6 className="mb-0">{lead?.openTasks}</h6>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="col-approval-box ms-0">
-                            <div className="approval-box">
-                                <div className="text">
-                                    <p>Director Final Approval</p>
-                                    <h6 className="mb-0">{lead?.meetingsScheduled}</h6>
+                        )}
+                        {lead?.meetingsScheduled && (
+                            <div className="col-approval-box ms-0">
+                                <div className="approval-box">
+                                    <div className="text">
+                                        <p>Director Final Approval</p>
+                                        <h6 className="mb-0">{lead?.meetingsScheduled}</h6>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
 
