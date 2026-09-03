@@ -382,7 +382,7 @@ const ContactsForm = ({ mode, contactId }) => {
                             <div className="col-lg-12">
                                 <div className="form-group">
                                     <label>Contact Type</label>
-                                    <div className="d-flex gap-2">
+                                    <div className="d-flex gap-2 flex-wrap">
                                         {roles.map((role, index) => (
                                             <div key={index}>
                                                 <input
