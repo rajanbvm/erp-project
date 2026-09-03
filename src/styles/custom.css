@@ -2422,6 +2422,15 @@ body.dark-mode .accordion-item {
 
     .notification_tabs {
         width: auto !important;
+        padding: 15px 10px;
+    }
+
+    .notificationModalcontent .d-flex {
+        justify-content: space-between;
+    }
+
+    .notification-modal-overlay {
+        padding: 60px 16px 16px;
     }
 
     .QuoteDetailsStatus {
