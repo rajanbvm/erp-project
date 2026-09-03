@@ -40,6 +40,19 @@ const LeadForm = ({ mode, leadId }) => {
 
     const router = useRouter();
 
+    const getCompanyBusinessAddress = (company) => {
+        if (!company) return "";
+
+        const addressParts = [
+            company.street,
+            company.city,
+            // company.state,
+            // company.pincode,
+        ].filter(Boolean);
+
+        return addressParts.join(", ");
+    };
+
     const [companies, setCompanies] = useState([]);
 
     useEffect(() => {
@@ -78,7 +91,8 @@ const LeadForm = ({ mode, leadId }) => {
             industryType: selectedCompany?.industry || "",
             companySize: selectedCompany?.companySize || "",
             annualRevenue: selectedCompany?.revenue || "",
-            businessAddress: selectedCompany?.billingAddress || "",
+            // Combine company address
+            businessAddress: getCompanyBusinessAddress(selectedCompany),
             owner: selectedCompany?.owner || "",
 
             primaryPhone: selectedCompany?.phone || "",
@@ -419,62 +433,33 @@ const LeadForm = ({ mode, leadId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Website</label>
-                                    <input
-                                        type="text"
-                                        name="website"
-                                        className="form-control"
-                                        placeholder="www.google.com"
-                                        value={formData?.website}
-                                        readOnly
-                                    />
+                                    <div className="input-text-box">
+                                        {formData?.website}
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Industry Type</label>
-                                    <input
-                                        type="text"
-                                        name="industryType"
-                                        className="form-control"
-                                        placeholder="www.google.com"
-                                        value={formData?.industryType}
-                                        readOnly
-                                    />
-                                    {/* <CustomDropdown
-                                        name="industryType"
-                                        value={formData?.industryType}
-                                        placeholder="Select Industry"
-                                        options={industryOptions}
-                                        readOnly
-                                    /> */}
+                                    <div className="input-text-box">
+                                        {formData?.industryType}
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Annual Revenue</label>
-                                    <input
-                                        id="annualRevenue"
-                                        name="annualRevenue"
-                                        type="text"
-                                        className="form-control"
-                                        value={formData?.annualRevenue}
-                                        placeholder="e.g. 2,00,00,000"
-                                        readOnly
-                                    />
+                                    <div className="input-text-box">
+                                        {formData?.annualRevenue}
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Business Address</label>
-                                    <input
-                                        id="businessAddress"
-                                        name="businessAddress"
-                                        type="text"
-                                        className="form-control"
-                                        value={formData?.businessAddress}
-                                        placeholder="e.g. C-Scheme, Jaipur"
-                                        readOnly
-                                    />
+                                    <div className="input-text-box">
+                                        {formData?.businessAddress}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -486,15 +471,9 @@ const LeadForm = ({ mode, leadId }) => {
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Primary Phone</label>
-                                    <input
-                                        id="primaryPhone"
-                                        name="primaryPhone"
-                                        type="text"
-                                        className="form-control"
-                                        placeholder="+91 1234567890"
-                                        value={formData?.primaryPhone}
-                                        readOnly
-                                    />
+                                    <div className="input-text-box">
+                                        {formData?.primaryPhone}
+                                    </div>
                                 </div>
                             </div>
                             <div className="col-lg-4 col-md-6">
@@ -516,14 +495,9 @@ const LeadForm = ({ mode, leadId }) => {
                                 <div className="form-group">
                                     <label>Email Address</label>
 
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        className={`form-control`}
-                                        value={formData?.email}
-                                        readOnly
-                                        placeholder="e.g. rohan@company.com"
-                                    />
+                                    <div className="input-text-box">
+                                        {formData?.email}
+                                    </div>
 
                                 </div>
                             </div>
@@ -588,7 +562,7 @@ const LeadForm = ({ mode, leadId }) => {
                                 </div>
                             </div>
 
-                            <div className="col-lg-4 col-md-6">
+                            {/* <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Lead Owner</label>
                                     <input
@@ -600,13 +574,14 @@ const LeadForm = ({ mode, leadId }) => {
                                         placeholder="e.g. rohan@company.com"
                                     />
 
+
                                     {errors?.owner && (
                                         <div className="invalid-feedback">
                                             {errors?.owner}
                                         </div>
                                     )}
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="col-lg-4 col-md-6">
                                 <div className="form-group">
                                     <label>Lead Status</label>
