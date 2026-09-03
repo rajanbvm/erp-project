@@ -2498,7 +2498,8 @@ body.dark-mode .accordion-item {
     }
 
     .dash-navbar .navbar-list {
-        max-height: 92vh;
+        /* max-height: 92vh; */
+        max-height: 87vh;
     }
 
     .dash-navbar {
