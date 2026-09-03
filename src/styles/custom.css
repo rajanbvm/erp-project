@@ -547,6 +547,13 @@ body.dark-mode .form-control::placeholder {
 
 .dash-logo {
     width: 25%;
+    height: 20px;
+}
+
+.dash-logo a {
+    display: inline-flex;
+    align-items: center;
+    color: transparent !important;
 }
 
 .dash-logo .text-one {
@@ -2321,6 +2328,10 @@ body.dark-mode .accordion-item {
         font-size: 20px;
     }
 
+    .dash-logo {
+        height: 18px;
+    }
+
     .dash-logo,
     .dash-header .header-actions {
         width: 42%;
@@ -2417,7 +2428,8 @@ body.dark-mode .accordion-item {
         flex-wrap: wrap;
         row-gap: 12px;
     }
-    .page-search-sec{
+
+    .page-search-sec {
         padding: 12px;
     }
 
