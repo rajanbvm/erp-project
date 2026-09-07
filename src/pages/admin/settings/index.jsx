@@ -144,25 +144,21 @@ const SettingsPage = () => {
                   eventKey={String(index)}
                   key={item.module}
                 >
-                  <Accordion.Header>
-                    <div className="permission-module-info">
-                      <div>
-                        <h5>{item.label}</h5>
+                  <div className="permission-accordion-header">
+                    <Accordion.Header>
+                      <div className="permission-module-info">
+                        <div>
+                          <h5>{item.label}</h5>
 
-                        <span>
-                          {enabledCount} /{" "}
-                          {item.actions.length}{" "}
-                          permissions enabled
-                        </span>
+                          <span>
+                            {enabledCount} / {item.actions.length}{" "}
+                            permissions enabled
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    </Accordion.Header>
 
-                    <div
-                      className="permission-module-actions"
-                      onClick={(e) =>
-                        e.stopPropagation()
-                      }
-                    >
+                    <div className="permission-module-actions">
                       <button
                         type="button"
                         className="permission-action-btn"
@@ -178,54 +174,45 @@ const SettingsPage = () => {
                             )
                         }
                       >
-                        {allEnabled
-                          ? "Disable all"
-                          : "Enable all"}
+                        {allEnabled ? "Disable all" : "Enable all"}
                       </button>
                     </div>
-                  </Accordion.Header>
+                  </div>
 
                   <Accordion.Body>
                     <div className="permission-module-content">
-                      {item.actions.map(
-                        (action) => {
-                          const checked =
-                            roleHasPermission(
-                              selectedRole,
-                              item.module,
-                              action
-                            );
+                      {item.actions.map((action) => {
+                        const checked = roleHasPermission(
+                          selectedRole,
+                          item.module,
+                          action
+                        );
 
-                          return (
-                            <button
-                              type="button"
-                              key={action}
-                              className={`permission-chip ${checked
-                                ? "active"
-                                : ""
-                                }`}
-                              onClick={() =>
-                                handlePermissionChange(
-                                  item.module,
-                                  action,
-                                  !checked
-                                )
-                              }
-                            >
-                              <span className="permission-chip-icon">
-                                {checked ? <FaCheck /> : <FaPlus />}
-                              </span>
+                        return (
+                          <button
+                            type="button"
+                            key={action}
+                            className={`permission-chip ${checked ? "active" : ""
+                              }`}
+                            onClick={() =>
+                              handlePermissionChange(
+                                item.module,
+                                action,
+                                !checked
+                              )
+                            }
+                          >
+                            <span className="permission-chip-icon">
+                              {checked ? <FaCheck /> : <FaPlus />}
+                            </span>
 
-                              <span>
-                                {action
-                                  .charAt(0)
-                                  .toUpperCase() +
-                                  action.slice(1)}
-                              </span>
-                            </button>
-                          );
-                        }
-                      )}
+                            <span>
+                              {action.charAt(0).toUpperCase() +
+                                action.slice(1)}
+                            </span>
+                          </button>
+                        );
+                      })}
                     </div>
                   </Accordion.Body>
                 </Accordion.Item>

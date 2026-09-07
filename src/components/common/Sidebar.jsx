@@ -224,9 +224,9 @@ const Sidebar = ({
             {/* HEADER ACTIONS */}
             <div className="header-actions">
 
-              <span className="reset-settings d-none" onClick={resetERPStorage} style={{ cursor: "pointer" }}>
+              {/* <span className="reset-settings d-none" onClick={resetERPStorage} style={{ cursor: "pointer" }}>
                 <BsSliders2 />
-              </span>
+              </span> */}
 
               {/* NOTIFICATIONS */}
               <div className="notification-wrapper">
